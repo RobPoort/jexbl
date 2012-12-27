@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form
+	addrulepath="/administrator/components/com_jexbooking/models/rules"
+>
+	<fieldset name="details"
+	>
+		<field
+			name="id"
+			type="hidden"
+		/>
+		<field
+			name="name"
+			type="text"
+			label="COM_JEXBOOKING_TYPE_NAME_LABEL"
+			description="COM_JEXBOOKING_TYPE_DESC"
+			required="true"
+			default=""
+		/>
+		<field
+			name="desc"
+			type="editor"
+			label="COM_JEXBOOKING_TYPE_DESC_LABEL"
+			description="COM_JEXBOOKING_TYPE_DESC_DESC"
+			required="false"
+			default=""
+		/>		
+	</fieldset>
+	<fieldset name="publish"
+	>
+		<field
+			name="published"
+			type="list"
+			label="JSTATUS"
+			description="JSTATUS"
+			default="0"
+		>
+			<option value="0">JUNPUBLISHED</option>
+			<option value="1">JPUBLISHED</option>
+		</field>
+	</fieldset>
+	<fieldset name="attributen"
+	>
+		<field
+			name="attribute_id"
+			type="attributentypes"
+			label="attributen"
+			description=""
+			required="false"
+			multiple="true"
+			default=""			
+		/>
+	</fieldset>	
+</form>

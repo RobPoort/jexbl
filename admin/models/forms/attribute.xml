@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form
+	addrulepath="/administrator/components/com_jexbooking/models/rules"
+>
+	<fieldset name="details"
+	>
+		<field
+			name="id"
+			type="hidden"
+		/>
+		<field
+			name="name"
+			type="text"
+			label="COM_JEXBOOKING_ATTRIBUTE_NAME_LABEL"
+			description="COM_JEXBOOKING_ATTRIBUTE_NAME_DESC"
+			required="true"
+			class="inputbox"
+			size="80"
+			default=""
+		/>
+		<field
+			name="desc"
+			type="editor"
+			label="COM_JEXBOOKING_ATTRIBUTE_DESC_LABEL"
+			description="COM_JEXBOOKING_ATTRIBUTE_DESC_DESC"
+			required="false"
+			default=""
+		/>
+		
+	</fieldset>
+	<fieldset name="more_details"
+	>
+		<field
+			name="price"
+			type="text"
+			label="COM_JEXBOOKING_ATTRIBUTE_PRICE_LABEL"
+			description="COM_JEXBOOKING_ATTRIBUTE_DESC"
+			required="false"
+			default="0.00"
+		/>
+		<field
+			name="has_price"
+			type="list"
+			label="COM_JEXBOOKING_ATTRIBUTE_HAS_PRICE_LABEL"
+			description="COM_JEXBOOKING_ATTRIBUTE_HAS_PRICE_DESC"
+			required="false"
+			default=""
+		>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field
+			name="is_pn"
+			type="list"
+			label="COM_JEXBOOKING_ATTRIBUTE_IS_PN_LABEL"
+			description="COM_JEXBOOKING_ATTRIBUTE_IS_PN_DESC"
+			required="false"
+			default="0"
+		>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>		
+	</fieldset>
+	<fieldset name="publish"
+	>
+		<field
+			name="published"
+			type="list"
+			label="JSTATUS"
+			description="JSTATUS"
+			default="0"
+		>
+			<option value="0">JUNPUBLISHED</option>
+			<option value="1">JPUBLISHED</option>
+		</field>
+	</fieldset>
+</form>
