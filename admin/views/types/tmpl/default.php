@@ -5,7 +5,7 @@ JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
 
 $items = $this->items;
-//TODO hidden fields
+
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_jexbooking&view=types'); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">

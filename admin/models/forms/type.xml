@@ -38,16 +38,5 @@
 			<option value="1">JPUBLISHED</option>
 		</field>
 	</fieldset>
-	<fieldset name="attributen"
-	>
-		<field
-			name="attribute_id"
-			type="attributentypes"
-			label="attributen"
-			description=""
-			required="false"
-			multiple="true"
-			default=""			
-		/>
-	</fieldset>	
+	
 </form>

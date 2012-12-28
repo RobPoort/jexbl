@@ -16,17 +16,7 @@ JHTML::_('behavior.formvalidation');
 				<?php endforeach; ?>
 			</ul>
 		</fieldset>
-	</div>
-	<div class="width-40 fltrt">
-		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_JEXBOOKING_TYPE_ATTRIBUTES'); ?></legend>
-			
-			<?php foreach($this->form->getFieldset('attributen') as $field) : ?>
-			<?php //echo $field->label; ?><br />			
-			<?php echo $field->input; ?>
-			<?php endforeach; ?>
-		</fieldset>
-	</div>	
+	</div>		
 	<div class="width-60 fltlft">
 		<fieldset class="adminform">			
 			<ul class="adminformlist">

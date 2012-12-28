@@ -12,8 +12,11 @@ class JexBookingModelArrangements extends JModelList
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$query->from('#__jexbooking_arrangements as arr');
-		//$query->select('arr.id as id, arr.name as name, arr.desc as desc, arr.start_date as start_date, arr.end_date as end_date, arr.nights as nights, arr.price as price, arr.is_pa as is_pa, arr.required as required, arr.published as published');
-		$query->select('*');
+		$query->join('LEFT', '#__jexbooking_type as jty ON arr.type_id=jty.id');
+		$query->join('LEFT', '#__jexbooking_location as jl ON arr.location_id=jl.id');
+		$query->select('arr.id as id, arr.name as name, arr.desc, arr.start_date as start_date, arr.end_date as end_date, arr.nights as nights, arr.price as price, arr.is_pa as is_pa, arr.required as required, arr.published as published, jty.name as type_name, jl.name as location_name');
+		
+		//$query->select('arr.desc');
 		
 		return $query;
 	}

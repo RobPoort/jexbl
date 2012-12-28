@@ -40,6 +40,8 @@ CREATE TABLE IF NOT EXISTS `#__jexbooking_default_prices` (
 
 CREATE TABLE IF NOT EXISTS `#__jexbooking_arrangements` (
 	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`location_id` int(11) NOT NULL,
+	`type_id` int(11) NOT NULL,
 	`name` varchar(50) NOT NULL,
 	`desc` varchar(500) NOT NULL,
 	`start_date` int(150) NOT NULL,
