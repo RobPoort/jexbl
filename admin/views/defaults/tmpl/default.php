@@ -5,44 +5,38 @@ JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
 
 $items = $this->items;
-//TODO hidden fields
+
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_jexbooking'); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
 				<th width="5">
-					<?php echo JText::_('COM_JEXBOOKING_ARRANGEMENTS_HEADING_ID'); ?>
+					<?php echo JText::_('COM_JEXBOOKING_DEFAULT_PRICES_HEADING_ID'); ?>
 				</th>
 				<th width="20">
 					<input type="checkbox" name="toggle" value="" onClick="checkAll(<?php echo count($this->items); ?>)" />
 				</th>
 				<th>
-					<?php echo JText::_('COM_JEXBOOKING_ARRANGEMENTS_HEADING_NAME'); ?>
+					<?php echo JText::_('COM_JEXBOOKING_DEFAULT_PRICES_HEADING_NAME'); ?>
 				</th>
 				<th>
-					<?php echo JText::_('COM_JEXBOOKING_ARRANGEMENTS_HEADING_DESC'); ?>
+					<?php echo JText::_('COM_JEXBOOKING_DEFAULT_PRICES_HEADING_START_DATE'); ?>
+				</th>
+				<th>
+					<?php echo JText::_('COM_JEXBOOKING_DEFAULT_PRICES_HEADING_END_DATE'); ?>
 				</th>
 				<th width="5">
 					<?php echo JText::_('JSTATUS') ?>
 				</th>
 				<th>
-					<?php echo JText::_('COM_JEXBOOKING_ARRANGEMENTS_HEADING_TYPE_NAME'); ?>
-				</th>
-				<th>
-					<?php echo JText::_('COM_JEXBOOKING_ARRANGEMENTS_HEADING_LOCATION_NAME'); ?>
-				</th>
-				<th>
-					<?php echo JText::_('COM_JEXBOOKING_ARRANGEMENTS_HEADING_FROM'); ?>
-				</th>
-				<th>
-					<?php echo JText::_('COM_JEXBOOKING_ARRANGEMENTS_HEADING_TO'); ?>
+					<?php echo JText::_('COM_JEXBOOKING_DEFAULT_PRICES_HEADING_LOCATION_NAME'); ?>
 				</th>
 			</tr>
 		</thead>		
 		<tfoot>
 			<tr>
-				<td colspan="9">
+				<td colspan="7">
 					<?php echo $this->pagination->getListFooter(); ?>
 				</td>
 			</tr>
@@ -59,27 +53,21 @@ $items = $this->items;
 					<?php echo JHtml::_('grid.id', $i, $item->id) ?>
 				</td>
 				<td>
-					<a href="<?php echo JRoute::_('index.php?option=com_jexbooking&task=arrangement.edit&id='.$item->id); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=com_jexbooking&task=default.edit&id='.$item->id); ?>">
 						<?php echo $item->name; ?>
 					</a>
-				</td>
-				<td>
-					<?php echo $item->desc; ?>
-				</td>
-				<td class="center">
-					<?php echo JHtml::_('jgrid.published', $item->published, $i, 'arrangements.', true);?>
-				</td>
-				<td>
-					<?php echo $item->type_name; ?>
-				</td>
-				<td>
-					<?php echo $item->location_name; ?>
 				</td>
 				<td>
 					<?php echo $item->start_date; ?>
 				</td>
 				<td>
-					<?php echo $item->end_date; ?>
+					<?php echo $item->end_date ?>
+				</td>
+				<td class="center">
+					<?php echo JHtml::_('jgrid.published', $item->published, $i, 'defaults.', true);?>
+				</td>
+				<td>
+					<?php echo $item->location_name; ?>
 				</td>
 			</tr>
 			<?php }

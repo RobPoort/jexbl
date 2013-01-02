@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form
+	addrulepath="/administrator/components/com_jexbooking/models/rules"
+>
+	<fieldset name="details">
+		<field
+			name="id"
+			type="hidden"
+		/>
+		<field
+			name="name"
+			type="text"
+			label="COM_JEXBOOKING_ARRANGEMENT_NAME_LABEL"
+			description="COM_JEXBOOKING_ARRANGEMENT_NAME_DESC"
+			required="true"
+			class="inputbox"
+			size="80"
+			default=""
+		/>
+		<field
+			name="desc"
+			type="text"
+			label="COM_JEXBOOKING_ARRANGEMENT_DESC_LABEL"
+			description="COM_JEXBOOKING_ARRANGEMENT_DESC_DESC"
+			required="false"
+			class="inputbox"
+			size="100"
+			default=""
+		/>
+		<field
+			name="start_date"
+			type="calendar"
+			label="COM_JEXBOOKING_ARRANGEMENTS_START_DATE_LABEL"
+			description="COM_JEXBOOKING_ARRANGEMENTS_START_DATE_DESC"
+			required="true"
+			default="dd-mm-jjjj"
+			format="%d-%m-%Y"
+		/>	
+		<field
+			name="end_date"
+			type="calendar"
+			label="COM_JEXBOOKING_ARRANGEMENTS_END_DATE_LABEL"
+			description="COM_JEXBOOKING_ARRANGEMENTS_END_DATE_DESC"
+			required="true"			
+			format="%d-%m-%Y"
+			default="dd-mm-jjjj"
+		/>			
+		<field
+			name="type_id"
+			type="arrangementtype"
+			label="COM_JEXBOOKING_ARRANGEMENT_TYPE_LABEL"
+			description="COM_JEXBOOKING_ARRANGEMENT_TYPE_DESC"
+			default=""
+			required="true"
+		/>
+		<field
+			name="price"
+			type="text"
+			label="COM_JEXBOOKING_ARRANGEMENT_PRICE_LABEL"
+			description="COM_JEXBOOKING_ARRANGEMENT_PRICE_DESC"
+			default="0.00"
+			required="true"
+		/>
+		<field
+			name="published"
+			type="list"
+			label="JSTATUS"
+			description="JSTATUS"
+			default="0"
+		>
+			<option value="0">JUNPUBLISHED</option>
+			<option value="1">JPUBLISHED</option>
+		</field>	
+	</fieldset>
+	<fieldset name="attributen"
+	>
+		<field
+			name="attribute_id"
+			type="attributenarrangements"
+			label="COM_JEXBOOKING_ARRANGEMENT_ATTRIBUTES_LABEL"
+			description="COM_JEXBOOKING_ARRANGEMENT_ATTRIBUTES_DESC"
+			required="false"
+			multiple="true"
+			default=""			
+		/>
+	</fieldset>	
+</form>

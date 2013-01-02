@@ -1,15 +1,22 @@
 <?php
+	/**
+	*	admin part
+	*/
 defined('_JEXEC') or die('Restricted Access');
 
+//import Joomla table library
 jimport('joomla.database.table');
 
-class JexBookingTableArrangements extends JTable
+class JexBookingTableDefaults extends JTable
 {
-	
-	//constructor van table class tabel
+	/**
+	*	constructor
+	*	$param	object	Database connector object
+	*/
 	function __construct(&$db){
-		parent::__construct('#__jexbooking_arrangements', 'id', $db);
+		parent::__construct('#__jexbooking_default_prices', 'id', $db);
 	}
+	
 	/**
 	*	overloaded bind function
 	*
@@ -53,6 +60,7 @@ class JexBookingTableArrangements extends JTable
 			return false;
 		}
 	}
+	
 	/**
 	*	method to compute the default name of the asset.
 	*	The default name is in the form `table name.id`
@@ -75,6 +83,7 @@ class JexBookingTableArrangements extends JTable
 	{
 		return $this->name;
 	}
+	
 	/**
 	*	method to get the parent asset id for the record
 	*	
@@ -88,4 +97,5 @@ class JexBookingTableArrangements extends JTable
 		
 		return $asset->id;
 	}
+	
 }

@@ -3,7 +3,7 @@ defined('_JEXEC') or die('Restricted Access');
 
 jimport('joomla.application.component.view');
 
-class JexBookingViewAttribute extends JView{
+class JexBookingViewArrangement extends JView{
 	
 public function display($tpl = null){
 		
@@ -44,42 +44,42 @@ public function display($tpl = null){
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;
 		$canDo = JexBookingHelper::getActions($this->item->id);
-		JToolBarHelper::title($isNew ? JText::_('COM_JEXBOOKING_MANAGER_ATTRIBUTE_NEW')
-		: JText::_('COM_JEXBOOKING_MANAGER_ATTRIBUTE_EDIT'), 'jexbooking');
+		JToolBarHelper::title($isNew ? JText::_('COM_JEXBOOKING_MANAGER_ARRANGEMENT_NEW')
+		: JText::_('COM_JEXBOOKING_MANAGER_ARRANGEMENT_EDIT'), 'jexbooking');
 		//built the actions for new and existings records
 		if($isNew)
 		{
 			//for new records, check the create permission
 			if($canDo->get('core.create'))
 			{
-				JToolBarHelper::apply('attribute.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('attribute.save', 'JTOOLBAR_SAVE');
-				JToolBarHelper::custom('attribute.save2new', 'save-new.png', 'save-new_f2.png',
+				JToolBarHelper::apply('arrangement.apply', 'JTOOLBAR_APPLY');
+				JToolBarHelper::save('arrangement.save', 'JTOOLBAR_SAVE');
+				JToolBarHelper::custom('arrangement.save2new', 'save-new.png', 'save-new_f2.png',
 				'JTOOLBAR_SAVE_AND_NEW', false);
 			}
-			JToolBarHelper::cancel('attribute.cancel', 'JTOOLBAR_CANCEL');
+			JToolBarHelper::cancel('arrangement.cancel', 'JTOOLBAR_CANCEL');
 		} else
 		{
 			if($canDo->get('core.edit'))
 			{
 				//we can save the new record
-				JToolBarHelper::apply('attribute.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('attribute.save', 'JTOOLBAR_SAVE');
+				JToolBarHelper::apply('arrangement.apply', 'JTOOLBAR_APPLY');
+				JToolBarHelper::save('arrangement.save', 'JTOOLBAR_SAVE');
 	
 				//we can save this record, but check the create permission to see
 				//if we can return to make a new one
 				if($canDo->get('core.create'))
 				{
-					JToolBarHelper::custom('attribute.save2new', 'save-new.png', 'save-new_f2.png',
+					JToolBarHelper::custom('arrangement.save2new', 'save-new.png', 'save-new_f2.png',
 					'JTOOLBAR_SAVE_AND_NEW', false);
 				}
 			}
 			if($canDo->get('core.create'))
 			{
-				JToolBarHelper::custom('attribute.save2copy', 'save-copy.png', 'save-copy_f2.png',
+				JToolBarHelper::custom('arrangement.save2copy', 'save-copy.png', 'save-copy_f2.png',
 				'JTOOLBAR_SAVE_AS_COPY', false);
 			}
-			JToolBarHelper::cancel('attribute.cancel', 'JTOOLBAR_CLOSE');
+			JToolBarHelper::cancel('arrangement.cancel', 'JTOOLBAR_CLOSE');
 		}
 	}
 	/**
@@ -90,10 +90,10 @@ public function display($tpl = null){
 	{
 		$isNew = ($this->item->id < 1);
 		$document = JFactory::getDocument();
-		$document->setTitle($isNew ? JText::_('COM_JEXBOOKING_ATTRIBUTE_CREATING') : JTEXT::_('COM_JEXBOOKING_ATTRIBUTE_EDITING'));
+		$document->setTitle($isNew ? JText::_('COM_JEXBOOKING_ARRANGEMENT_CREATING') : JTEXT::_('COM_JEXBOOKING_ARRANGEMENT_EDITING'));
 	
 		$document->addScript(JURI::root() . $this->script);
-		$document->addScript(JURI::root() . "/administrator/components/com_jexbooking/views/attribute/submitbutton.js");
+		$document->addScript(JURI::root() . "/administrator/components/com_jexbooking/views/arrangement/submitbutton.js");
 		JText::script('COM_JEXBOOKING_JEXBOOKING_ERROR_UNACCEPTABLE');
 	}
 }
