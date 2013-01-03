@@ -11,6 +11,7 @@
 		<field
 			name="name"
 			type="text"
+			class="inputbox"
 			label="COM_JEXBOOKING_TYPE_NAME_LABEL"
 			description="COM_JEXBOOKING_TYPE_DESC"
 			required="true"
@@ -21,6 +22,7 @@
 			type="editor"
 			label="COM_JEXBOOKING_TYPE_DESC_LABEL"
 			description="COM_JEXBOOKING_TYPE_DESC_DESC"
+			hide="readmore, pagebreak"
 			required="false"
 			default=""
 		/>		
