@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="COM_JEXPRICELIST_JEXPRICELIST_VIEW_ADDING_TITLE">
-		<message>COM_JEXPRICELIST_JEXPRICELIST_VIEW_ADDING_DESC</message>
+	<layout title="COM_JEXBOOKING_VIEW_ARRANGEMENTS_TITLE">
+		<message>COM_JEXBOOKING_VIEW_ARRANGEMENTS_DESC</message>
 	</layout>
 	<fields name="request">
 		<fieldset 
 			name="request"
-			addfieldpath="/administrator/components/com_jexbl/models/fields"
+			addfieldpath="/administrator/components/com_jexbooking/models/fields"
 		>
 			<field
-				name="id"
-				type="jexpricelist"
-				label="COM_JEXPRICELIST_JEXPRICELIST_FIELD_PRICELISTCAT_LABEL"
-				description="COM_JEXPRICELIST_JEXPRICELIST_FIELD_PRICELISTCAT_DESCRIPTION"
+				name="location_id"
+				type="locations"
+				label="COM_JEXBOOKING_FIELD_ARRANGEMENT_LOCATION_LABEL"
+				description="COM_JEXBOOKING_FIELD_ARRANGEMENT_LOCATION_DESC"
+				
 			/>
 			
 		</fieldset>

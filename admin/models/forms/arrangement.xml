@@ -51,7 +51,15 @@
 			label="COM_JEXBOOKING_ARRANGEMENT_TYPE_LABEL"
 			description="COM_JEXBOOKING_ARRANGEMENT_TYPE_DESC"
 			default=""
-			required="true"
+			required="false"
+		/>
+		<field
+			name="location_id"
+			type="locations"
+			label="COM_JEXBOOKING_ARRANGEMENT_LOCATION_LABEL"
+			description="COM_JEXBOOKING_ARRANGEMENT_LOCATION_DESC"
+			default=""
+			required="false"
 		/>
 		<field
 			name="price"
