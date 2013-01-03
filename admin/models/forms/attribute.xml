@@ -23,6 +23,7 @@
 			type="editor"
 			label="COM_JEXBOOKING_ATTRIBUTE_DESC_LABEL"
 			description="COM_JEXBOOKING_ATTRIBUTE_DESC_DESC"
+			hide="readmore,pagebreak"
 			required="false"
 			default=""
 		/>

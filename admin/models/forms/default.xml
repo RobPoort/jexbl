@@ -24,7 +24,7 @@
 			description="COM_JEXBOOKING_DEFAULT_PRICES_START_DATE_DESC"
 			required="true"
 			default="dd-mm-jjjj"
-			format="%d-%m-%Y"
+			format="%d-%m-%Y"			
 		/>	
 		<field
 			name="end_date"
@@ -33,8 +33,35 @@
 			description="COM_JEXBOOKING_DEFAULT_PRICES_END_DATE_DESC"
 			required="true"			
 			format="%d-%m-%Y"
-			default="dd-mm-jjjj"
-		/>			
+			default="dd-mm-jjjj"			
+		/>
+		<field
+			name="min_price"
+			type="text"
+			label="COM_JEXBOOKING_DEFAULT_PRICES_MIN_PRICE_LABEL"
+			description="COM_JEXBOOKING_DEFAULT_PRICES_MIN_PRICE_DESC"
+			required="true"
+			default="0.00"
+		/>
+		<field
+			name="extra"
+			type="text"
+			label="COM_JEXBOOKING_DEFAULT_PRICES_EXTRA_LABEL"
+			description="COM_JEXBOOKING_DEFAULT_PRICES_EXTRA_DESC"
+			required="true"
+			default="0.00"
+		/>
+		<field
+			name="is_pn_extra"
+			type="radio"
+			label="COM_JEXBOOKING_DEFAULT_PRICES_EXTRA_PN_LABEL"
+			description="COM_JEXBOOKING_DEFAULT_PRICES_EXTRA_PN_DESC"
+			required="true"
+			default="1"
+		>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
 		<field
 			name="location_id"
 			type="defaultlocation"
