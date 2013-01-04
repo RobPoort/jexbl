@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Machine: localhost
--- Genereertijd: 27 dec 2012 om 13:45
+-- Genereertijd: 04 jan 2013 om 19:18
 -- Serverversie: 5.5.16
 -- PHP-Versie: 5.3.8
 
@@ -28,17 +28,29 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `localtest_jexbooking_arrangements` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `location_id` int(11) NOT NULL,
+  `type_id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `desc` varchar(500) NOT NULL,
-  `start_date` int(150) NOT NULL,
-  `end_date` int(150) NOT NULL,
+  `start_date` varchar(10) NOT NULL,
+  `end_date` varchar(10) NOT NULL,
   `nights` int(3) NOT NULL,
   `price` float(10,2) NOT NULL,
   `is_pa` int(1) NOT NULL DEFAULT '1',
   `required` int(1) NOT NULL DEFAULT '0',
   `published` int(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `localtest_jexbooking_arrangements`
+--
+
+INSERT INTO `localtest_jexbooking_arrangements` (`id`, `location_id`, `type_id`, `name`, `desc`, `start_date`, `end_date`, `nights`, `price`, `is_pa`, `required`, `published`) VALUES
+(1, 6, 6, 'diamantsnip normaal', 'diamantsnip normaal tarief midweek', '18-01-2013', '25-01-2013', 5, 650.75, 1, 0, 1),
+(2, 4, 5, 'standaardplaats (sp)', 'sp voorjaars arrangement', '15-03-2013', '31-01-2013', 0, 5.00, 0, 0, 1),
+(3, 4, 5, 'Frisse, fruitige lente week', '', '15-04-2013', '21-04-2013', 0, 0.00, 1, 0, 1),
+(4, 5, 6, 'hooikiep juni', '', '04-06-2013', '18-06-2013', 0, 500.00, 1, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -78,13 +90,26 @@ INSERT INTO `localtest_jexbooking_attributes` (`id`, `name`, `desc`, `price`, `i
 
 CREATE TABLE IF NOT EXISTS `localtest_jexbooking_default_prices` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `location_id` int(11) NOT NULL,
+  `name` varchar(250) NOT NULL,
+  `start_date` varchar(10) NOT NULL,
+  `end_date` varchar(10) NOT NULL,
   `min_price` float(10,2) NOT NULL,
   `is_pn_min_price` int(1) NOT NULL DEFAULT '1',
   `extra` float(10,2) NOT NULL,
   `is_pn_extra` int(1) NOT NULL DEFAULT '1',
   `published` int(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+
+--
+-- Gegevens worden uitgevoerd voor tabel `localtest_jexbooking_default_prices`
+--
+
+INSERT INTO `localtest_jexbooking_default_prices` (`id`, `location_id`, `name`, `start_date`, `end_date`, `min_price`, `is_pn_min_price`, `extra`, `is_pn_extra`, `published`) VALUES
+(1, 4, 'sp mei', '16-01-2013', '12-10-2013', 8.50, 1, 3.50, 0, 1),
+(2, 4, 'sp juli', '13-10-2013', '09-01-2014', 9.50, 1, 3.75, 1, 1),
+(6, 7, 'zonnezicht januari', '11-01-2013', '31-01-2013', 0.00, 1, 0.00, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -101,17 +126,18 @@ CREATE TABLE IF NOT EXISTS `localtest_jexbooking_location` (
   `available_number` int(11) NOT NULL,
   `published` int(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
 
 --
 -- Gegevens worden uitgevoerd voor tabel `localtest_jexbooking_location`
 --
 
 INSERT INTO `localtest_jexbooking_location` (`id`, `type_id`, `name`, `desc`, `total_number`, `available_number`, `published`) VALUES
-(5, 7, 'trekkershut', 'simpele bungalow voor wandelaars', 50, 46, 1),
+(5, 7, 'hooikiep', 'simpele hut voor wandelaars', 50, 46, 1),
 (4, 6, 'standaardplaats (sp)', 'standaard kampeerplek', 40, 29, 1),
 (6, 6, 'diamantsnip', 'luxe, 6-persoons bungalow', 8, 6, 1),
-(7, 5, 'comfortplaats', 'luxe kampeerplek, met internetaansluiting', 25, 23, 1);
+(7, 5, 'comfortplaats', 'luxe kampeerplek, met internetaansluiting', 25, 23, 1),
+(9, 7, 'hooikiep luxe', 'luxere uitvoering van de hooikiep', 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -134,7 +160,7 @@ CREATE TABLE IF NOT EXISTS `localtest_jexbooking_type` (
 INSERT INTO `localtest_jexbooking_type` (`id`, `name`, `desc`, `published`) VALUES
 (5, 'kampeerplek', 'voor mensen met een tentje of huifkarretje of paddestoelhuisje', 1),
 (6, 'bungalow', 'voor mensen in een huisje', 1),
-(7, 'trekkershuisje', 'voor wandelaars in een huisje', 1);
+(7, 'hooikiep', 'ouderwets overnachten in een hooiberg', 1);
 
 -- --------------------------------------------------------
 
@@ -150,26 +176,36 @@ CREATE TABLE IF NOT EXISTS `localtest_jexbooking_xref_attributes` (
   `default_id` int(11) NOT NULL,
   `arr_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=51 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=101 ;
 
 --
 -- Gegevens worden uitgevoerd voor tabel `localtest_jexbooking_xref_attributes`
 --
 
 INSERT INTO `localtest_jexbooking_xref_attributes` (`id`, `attribute_id`, `type_id`, `location_id`, `default_id`, `arr_id`) VALUES
-(43, 2, 0, 5, 0, 0),
-(42, 1, 0, 5, 0, 0),
+(74, 4, 0, 5, 0, 0),
+(73, 2, 0, 5, 0, 0),
 (27, 2, 5, 0, 0, 0),
 (19, 2, 6, 0, 0, 0),
 (20, 5, 6, 0, 0, 0),
 (21, 7, 6, 0, 0, 0),
-(22, 1, 7, 0, 0, 0),
-(23, 2, 7, 0, 0, 0),
-(24, 4, 7, 0, 0, 0),
+(100, 6, 0, 0, 0, 3),
+(99, 4, 0, 0, 0, 3),
+(98, 3, 0, 0, 0, 3),
+(62, 5, 0, 6, 0, 0),
+(61, 3, 0, 6, 0, 0),
+(67, 2, 0, 0, 0, 1),
+(66, 1, 0, 0, 0, 1),
 (50, 6, 0, 4, 0, 0),
 (49, 2, 0, 4, 0, 0),
 (41, 4, 0, 7, 0, 0),
-(44, 4, 0, 5, 0, 0);
+(72, 1, 0, 5, 0, 0),
+(60, 1, 0, 6, 0, 0),
+(63, 7, 0, 6, 0, 0),
+(91, 4, 0, 0, 0, 2),
+(90, 1, 0, 0, 0, 2),
+(68, 4, 0, 0, 0, 1),
+(69, 5, 0, 0, 0, 1);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
