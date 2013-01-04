@@ -23,7 +23,8 @@ JHtml::stylesheet('jbl.css','components/com_jexbooking/css/');
 				} 
 			?>
 		</select>
-		<input type="hidden" name="task" value="" />
+		<input type="hidden" name="task" value="arrangements.setStep" />
+		<input type="hidden" name="step" value="1" />
 	</fieldset>
 </form>
 <hr />
@@ -31,6 +32,6 @@ JHtml::stylesheet('jbl.css','components/com_jexbooking/css/');
 <?php
 $rob = $this->input->get('arrangementSelect');
 $choose = $this->input->get('choose');
-var_dump($choose);
+//var_dump($choose);
 ?>
 </pre>
