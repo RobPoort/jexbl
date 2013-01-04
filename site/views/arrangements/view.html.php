@@ -9,8 +9,7 @@ class JexBookingViewArrangements extends JView
 		
 		$this->app = JFactory::getApplication();
 		$this->input = $this->app->input;
-		$this->items = $this->get('Items');
-		$this->rob = $this->input->get('location_id');
+		$this->items = $this->get('Items');		
 		
 		parent::display($tpl);
 	}

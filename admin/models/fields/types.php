@@ -4,12 +4,12 @@ defined('_JEXEC') or die('Restricted Access');
 jimport('joomla.form.helper');
 JFormHelper::loadFieldClass('list');
 
-class JFormfieldLocations extends JFormFieldList
+class JFormfieldTypes extends JFormFieldList
 {
 	/**
 	 * het formfield type
 	 */
-	protected $type= 'locations';
+	protected $type= 'types';
 	
 	/*
 	 * lijst met checkboxes met locaties aanmaken
@@ -21,7 +21,7 @@ class JFormfieldLocations extends JFormFieldList
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select('id,name');
-		$query->from('#__jexbooking_location');
+		$query->from('#__jexbooking_type');
 		$query->where('published = 1');
 		$db->setQuery((string)$query);
 		
