@@ -1,7 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted Access');
 ?>
-<pre>
+<pre>TESTKIP
 	<?php
 		$check = JFactory::getApplication()->input->get('layout');
 		$lastStep = JFactory::getApplication()->input->get('step');

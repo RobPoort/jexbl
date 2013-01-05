@@ -27,15 +27,26 @@ class JexBookingControllerArrangements extends JController
 				$app->input->set('layout', 'step_2');
 				$arr_id = $app->input->get('arrangementSelect');
 				$app->setUserState("option_jbl.arr_id", $arr_id);
-				$app->setUserState("option_jbl.testStaatje", 'tesssssssssssst');
-				//var_dump($arr_id);
+				
+				
 				break;
 			case 2:
+				$this->calculatePrice();
 				$app->input->set('layout','step_3');
 				break;
-		}
-		//$app->input->set('layout','step_2');
+		}		
 		
 		$this->display();
+	}
+	/**
+	 * method om prijs te berekenen en vul userState aan
+	 * @return empty
+	 */
+	public function calculatePrice(){
+		
+		//eerst data uit form step_2 halen
+		
+		$app = JFactory::getApplication();
+		$app->setUserState("option_jbl.rob", 'rules!');
 	}
 }

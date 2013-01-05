@@ -70,6 +70,17 @@
 			required="true"
 		/>
 		<field
+			name="is_pp"
+			type="list"
+			label="COM_JEXBOOKING_ARRANGEMENT_IS_PP_LABEL"
+			description="COM_JEXBOOKING_ARRANGEMENT_IS_PP_DESC"
+			default="1"
+			required="false"
+		>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field
 			name="published"
 			type="list"
 			label="JSTATUS"

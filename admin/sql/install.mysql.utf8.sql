@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `#__jexbooking_attributes` (
   `price` float(10,2) NOT NULL,
   `is_pn` int(1) NOT NULL DEFAULT '1',
   `has_price` int(1) NOT NULL DEFAULT '0',
+  `has_number` int(1) NOT NULL DEFAULT '0',
   `published` int(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=0 ;
@@ -52,6 +53,7 @@ CREATE TABLE IF NOT EXISTS `#__jexbooking_arrangements` (
 	`end_date` varchar(10) NOT NULL,
 	`nights` int(3) NOT NULL,
 	`price` float(10,2) NOT NULL,
+	`is_pp` int(1) NOT NULL DEFAULT '1',
 	`is_pa` int(1) NOT NULL DEFAULT '1',
 	`required` int(1) NOT NULL DEFAULT '0',
 	`published` int(1) NOT NULL DEFAULT '1',

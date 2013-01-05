@@ -3,3 +3,50 @@
 .odd{
 	background-color:#ccddee;
 }
+.jbl_form{
+	border:solid 1px #ccc;
+	padding:3px;
+}
+.jbl_input_number{
+	width:20px;
+	text-align:right;
+	border:solid 1px #000;
+	background-color:#eee;
+	padding:0 3px 0 3px;
+}
+.jbl_form_table{
+	border:0;
+	width:100%;
+	margin:0;
+	padding:0;
+}
+.jbl_form_table tr{
+	border:0;
+	margin:0;
+	padding:10px;
+}
+.jbl_form_left{
+	border:0;
+	margin:0;
+	padding:3px;
+	width:20%;
+}
+.jbl_form_right{
+	border:0;
+	margin:0;
+	padding:3px;
+}
+.jbl_form_checkbox{
+	width:8px;
+	border:0;
+	padding-right:0;
+}
+.buttonNext{
+	min-width:25px;
+	min-height:12px;
+	color:white;
+	background-color:#0F4A84;
+	text-align:center;
+	font-weight:bold;
+	PADDING:3PX;
+}

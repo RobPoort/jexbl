@@ -51,6 +51,16 @@
 			<option value="0">JNO</option>
 		</field>
 		<field
+			name="has_number"
+			type="list"
+			label="COM_JEXBOOKING_ATTRIBUTE_HAS_NUMBER_LABEL"
+			description="COM_JEXBOOKING_ATTRIBUTE_HAS_NUMBER_DESC"
+			required="false"			
+		>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field
 			name="is_pn"
 			type="list"
 			label="COM_JEXBOOKING_ATTRIBUTE_IS_PN_LABEL"
