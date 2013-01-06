@@ -64,11 +64,14 @@ class JexBookingControllerArrangements extends JController
 		$data = $app->input->get('jbl_form',null,null);
 		$data['arr_id'] = $arr_id;
 		
+		//model ophalen
 		$model = $this->getModel('arrangements');
 		
-		//prijzen met key 'number' ophalen, indien aanwezig
+		//arr_price ophalen
 		$this->arr_price = $model->getItem();
 		$this->arr_price->total_arr_price = $this->arr_price->price;
+		
+		//prijzen met key 'number' ophalen, indien aanwezig
 		if (array_key_exists('number', $data)) {
 			if (array_key_exists('number_pp', $data['number'])) {
 				$this->arr_price->number_pp = (int)$data['number']['number_pp'];
