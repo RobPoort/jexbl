@@ -9,11 +9,11 @@ class JexBookingControllerArrangements extends JController
 		
 		parent::display($cachable);
 	}
+	
 	/*
 	 * bepaal de volgende stap en zet de userState variabelen
 	 * @return empty
-	 */
-	
+	 */	
 	function setStep(){
 		
 		$app = JFactory::getApplication();
@@ -26,9 +26,7 @@ class JexBookingControllerArrangements extends JController
 			case 1:
 				$app->input->set('layout', 'step_2');
 				$arr_id = $app->input->get('arrangementSelect');
-				$app->setUserState("option_jbl.arr_id", $arr_id);
-				
-				
+				$app->setUserState("option_jbl.arr_id", $arr_id);				
 				break;
 			case 2:
 				$this->calculatePrice();
@@ -38,15 +36,47 @@ class JexBookingControllerArrangements extends JController
 		
 		$this->display();
 	}
+	
+	/**
+	 * method om het model op te halen voor de prijsberekening
+	 * @return string
+	 */
+	public function getModel($name = '', $prefix = '', $config = array('ignore_request' => true))
+	{
+		return parent::getModel($name, $prefix, array('ignore_request' => false));
+	}
+	
 	/**
 	 * method om prijs te berekenen en vul userState aan
 	 * @return empty
 	 */
 	public function calculatePrice(){
 		
-		//eerst data uit form step_2 halen
-		
 		$app = JFactory::getApplication();
-		$app->setUserState("option_jbl.rob", 'rules!');
+		
+		//eerst userState opschonen, zodat bij voor 2e keer invullen formulier niet waarden uit de eerste keer bewaard blijven. arr_id moet er wel weer in
+		$arr_id = $app->getUserState("option_jbl.arr_id");		
+		$app->setUserState("option_jbl", null);
+		$app->setUserState("option_jbl.arr_id", $arr_id);
+		
+		//nu eerst data uit form step_2 halen
+		$data = array();		
+		$data = $app->input->get('jbl_form',null,null);
+		$data['arr_id'] = $arr_id;
+		
+		$model = $this->getModel('arrangements');
+		
+		//prijzen met key 'number' ophalen, indien aanwezig
+		$this->arr_price = $model->getItem();
+		$this->arr_price->total_arr_price = $this->arr_price->price;
+		if (array_key_exists('number', $data)) {
+			if (array_key_exists('number_pp', $data['number'])) {
+				$this->arr_price->number_pp = (int)$data['number']['number_pp'];
+				$this->arr_price->total_arr_price = $this->arr_price->number_pp * $this->arr_price->price;
+			}		
+		}		
+		
+		//de berekeningen in de userState zetten
+		$app->setUserState("option_jbl.arr_price", $this->arr_price);
 	}
 }

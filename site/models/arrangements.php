@@ -86,11 +86,29 @@ class JexBookingModelArrangements extends JModel
 			$rows[] = $row;
 			}
 		}
-		/**
-		$rows = array();
-		foreach($attrib_ids as $attrib_id){
-			$rows[] = $attrib_id;
-		} */
+		
+		return $rows;
+	}	
+	
+	function getSelectedAttribs($data){
+		
+		//de $key's in $data zijn de attrib_ids
+		foreach($data as $key=>$value){
+			$arr_ids[] = 'id='.(int)$key;
+		}
+		
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$query->from('#__jexbooking_attributes');
+		$query->select('*');
+		$query->where((array)$arr_ids, ' OR ');
+		$db->setQuery($query);
+		$rows = $db->loadObjectList();
+		echo '<pre>';
+		foreach($rows as $row){
+			//echo $row->id.'&nbsp;'.$row->name.'&nbsp;'.$row->price.'&nbsp;'.$row->has_number.'<br />';
+		}
+		echo '</pre>';
 		return $rows;
 	}
 }

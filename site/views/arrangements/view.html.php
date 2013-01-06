@@ -11,9 +11,9 @@ class JexBookingViewArrangements extends JView
 		$this->step = (int)$this->app->input->get('step');
 		$this->input = $this->app->input;
 		$this->items = $this->get('Items');
-		if($this->step >= 1){
+		if($this->step = 2){
 				$this->attribs = $this->get('PaidItems');
-				$this->item = $this->get('Item');		
+				$this->item = $this->get('Item');								
 		}	
 		
 		parent::display($tpl);

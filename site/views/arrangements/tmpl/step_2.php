@@ -15,7 +15,7 @@ $attribs = $this->attribs;
 			<?php
 				if($item->is_pp){
 					?>				
-					<td class="jbl_form_left"><label>Aantal personen:&nbsp;</label></td><td class="jbl_form_right">&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="number_of_persons" value="2" class="jbl_input_number" /></td>				
+					<td class="jbl_form_left"><label>Aantal personen:&nbsp;</label></td><td class="jbl_form_right">&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="jbl_form[number][number_pp]" value="2" class="jbl_input_number" /></td>				
 					<?php
 				} else{
 					?>					
@@ -25,34 +25,34 @@ $attribs = $this->attribs;
 			?>
 			</tr>
 		</table>
-	</fieldset>
-	<fieldset class="jbl_form" id="jbl_attribs_has_price">
+	</fieldset>	
 		<?php
 			if($attribs){
 			?>
-			<table class="jbl_form_table">
-			<?php
-				foreach($attribs as $attrib){
-					if($attrib->has_number){
-						?>
-							<tr>
-							<td class="jbl_form_checkbox">&nbsp;</td><td class="jbl_form_left"><label><?php echo $attrib->name; ?></label></td><td class="jbl_form_right">&nbsp;x&nbsp;<input type="text" name="<?php echo $attrib->name; ?>" value="" class="jbl_input_number" /></td>
-							</tr>
-						<?php
-					} else{
-						?>
-							<tr>
-							<td class="jbl_form_checkbox"><input type="checkbox" class="jbl_input_checkbox" /></td><td class="jbl_form_left"><label><?php echo $attrib->name; ?>&nbsp;</label></td><td class="jbl_form_right">&nbsp;</td>
-							</tr>
-						<?php
+			<fieldset class="jbl_form" id="jbl_attribs_has_price">
+				<table class="jbl_form_table">
+				<?php
+					foreach($attribs as $attrib){
+						if($attrib->has_number){
+							?>
+								<tr>
+								<td class="jbl_form_checkbox">&nbsp;</td><td class="jbl_form_left"><label><?php echo $attrib->name; ?></label></td><td class="jbl_form_right">&nbsp;x&nbsp;<input type="text" name="jbl_form[number][<?php echo $attrib->id; ?>]" value="0" class="jbl_input_number" /></td>
+								</tr>
+							<?php
+						} else{
+							?>
+								<tr>
+								<td class="jbl_form_checkbox"><input type="checkbox" class="jbl_input_checkbox" name="jbl_form[checked][<?php echo $attrib->id; ?>]" value="1" /></td><td class="jbl_form_left"><label><?php echo $attrib->name; ?>&nbsp;</label></td><td class="jbl_form_right">&nbsp;</td>
+								</tr>
+							<?php
+						}
 					}
-				}
-			?>
-			</table>
+				?>
+				</table>
+			</fieldset>
 			<?php
 			}
-		?>
-	</fieldset>
+		?>	
 	<fieldset class="jbl_form" id="button">
 		<button class="buttonNext" onClick="this.form.submit()">VOLGENDE</button>
 	</fieldset>	
