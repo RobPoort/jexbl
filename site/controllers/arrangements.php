@@ -70,16 +70,38 @@ class JexBookingControllerArrangements extends JController
 		//arr_price ophalen
 		$this->arr_price = $model->getItem();
 		$this->arr_price->total_arr_price = $this->arr_price->price;
+		if (array_key_exists('number_pp', $data)) {
+			$this->arr_price->number_pp = (int)$data['number_pp'];
+			$this->arr_price->total_arr_price = $this->arr_price->number_pp * $this->arr_price->price;
+		}
 		
 		//prijzen met key 'number' ophalen, indien aanwezig
 		if (array_key_exists('number', $data)) {
-			if (array_key_exists('number_pp', $data['number'])) {
-				$this->arr_price->number_pp = (int)$data['number']['number_pp'];
-				$this->arr_price->total_arr_price = $this->arr_price->number_pp * $this->arr_price->price;
-			}		
+				$this->attrib_prices_number = $model->getSelectedAttribs($data, true);				
+		}
+		//prijzen met key 'checked' ophalen, indien aanwezig
+		if (array_key_exists('checked', $data)) {
+			$this->attrib_prices_checked = $model->getSelectedAttribs($data, false);
 		}		
 		
 		//de berekeningen in de userState zetten
 		$app->setUserState("option_jbl.arr_price", $this->arr_price);
+		if($this->attrib_prices_number){
+			$app->setUserState("option_jbl.attrib_prices_number", $this->attrib_prices_number);
+		}
+		if($this->attrib_prices_checked){
+			$app->setUserState("option_jbl.attrib_prices_checked", $this->attrib_prices_checked);
+		}
+		
+		//totaalprijs berekenen
+		$total = 0;
+		$total += $this->arr_price->total_arr_price;
+		foreach($this->attrib_prices_number as $item){
+			$total += $item->total_attrib_price;
+		}
+		foreach($this->attrib_prices_checked as $item){
+			$total += $item->total_attrib_price;
+		}
+		$app->setUserState("option_jbl.total_price", $total);
 	}
 }

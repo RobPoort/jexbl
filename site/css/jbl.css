@@ -14,11 +14,25 @@
 	background-color:#eee;
 	padding:0 3px 0 3px;
 }
+.jbl_input_text{
+	width:200px;
+	text-align:left;
+	border:solid 1px #000;
+	background-color:#eee;
+	padding:0 3px 0 3px;
+}
+.jbl_label_naw{
+	width:100px;
+}
 .jbl_form_table{
 	border:0;
 	width:100%;
 	margin:0;
 	padding:0;
+}
+.jbl_form_table td{
+	border:0;
+	padding:3px;
 }
 .jbl_form_table tr{
 	border:0;

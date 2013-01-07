@@ -16,7 +16,7 @@ $attribs = $this->attribs;
 			<?php
 				if($item->is_pp){
 					?>				
-					<td class="jbl_form_left"><label>Aantal personen:&nbsp;</label></td><td class="jbl_form_right">&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="jbl_form[number][number_pp]" value="2" class="jbl_input_number" /></td>				
+					<td class="jbl_form_left"><label>Aantal personen:&nbsp;</label></td><td class="jbl_form_right">&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="jbl_form[number_pp]" value="2" class="jbl_input_number" /></td>				
 					<?php
 				} else{
 					?>					

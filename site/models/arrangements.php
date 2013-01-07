@@ -90,25 +90,50 @@ class JexBookingModelArrangements extends JModel
 		return $rows;
 	}	
 	
-	function getSelectedAttribs($data){
+	function getSelectedAttribs($data,$is_number){
 		
 		//de $key's in $data zijn de attrib_ids
-		foreach($data as $key=>$value){
-			$arr_ids[] = 'id='.(int)$key;
-		}
+		$rows = array();
+		if($is_number){
+			foreach($data['number'] as $key=>$number){
+				if((int)$number > 0){
+					$arr_id = (int)$key;
+					$number = (int)$number;
+					$db = JFactory::getDbo();
+					$query = $db->getQuery(true);
+					$query->from('#__jexbooking_attributes');
+					$query->select('*');
+					$query->where('id='.$arr_id);
+					$db->setQuery($query);
+					$result = $db->loadObject();
+					
+					$result->number = $number;
+					$result->total_attrib_price = $result->price * $number;
+					$result->price = (double)$result->price;
+					$rows[] = $result;
+				}
+			}
+		} else {
+			foreach($data['checked'] as $key=>$number){
+				if((int)$number > 0){
+					$arr_id = (int)$key;
+					$number = (int)$number;
+					$db = JFactory::getDbo();
+					$query = $db->getQuery(true);
+					$query->from('#__jexbooking_attributes');
+					$query->select('*');
+					$query->where('id='.$arr_id);
+					$db->setQuery($query);
+					$result = $db->loadObject();
+						
+					$result->number = $number;
+					$result->total_attrib_price = (double)$result->price;
+					$result->price = (double)$result->price;
+					$rows[] = $result;
+				}
+			}
+		}			
 		
-		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
-		$query->from('#__jexbooking_attributes');
-		$query->select('*');
-		$query->where((array)$arr_ids, ' OR ');
-		$db->setQuery($query);
-		$rows = $db->loadObjectList();
-		echo '<pre>';
-		foreach($rows as $row){
-			//echo $row->id.'&nbsp;'.$row->name.'&nbsp;'.$row->price.'&nbsp;'.$row->has_number.'<br />';
-		}
-		echo '</pre>';
 		return $rows;
 	}
 }
