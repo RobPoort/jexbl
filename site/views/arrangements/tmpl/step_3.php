@@ -73,6 +73,14 @@ $attribs_checked = $this->attrib_prices_checked;
 		</table>
 	</fieldset>
 	<form method="post" action="">
+		<?php
+		if($this->extras){
+			?>
+			<fieldset class="jbl_form"><legend class="hasTip" title="Hier kunt u nog extra wensen opgeven">Extra's:</legend>
+			</fieldset>
+			<?php
+		} 
+		?>
 		<fieldset class="jbl_form"><legend>Uw NAW-gegevens:</legend>
 			<table class="jbl_form_table" id="">
 				<tr>

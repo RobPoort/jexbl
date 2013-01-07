@@ -88,7 +88,46 @@ class JexBookingModelArrangements extends JModel
 		}
 		
 		return $rows;
-	}	
+	}
+	
+	/**
+	 * method om extra's op te halen, nl. de attribs zonder prijs
+	 * @param unknown $data
+	 * @param unknown $is_number
+	 * @return multitype:Ambigous <mixed, NULL>
+	 */
+	function getItems(){
+		//eerst de arr_id ophalen uit de userState
+		$arr_id = (int)JFactory::getApplication()->getUserState("option_jbl.arr_id");
+		
+		//attrib_ids ophalen uit xref tabel
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$query->from('#__jexbooking_xref_attributes as jxa');
+		$query->select('attribute_id');
+		$query->where('arr_id='.$arr_id);
+		$db->setQuery($query);
+		$attrib_ids = $db->loadObjectList();
+		
+		//nu de attribs zelf ophalen met als condities published=1 en has_price=0
+		//TODO kijken of hier een $query->clear() volstaat en kijken of join hier niet beter is
+		
+		$rows = array();
+		foreach ($attrib_ids as $attrib_id){
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true);
+			$query->from('#__jexbooking_attributes as ja');
+			$query->where('ja.published=1 AND ja.has_price=0 AND ja.id='.$attrib_id->attribute_id);
+			$query->select('*');
+			$db->setQuery($query);
+			$row = $db->loadObject();
+			if($row){
+				$rows[] = $row;
+			}
+		}
+		
+		return $rows;
+	}
 	
 	function getSelectedAttribs($data,$is_number){
 		

@@ -13,6 +13,7 @@ class JexBookingViewArrangements extends JView
 		$this->items = $this->get('Items');
 		if($this->step = 2){
 				$this->attribs = $this->get('PaidItems');
+				$this->extras = $this->get('Extras');
 				$this->item = $this->get('Item');
 				$this->arrangement = $this->app->getUserState("option_jbl.arr_price");
 				$this->attrib_prices_number = $this->app->getUserState("option_jbl.attrib_prices_number");
