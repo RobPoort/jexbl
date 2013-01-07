@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted Access');
 jimport('joomla.html.html');
+JHtml::_('behavior.tooltip');
 JHtml::stylesheet('jbl.css','components/com_jexbooking/css/');
 
 //alleen omdat het minder typen is :)
@@ -36,13 +37,13 @@ $attribs = $this->attribs;
 						if($attrib->has_number){
 							?>
 								<tr>
-								<td class="jbl_form_checkbox">&nbsp;</td><td class="jbl_form_left"><label><?php echo $attrib->name; ?></label></td><td class="jbl_form_right">&nbsp;x&nbsp;<input type="text" name="jbl_form[number][<?php echo $attrib->id; ?>]" value="0" class="jbl_input_number" /></td>
+								<td class="jbl_form_checkbox">&nbsp;</td><td class="jbl_form_left"><label <?php if($attrib->desc) : ?>class="hasTip" title="<?php echo $attrib->desc; ?>" <?php endif; ?>><?php echo $attrib->name; ?></label></td><td class="jbl_form_right">&nbsp;x&nbsp;<input type="text" name="jbl_form[number][<?php echo $attrib->id; ?>]" value="0" class="jbl_input_number" /></td>
 								</tr>
 							<?php
 						} else{
 							?>
 								<tr>
-								<td class="jbl_form_checkbox"><input type="checkbox" class="jbl_input_checkbox" name="jbl_form[checked][<?php echo $attrib->id; ?>]" value="1" /></td><td class="jbl_form_left"><label><?php echo $attrib->name; ?>&nbsp;</label></td><td class="jbl_form_right">&nbsp;</td>
+								<td class="jbl_form_checkbox"><input type="checkbox" class="jbl_input_checkbox" name="jbl_form[checked][<?php echo $attrib->id; ?>]" value="1" /></td><td class="jbl_form_left"><label <?php if($attrib->desc) : ?>class="hasTip" title="<?php echo $attrib->desc; ?>" <?php endif; ?>><?php echo $attrib->name; ?>&nbsp;</label></td><td class="jbl_form_right">&nbsp;</td>
 								</tr>
 							<?php
 						}
