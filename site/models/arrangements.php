@@ -96,7 +96,7 @@ class JexBookingModelArrangements extends JModel
 	 * @param unknown $is_number
 	 * @return multitype:Ambigous <mixed, NULL>
 	 */
-	function getItems(){
+	function getExtras(){
 		//eerst de arr_id ophalen uit de userState
 		$arr_id = (int)JFactory::getApplication()->getUserState("option_jbl.arr_id");
 		
