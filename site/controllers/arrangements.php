@@ -23,6 +23,9 @@ class JexBookingControllerArrangements extends JController
 		
 		//nu layout bepalen en userState vullen
 		switch($step){
+			case 0:
+				$app->input->set('layout', 'default');
+				break;
 			case 1:
 				$app->input->set('layout', 'step_2');
 				$arr_id = $app->input->get('arrangementSelect');
@@ -31,6 +34,9 @@ class JexBookingControllerArrangements extends JController
 			case 2:
 				$this->calculatePrice();
 				$app->input->set('layout','step_3');
+				break;
+			default :
+				$app->input->set('layout', 'default');
 				break;
 		}		
 		
@@ -96,12 +102,22 @@ class JexBookingControllerArrangements extends JController
 		//totaalprijs berekenen
 		$total = 0;
 		$total += $this->arr_price->total_arr_price;
-		foreach($this->attrib_prices_number as $item){
-			$total += $item->total_attrib_price;
+		if($this->attrib_prices_number){
+			foreach($this->attrib_prices_number as $item){
+				$total += $item->total_attrib_price;
+			}
 		}
-		foreach($this->attrib_prices_checked as $item){
-			$total += $item->total_attrib_price;
+		if($this->attrib_prices_checked){
+			foreach($this->attrib_prices_checked as $item){
+				$total += $item->total_attrib_price;
+			}
 		}
 		$app->setUserState("option_jbl.total_price", $total);
+	}
+	
+	public function process(){
+		$app = JFactory::getApplication();
+		$app->input->set('layout', 'bedankt');
+		$this->display();
 	}
 }

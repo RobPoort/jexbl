@@ -129,8 +129,33 @@ class JexBookingModelArrangements extends JModel
 		return $rows;
 	}
 	
-	function getSelectedAttribs($data,$is_number){
+	/**
+	 * method om het aantal nachten van een arrangement te berekenen
+	 * @return integer number of nights
+	 */
+	public function getNights(){
 		
+		$arr = $this->getItem();
+		list($day,$month,$year) = explode('-',$arr->start_date);
+		$start = mktime(0,0,0,(int)$month,(int)$day,(int)$year);
+		
+		list($day,$month,$year) = explode('-',$arr->end_date);
+		$end = mktime(0,0,0,(int)$month,(int)$day,(int)$year);
+		
+		$nights = $end - $start;
+		$nights = ($nights / 86400);
+		
+		return $nights;
+	}
+	
+	/**
+	 * method om prijzen te berekenen van de geselecteerde attribs	 
+	 * @return objectlist
+	 */
+	function getSelectedAttribs($data,$is_number){		
+		
+		//voor de attribprijs, moet price met aantal nachten vermenigvuldigd worden
+		$nights = $this->getNights();
 		//de $key's in $data zijn de attrib_ids
 		$rows = array();
 		if($is_number){
@@ -147,8 +172,14 @@ class JexBookingModelArrangements extends JModel
 					$result = $db->loadObject();
 					
 					$result->number = $number;
-					$result->total_attrib_price = $result->price * $number;
+					$result->total_attrib_price = (double)$result->price;
+					if($result->is_pn){
+					$result->total_attrib_price = ((double)$result->price * $nights);
+					}
 					$result->price = (double)$result->price;
+					if($result->is_pn){
+					$result->price = ((double)$result->price * $nights);
+					}
 					$rows[] = $result;
 				}
 			}
@@ -165,9 +196,15 @@ class JexBookingModelArrangements extends JModel
 					$db->setQuery($query);
 					$result = $db->loadObject();
 						
-					$result->number = $number;
+				$result->number = $number;
 					$result->total_attrib_price = (double)$result->price;
+					if($result->is_pn){
+					$result->total_attrib_price = ((double)$result->price * $nights);
+					}
 					$result->price = (double)$result->price;
+					if($result->is_pn){
+					$result->price = ((double)$result->price * $nights);
+					}
 					$rows[] = $result;
 				}
 			}

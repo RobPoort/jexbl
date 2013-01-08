@@ -55,9 +55,14 @@ $attribs = $this->attribs;
 			}
 		?>	
 	<fieldset class="jbl_form" id="button">
+		<input type="hidden" name="task" value="arrangements.setStep" />
+		<input type="hidden" name="step" value="2" />
 		<button class="buttonNext" onClick="this.form.submit()">VOLGENDE</button>
-	</fieldset>	
-	
-	<input type="hidden" name="task" value="arrangements.setStep" />
-	<input type="hidden" name="step" value="2" />
-</form>
+		</form>
+		<div class="clear">&nbsp;</div>
+		<form method="post" action="">
+		<button class="buttonNext" onClick="this.form.submit()" >VORIGE</button>
+		<input type="hidden" name="task" value="arrangements.setStep" />
+		<input type="hidden" name="step" value="0" />
+		</form>
+	</fieldset>

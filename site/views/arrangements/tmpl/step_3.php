@@ -9,6 +9,7 @@ $this->step = (int)$this->app->input->get('step');
 $arrangement = $this->arrangement;
 $attribs_number = $this->attrib_prices_number;
 $attribs_checked = $this->attrib_prices_checked;
+$extras = $this->extras;
 ?>
 <div class="jbl_prijsberekening" id="jbl_prijsberekening">
 	<fieldset class="jbl_form"><legend>Uw prijsberekening:</legend>
@@ -27,6 +28,18 @@ $attribs_checked = $this->attrib_prices_checked;
 						} 
 					?>
 				</td>
+			</tr>
+			<tr>
+				<td>
+					&nbsp;
+				</td>
+				<td>
+					Van:&nbsp<?php echo $arrangement->start_date; ?>
+				</td>
+				<td>
+					Tot:&nbsp;<?php echo $arrangement->end_date; ?>
+				</td>
+				
 			</tr>
 			<tr>
 				<td colspan="3">&nbsp;</td>
@@ -77,6 +90,25 @@ $attribs_checked = $this->attrib_prices_checked;
 		if($this->extras){
 			?>
 			<fieldset class="jbl_form"><legend class="hasTip" title="Hier kunt u nog extra wensen opgeven">Extra's:</legend>
+				<table class="jbl_form_table">
+					<?php
+						foreach($extras as $attrib){
+							if($attrib->has_number){
+								?>
+									<tr>
+									<td class="jbl_form_checkbox">&nbsp;</td><td class="jbl_form_left"><label <?php if($attrib->desc) : ?>class="hasTip" title="<?php echo $attrib->desc; ?>" <?php endif; ?>><?php echo $attrib->name; ?></label></td><td class="jbl_form_right">&nbsp;x&nbsp;<input type="text" name="jbl_form[number][<?php echo $attrib->id; ?>]" value="0" class="jbl_input_number" /></td>
+									</tr>
+								<?php
+							} else{
+								?>
+									<tr>
+									<td class="jbl_form_checkbox"><input type="checkbox" class="jbl_input_checkbox" name="jbl_form[checked][<?php echo $attrib->id; ?>]" value="1" /></td><td class="jbl_form_left"><label <?php if($attrib->desc) : ?>class="hasTip" title="<?php echo $attrib->desc; ?>" <?php endif; ?>><?php echo $attrib->name; ?>&nbsp;</label></td><td class="jbl_form_right">&nbsp;</td>
+									</tr>
+								<?php
+							}
+						}
+					?>
+				</table>
 			</fieldset>
 			<?php
 		} 
@@ -118,9 +150,19 @@ $attribs_checked = $this->attrib_prices_checked;
 			</table>
 		</fieldset>
 		<fieldset class="jbl_form" id="button">
-			<button class="buttonNext" onClick="this.form.submit()" name="final" value="1">VERZENDEN</button>
-		</fieldset>
-		<input type="hidden" name="task" value="arrangements.setStep" />
-	<input type="hidden" name="step" value="3" />
+			<button class="buttonNext" onClick="this.form.submit()" name="final" value="1">VERZENDEN</button>		
+			<input type="hidden" name="task" value="arrangements.process" />
+			<!-- <input type="hidden" name="step" value="3" /> -->
 	</form>
+	<div class="clear">&nbsp;</div>
+		<form method="post" action="">
+		<button class="buttonNext" onClick="this.form.submit()" >VORIGE</button>
+		<input type="hidden" name="task" value="arrangements.setStep" />
+		<input type="hidden" name="step" value="1" />
+		<input type="hidden" name="arrangementSelect" value="<?php echo $arrangement->id; ?>" />
+		</form>
+	</fieldset>
 </div>
+<pre>
+	<?php var_dump($this->nights); ?>
+</pre>

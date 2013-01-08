@@ -17,11 +17,21 @@ JHTML::_('behavior.formvalidation');
 			</ul>
 		</fieldset>		
 	</div>
-	<div class="width-60 fltlft">
+	<div class="width-40 fltrt">
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_JEXBOOKING_ATTRIBUTE_PRICE_DETAILS'); ?></legend>			
 			<ul class="adminformlist">
 				<?php foreach($this->form->getFieldset('more_details') as $field) : ?>
+					<li><?php echo $field->label;echo $field->input; ?></li>
+				<?php endforeach; ?>
+			</ul>
+		</fieldset>		
+	</div>
+	<div class="width-40 fltrt">
+		<fieldset class="adminform">
+			<legend><?php echo JText::_('COM_JEXBOOKING_ATTRIBUTE_SPECIAL_PRICE_DETAILS'); ?></legend>			
+			<ul class="adminformlist">
+				<?php foreach($this->form->getFieldset('special_price') as $field) : ?>
 					<li><?php echo $field->label;echo $field->input; ?></li>
 				<?php endforeach; ?>
 			</ul>
@@ -35,7 +45,7 @@ JHTML::_('behavior.formvalidation');
 				<?php endforeach; ?>
 			</ul>
 		</fieldset>		
-	</div>
+	</div>	
 	<div class="width-40 fltrt">
 		<?php
 			echo JHtml::_('sliders.start', 'jexbooking-slider');
