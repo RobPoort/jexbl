@@ -78,7 +78,7 @@ class JexBookingModelArrangements extends JModel
 			$db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 			$query->from('#__jexbooking_attributes as ja');
-			$query->where('ja.published=1 AND ja.has_price=1 AND ja.id='.$attrib_id->attribute_id);
+			$query->where('ja.published=1 AND ja.has_price=1 AND ja.is_special=0 AND ja.id='.$attrib_id->attribute_id);
 			$query->select('*');
 			$db->setQuery($query);
 			$row = $db->loadObject();
@@ -87,6 +87,46 @@ class JexBookingModelArrangements extends JModel
 			}
 		}
 		
+		return $rows;
+	}
+	
+	/**
+	 * method om special attribs op te halen, bv annuleringsverzekering
+	 */
+	public function getSpecialAttribs(){
+		//eerst de arr_id ophalen uit de UserState
+		$arr_id = (int)JFactory::getApplication()->getUserState("option_jbl.arr_id");
+		
+		//attrib_ids ophalen uit xref
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$query->from('#__jexbooking_xref_attributes as jxa');
+		$query->select('attribute_id');
+		$query->where('arr_id='.$arr_id);
+		$db->setQuery($query);
+		$attrib_ids = $db->loadObjectList();
+		
+		//nu de attribs zélf ophalen, geselecteerd op is_special
+		//splitsen in arrays 'required' en 'not_required'
+		$rows = array();
+		foreach($attrib_ids as $attrib_id){
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true);
+			$query->from('#__jexbooking_attributes as ja');
+			$query->select('*');
+			$query->where('ja.published=1 AND ja.is_special=1 AND ja.id='.$attrib_id->attribute_id);
+			$db->setQuery($query);
+			$result = $db->loadObject();
+			
+			if($result){
+				if ($result->is_required) {
+					$rows['required'][] = $result;
+				} else {
+					$rows['not_required'][] = $result;
+					
+				}
+			}			
+		}		
 		return $rows;
 	}
 	
@@ -152,13 +192,13 @@ class JexBookingModelArrangements extends JModel
 	 * method om prijzen te berekenen van de geselecteerde attribs	 
 	 * @return objectlist
 	 */
-	function getSelectedAttribs($data,$is_number){		
+	function getSelectedAttribs($data,$attribs_type){		
 		
 		//voor de attribprijs, moet price met aantal nachten vermenigvuldigd worden
 		$nights = $this->getNights();
 		//de $key's in $data zijn de attrib_ids
 		$rows = array();
-		if($is_number){
+		if($attribs_type == 1){
 			foreach($data['number'] as $key=>$number){
 				if((int)$number > 0){
 					$arr_id = (int)$key;
@@ -183,7 +223,7 @@ class JexBookingModelArrangements extends JModel
 					$rows[] = $result;
 				}
 			}
-		} else {
+		} elseif($attribs_type == 2) {
 			foreach($data['checked'] as $key=>$number){
 				if((int)$number > 0){
 					$arr_id = (int)$key;
@@ -196,7 +236,7 @@ class JexBookingModelArrangements extends JModel
 					$db->setQuery($query);
 					$result = $db->loadObject();
 						
-				$result->number = $number;
+					$result->number = $number;
 					$result->total_attrib_price = (double)$result->price;
 					if($result->is_pn){
 					$result->total_attrib_price = ((double)$result->price * $nights);
@@ -207,6 +247,10 @@ class JexBookingModelArrangements extends JModel
 					}
 					$rows[] = $result;
 				}
+			}
+		} else{
+			foreach($data['special'] as $key=>$number){
+				
 			}
 		}			
 		

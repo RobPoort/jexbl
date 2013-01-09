@@ -8,12 +8,13 @@ class JexBookingViewArrangements extends JView
 	function display($tpl = null){
 		
 		$this->app = JFactory::getApplication();
-		//$this->step = (int)$this->app->input->get('step');
+		$this->step = (int)$this->app->input->get('step');
 		$this->input = $this->app->input;
 		$this->items = $this->get('Items');
 		if($this->step = 2){
 				$this->attribs = $this->get('PaidItems');
 				$this->extras = $this->get('Extras');
+				$this->special_attribs = $this->get('SpecialAttribs');
 				$this->item = $this->get('Item');
 				$this->arrangement = $this->app->getUserState("option_jbl.arr_price");
 				$this->attrib_prices_number = $this->app->getUserState("option_jbl.attrib_prices_number");

@@ -69,6 +69,9 @@ class JexBookingControllerArrangements extends JController
 		$data = array();		
 		$data = $app->input->get('jbl_form',null,null);
 		$data['arr_id'] = $arr_id;
+		if($data['special']){
+			$app->setUserState("option_jbl.special", $data['special']);
+		}
 		
 		//model ophalen
 		$model = $this->getModel('arrangements');
@@ -83,11 +86,11 @@ class JexBookingControllerArrangements extends JController
 		
 		//prijzen met key 'number' ophalen, indien aanwezig
 		if (array_key_exists('number', $data)) {
-				$this->attrib_prices_number = $model->getSelectedAttribs($data, true);				
+				$this->attrib_prices_number = $model->getSelectedAttribs($data, 1);				
 		}
 		//prijzen met key 'checked' ophalen, indien aanwezig
 		if (array_key_exists('checked', $data)) {
-			$this->attrib_prices_checked = $model->getSelectedAttribs($data, false);
+			$this->attrib_prices_checked = $model->getSelectedAttribs($data, 2);
 		}		
 		
 		//de berekeningen in de userState zetten
@@ -112,6 +115,7 @@ class JexBookingControllerArrangements extends JController
 				$total += $item->total_attrib_price;
 			}
 		}
+		
 		$app->setUserState("option_jbl.total_price", $total);
 	}
 	

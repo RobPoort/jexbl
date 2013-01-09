@@ -9,6 +9,7 @@ $this->step = (int)$this->app->input->get('step');
 $arrangement = $this->arrangement;
 $attribs_number = $this->attrib_prices_number;
 $attribs_checked = $this->attrib_prices_checked;
+$attribs_special = $this->attrib_prices_special;
 $extras = $this->extras;
 ?>
 <div class="jbl_prijsberekening" id="jbl_prijsberekening">
@@ -59,6 +60,19 @@ $extras = $this->extras;
 			?>
 			<?php
 				if ($attribs_checked) {
+					foreach ($attribs_checked as $item){
+						?>
+						<tr>
+							<td><?php echo $item->name; ?></td>
+							<td>&euro;&nbsp;<?php echo number_format($item->total_attrib_price, 2, ',','.'); ?></td>
+							<td>&nbsp;</td>
+						</tr>
+						<?php
+					}
+				} 
+			?>
+			<?php
+				if ($attribs_special) {
 					foreach ($attribs_checked as $item){
 						?>
 						<tr>
@@ -164,5 +178,5 @@ $extras = $this->extras;
 	</fieldset>
 </div>
 <pre>
-	<?php var_dump($this->nights); ?>
-</pre>
+		<?php var_dump($data = $this->app->getUserState("option_jbl")); ?>
+	</pre>
