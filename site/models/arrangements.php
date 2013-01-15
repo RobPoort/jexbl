@@ -131,10 +131,8 @@ class JexBookingModelArrangements extends JModel
 	}
 	
 	/**
-	 * method om extra's op te halen, nl. de attribs zonder prijs
-	 * @param unknown $data
-	 * @param unknown $is_number
-	 * @return multitype:Ambigous <mixed, NULL>
+	 * method om extra's op te halen, nl. de attribs zonder prijs	 
+	 * @return array met objects
 	 */
 	function getExtras(){
 		//eerst de arr_id ophalen uit de userState
@@ -196,6 +194,7 @@ class JexBookingModelArrangements extends JModel
 		
 		//voor de attribprijs, moet price met aantal nachten vermenigvuldigd worden
 		$nights = $this->getNights();
+		
 		//de $key's in $data zijn de attrib_ids
 		$rows = array();
 		if($attribs_type == 1){
@@ -250,7 +249,7 @@ class JexBookingModelArrangements extends JModel
 			}
 		} else{
 			foreach($data['special'] as $key=>$number){
-				
+				//TODO moet nog gebeuren, ook bij use_percent=1
 			}
 		}			
 		
