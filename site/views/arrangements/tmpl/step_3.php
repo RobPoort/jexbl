@@ -178,5 +178,5 @@ $extras = $this->extras;
 	</fieldset>
 </div>
 <pre>
-		<?php var_dump($data = $this->app->getUserState("option_jbl")); ?>
+		<?php var_dump($data = $this->app->getUserState("option_jbl"),$attribs_special,$form_data = $this->app->input->get('jbl_form',null,null)); ?>
 	</pre>
