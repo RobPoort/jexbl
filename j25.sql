@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Machine: localhost
--- Genereertijd: 09 jan 2013 om 16:49
+-- Genereertijd: 28 jan 2013 om 11:49
 -- Serverversie: 5.5.16
 -- PHP-Versie: 5.3.8
 
@@ -190,7 +190,7 @@ CREATE TABLE IF NOT EXISTS `localtest_jexbooking_xref_attributes` (
   `default_id` int(11) NOT NULL,
   `arr_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=212 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=221 ;
 
 --
 -- Gegevens worden uitgevoerd voor tabel `localtest_jexbooking_xref_attributes`
@@ -216,15 +216,15 @@ INSERT INTO `localtest_jexbooking_xref_attributes` (`id`, `attribute_id`, `type_
 (72, 1, 0, 5, 0, 0),
 (60, 1, 0, 6, 0, 0),
 (63, 7, 0, 6, 0, 0),
-(188, 7, 0, 0, 0, 2),
-(187, 6, 0, 0, 0, 2),
+(218, 8, 0, 0, 0, 2),
+(217, 6, 0, 0, 0, 2),
 (208, 5, 0, 0, 0, 1),
 (207, 4, 0, 0, 0, 1),
-(186, 5, 0, 0, 0, 2),
-(185, 4, 0, 0, 0, 2),
-(184, 3, 0, 0, 0, 2),
-(183, 2, 0, 0, 0, 2),
-(182, 1, 0, 0, 0, 2),
+(216, 5, 0, 0, 0, 2),
+(215, 4, 0, 0, 0, 2),
+(214, 3, 0, 0, 0, 2),
+(213, 2, 0, 0, 0, 2),
+(212, 1, 0, 0, 0, 2),
 (179, 3, 0, 0, 0, 3),
 (173, 2, 0, 0, 0, 4),
 (174, 3, 0, 0, 0, 4),
@@ -234,7 +234,9 @@ INSERT INTO `localtest_jexbooking_xref_attributes` (`id`, `attribute_id`, `type_
 (178, 7, 0, 0, 0, 4),
 (206, 2, 0, 0, 0, 1),
 (205, 1, 0, 0, 0, 1),
-(211, 9, 0, 0, 0, 1);
+(211, 9, 0, 0, 0, 1),
+(219, 10, 0, 0, 0, 2),
+(220, 9, 0, 0, 0, 2);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
