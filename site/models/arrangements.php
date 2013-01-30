@@ -181,7 +181,7 @@ class JexBookingModelArrangements extends JModel
 		$end = mktime(0,0,0,(int)$month,(int)$day,(int)$year);
 		
 		$nights = $end - $start;
-		$nights = ($nights / 86400);
+		$nights = floor($nights / 86400);
 		
 		return $nights;
 	}
@@ -200,13 +200,13 @@ class JexBookingModelArrangements extends JModel
 		if($attribs_type == 1){
 			foreach($data['number'] as $key=>$number){
 				if((int)$number > 0){
-					$arr_id = (int)$key;
+					$attrib_id = (int)$key;
 					$number = (int)$number;
 					$db = JFactory::getDbo();
 					$query = $db->getQuery(true);
 					$query->from('#__jexbooking_attributes');
 					$query->select('*');
-					$query->where('id='.$arr_id);
+					$query->where('id='.$attrib_id);
 					$db->setQuery($query);
 					$result = $db->loadObject();
 					
@@ -225,13 +225,13 @@ class JexBookingModelArrangements extends JModel
 		} elseif($attribs_type == 2) {
 			foreach($data['checked'] as $key=>$number){
 				if((int)$number > 0){
-					$arr_id = (int)$key;
+					$attrib_id = (int)$key;
 					$number = (int)$number;
 					$db = JFactory::getDbo();
 					$query = $db->getQuery(true);
 					$query->from('#__jexbooking_attributes');
 					$query->select('*');
-					$query->where('id='.$arr_id);
+					$query->where('id='.$attrib_id);
 					$db->setQuery($query);
 					$result = $db->loadObject();
 						
@@ -247,12 +247,39 @@ class JexBookingModelArrangements extends JModel
 					$rows[] = $result;
 				}
 			}
-		} else{
-			foreach($data['special'] as $key=>$number){
-				//TODO moet nog gebeuren, ook bij use_percent=1
+		} elseif($attribs_type == 3){
+			foreach($data['special']['special_required'] as $key=>$number){
+				//TODO moet nog gebeuren, dit zijn de required attribs, zoals schoonmaakkosten
+				//eerst de special attribs ophalen, daarna prijsberekening op loslaten
+				if((int)$number > 0){					
+					$attrib_id = (int)$key;
+					$db = JFactory::getDbo();
+					$query = $db->getQuery(true);
+					$query->from('#__jexbooking_attributes');
+					$query->select('*');
+					$query->where('id='.$attrib_id.' AND published=1');
+					$db->setQuery($query);
+					$result = $db->loadObject();
+					
+					$result->number = 1;
+					$result->total_attrib_price = (double)$result->special_price;
+					if($result->is_pn_special){
+						$result->total_attrib_price = (double)$result->special_price * $nights;
+					}
+					$result->price = (double)$result->special_price;
+					if($result->is_pn_special){
+						$result->price = (double)$result->special_price * $nights;
+					}
+					
+					$rows[] = $result;
+				}
 			}
-		}			
-		
+		} elseif($attribs_type == 3){
+			//special percent
+		}		
+		echo '<pre>';
+		var_dump($rows,$nights);
+		echo '</pre>';
 		return $rows;
 	}
 }

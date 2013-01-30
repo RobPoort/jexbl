@@ -92,19 +92,22 @@ class JexBookingControllerArrangements extends JController
 		if (array_key_exists('checked', $data)) {
 			$this->attrib_prices_checked = $model->getSelectedAttribs($data, 2);
 		}
-		//prijzen met key special checked ophalen
-		if(array_key_exists('special', $data)){
-			if(array_key_exists('special_checked', $data['special'])){
-				$this->attrib_prices_special_checked = $model->getSelectedAttribs($data,3);
-			}
-		}
-
+		
 		//prijzen met key special required ophalen
 		if(array_key_exists('special', $data)){
 			if(array_key_exists('special_required', $data['special'])){
-				$this->attrib_prices_special_required = $model->getSelectedAttribs($data,4);
+				$this->attrib_prices_special_required = $model->getSelectedAttribs($data,3);
 			}
 		}
+		//prijzen met key special checked ophalen
+		//TODO deze bewerking kan pas zodra er een totaalprijs is, indien gekozen voor is_percent
+		if(array_key_exists('special', $data)){
+			if(array_key_exists('special_checked', $data['special'])){
+				$this->attrib_prices_special_checked = $model->getSelectedAttribs($data,4);
+			}
+		}
+
+		
 		
 		//de berekeningen in de userState zetten
 		$app->setUserState("option_jbl.arr_price", $this->arr_price);
@@ -113,6 +116,9 @@ class JexBookingControllerArrangements extends JController
 		}
 		if($this->attrib_prices_checked){
 			$app->setUserState("option_jbl.attrib_prices_checked", $this->attrib_prices_checked);
+		}
+		if($this->attrib_prices_special_required){
+			$app->setUserState("option_jbl.attrib_prices_special_required", $this->attrib_prices_special_required);
 		}
 		
 		//totaalprijs berekenen
@@ -125,6 +131,11 @@ class JexBookingControllerArrangements extends JController
 		}
 		if($this->attrib_prices_checked){
 			foreach($this->attrib_prices_checked as $item){
+				$total += $item->total_attrib_price;
+			}
+		}
+		if($this->attrib_prices_special_required){
+			foreach($this->attrib_prices_special_required as $item){
 				$total += $item->total_attrib_price;
 			}
 		}
