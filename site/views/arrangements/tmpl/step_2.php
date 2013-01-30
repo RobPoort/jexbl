@@ -99,7 +99,4 @@ $attribs = $this->attribs;
 		<input type="hidden" name="task" value="arrangements.setStep" />
 		<input type="hidden" name="step" value="0" />
 		</form>
-	</fieldset>
-	<pre>
-		<?php var_dump($this->special_attribs); ?>
-	</pre>
+	</fieldset>	
