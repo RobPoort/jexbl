@@ -59,7 +59,7 @@ class JexBookingModelArrangements extends JModel
 	function getPaidItems(){
 		
 		//eerst de arr_id ophalen uit de userState
-		$arr_id = (int)JFactory::getApplication()->getUserState("option_jbl.arr_id");
+		$arr_id = (int)JFactory::getApplication()->getUserState("option_jbl.arr_id");		
 		
 		//attrib_ids ophalen uit xref tabel
 		$db = JFactory::getDbo();
@@ -195,6 +195,15 @@ class JexBookingModelArrangements extends JModel
 		//voor de attribprijs, moet price met aantal nachten vermenigvuldigd worden
 		$nights = $this->getNights();
 		
+		//ook aantal personen, voor geval er items pp berekend worden
+		$app = JFactory::getApplication();
+		$data = array();
+		$data = $app->input->get('jbl_form',null,null);
+		$persons = 1;
+		if(array_key_exists('number_pp', $data)){
+			$persons = $data['number_pp'];
+		}
+		
 		//de $key's in $data zijn de attrib_ids
 		$rows = array();
 		if($attribs_type == 1){
@@ -218,6 +227,12 @@ class JexBookingModelArrangements extends JModel
 					$result->price = (double)$result->price;
 					if($result->is_pn){
 					$result->price = ((double)$result->price * $nights);
+					}
+					if($result->is_pp){
+						$result->total_attrib_price = (double)$result->total_attrib_price * $persons;						
+					}
+					if($result->has_number){
+						$result->total_attrib_price = $result->total_attrib_price * $number;						
 					}
 					$rows[] = $result;
 				}
@@ -243,6 +258,11 @@ class JexBookingModelArrangements extends JModel
 					$result->price = (double)$result->price;
 					if($result->is_pn){
 					$result->price = ((double)$result->price * $nights);
+					}
+					if($result->is_pp){
+						$result->total_attrib_price = (double)$result->total_attrib_price * $persons;
+						$result->price = (double)$result->price * $persons;
+						$result->persons = $persons;
 					}
 					$rows[] = $result;
 				}
@@ -270,16 +290,18 @@ class JexBookingModelArrangements extends JModel
 					if($result->is_pn_special){
 						$result->price = (double)$result->special_price * $nights;
 					}
-					
+					if($result->is_pp_special){
+						$result->total_attrib_price = (double)$result->total_attrib_price * $persons;
+						
+						$result->persons = $persons;
+					}					
 					$rows[] = $result;
 				}
 			}
-		} elseif($attribs_type == 3){
+		} elseif($attribs_type == 4){
 			//special percent
 		}		
-		echo '<pre>';
-		var_dump($rows,$nights);
-		echo '</pre>';
+		
 		return $rows;
 	}
 }
