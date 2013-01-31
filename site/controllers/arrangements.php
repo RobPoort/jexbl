@@ -139,7 +139,7 @@ class JexBookingControllerArrangements extends JController
 				$total += $item->total_attrib_price;
 			}
 		}
-		
+		//TODO total_price ná percentage berekenen. NB: vast gedeelte pas na berekening? Met Ivo overleggen?
 		$app->setUserState("option_jbl.total_price", $total);
 	}
 	

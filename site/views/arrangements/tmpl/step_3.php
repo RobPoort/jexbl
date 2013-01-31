@@ -188,6 +188,6 @@ $extras = $this->extras;
 	</fieldset>
 </div>
 <pre>
-		<?php //var_dump($data = $this->app->getUserState("option_jbl")); ?>
+		<?php var_dump($data = $this->app->getUserState("option_jbl")); ?>
 		<?php //var_dump($attribs_special_required); ?>
 	</pre>

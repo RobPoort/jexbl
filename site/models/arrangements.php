@@ -4,7 +4,7 @@ defined('_JEXEC') or die('Restricted Access');
 class JexBookingModelArrangements extends JModel
 {
 	/**
-	 * method to get the arrangemenst
+	 * method to get the arrangements
 	 * @return array $items
 	 */
 	
@@ -277,7 +277,7 @@ class JexBookingModelArrangements extends JModel
 					$query = $db->getQuery(true);
 					$query->from('#__jexbooking_attributes');
 					$query->select('*');
-					$query->where('id='.$attrib_id.' AND published=1');
+					$query->where('id='.$attrib_id.' AND published=1 AND use_special_price=1');
 					$db->setQuery($query);
 					$result = $db->loadObject();
 					
@@ -299,7 +299,35 @@ class JexBookingModelArrangements extends JModel
 				}
 			}
 		} elseif($attribs_type == 4){
-			//special percent
+			//special checked
+			foreach($data['special']['special_checked'] as $key=>$number){
+				if((int)$number > 0){
+					$attrib_id = (int)$key;
+					$db = JFactory::getDbo();
+					$query = $db->getQuery(true);
+					$query->from('#__jexbooking_attributes');
+					$query->select('*');
+					$query->where('id='.$attrib_id.' AND published=1 AND use_percent=0 AND use_special_price=1');
+					$db->setQuery($query);
+					$result = $db->loadObject();
+					
+					$result->number = 1;
+					$result->total_attrib_price = (double)$result->special_price;
+					if($result->is_pn_special){
+						$result->total_attrib_price = (double)$result->special_price * $nights;
+					}
+					$result->price = (double)$result->special_price;
+					if($result->is_pn_special){
+						$result->price = (double)$result->special_price * $nights;
+					}
+					if($result->is_pp_special){
+						$result->total_attrib_price = (double)$result->total_attrib_price * $persons;
+					
+						$result->persons = $persons;
+					}
+					$rows[] = $result;
+				}
+			}
 		}		
 		
 		return $rows;
