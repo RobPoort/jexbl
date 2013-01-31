@@ -86,24 +86,24 @@ class JexBookingControllerArrangements extends JController
 		
 		//prijzen met key 'number' ophalen, indien aanwezig
 		if (array_key_exists('number', $data)) {
-				$this->attrib_prices_number = $model->getSelectedAttribs($data, 1);				
+				$this->attrib_prices_number = $model->getSelectedAttribs($data, 1, null);				
 		}
 		//prijzen met key 'checked' ophalen, indien aanwezig
 		if (array_key_exists('checked', $data)) {
-			$this->attrib_prices_checked = $model->getSelectedAttribs($data, 2);
+			$this->attrib_prices_checked = $model->getSelectedAttribs($data, 2, null);
 		}
 		
 		//prijzen met key special required ophalen
 		if(array_key_exists('special', $data)){
 			if(array_key_exists('special_required', $data['special'])){
-				$this->attrib_prices_special_required = $model->getSelectedAttribs($data,3);
+				$this->attrib_prices_special_required = $model->getSelectedAttribs($data,3, null);
 			}
 		}
 		//prijzen met key special checked ophalen
 		//TODO deze bewerking kan pas zodra er een totaalprijs is, indien gekozen voor is_percent
 		if(array_key_exists('special', $data)){
 			if(array_key_exists('special_checked', $data['special'])){
-				$this->attrib_prices_special_checked = $model->getSelectedAttribs($data,4);
+				$this->attrib_prices_special_checked = $model->getSelectedAttribs($data,4, null);
 			}
 		}
 
@@ -119,6 +119,9 @@ class JexBookingControllerArrangements extends JController
 		}
 		if($this->attrib_prices_special_required){
 			$app->setUserState("option_jbl.attrib_prices_special_required", $this->attrib_prices_special_required);
+		}
+		if($this->attrib_prices_special_checked){
+			$app->setUserState("option_jbl.attrib_prices_special_checked", $this->attrib_prices_special_checked);
 		}
 		
 		//totaalprijs berekenen
@@ -139,8 +142,31 @@ class JexBookingControllerArrangements extends JController
 				$total += $item->total_attrib_price;
 			}
 		}
-		//TODO total_price ná percentage berekenen. NB: vast gedeelte pas na berekening? Met Ivo overleggen?
+		if($this->attrib_prices_special_checked){
+			foreach($this->attrib_prices_special_checked as $item){
+				$total += $item->total_attrib_price;
+			}
+		}
+		
+		//total_price in userState zetten
 		$app->setUserState("option_jbl.total_price", $total);
+		
+		//nu percent berekeningen, indien nodig
+		$total_percent = 0;
+		$total_percent_price = 0;
+		if(array_key_exists('special', $data)){
+			if(array_key_exists('special_checked', $data['special'])){
+				$this->checked_percent = $model->getSelectedAttribs($data, 5, $total);
+				if($this->checked_percent['percent']){
+					foreach($this->checked_percent['percent'] as $percent){
+						$total_percent += $percent->total_attrib_price_percent;
+					}					
+				}				
+			}
+			$app->setUserState("option_jbl.total_price_percent", $total_percent);
+			
+		}
+		
 	}
 	
 	public function process(){

@@ -10,6 +10,7 @@ $arrangement = $this->arrangement;
 $attribs_number = $this->attrib_prices_number;
 $attribs_checked = $this->attrib_prices_checked;
 $attribs_special_required = $this->attrib_prices_special_required;
+$attribs_special_checked = $this->attrib_prices_special_checked;
 $extras = $this->extras;
 ?>
 <div class="jbl_prijsberekening" id="jbl_prijsberekening">
@@ -74,6 +75,29 @@ $extras = $this->extras;
 			<?php
 				if ($attribs_special_required) {
 					foreach ($attribs_special_required as $item){
+						?>
+						<tr>
+							<td><?php echo $item->name; ?></td>
+							<td>&euro;&nbsp;<?php echo number_format($item->total_attrib_price, 2, ',','.'); ?></td>
+							<?php
+								if($item->is_pp_special){
+									?>
+									<td>(<?php echo $item->persons;?>&nbsp;personen&nbsp;&aacute;&nbsp;&euro;&nbsp;<?php echo number_format($item->price, 2, ',','.'); ?>)</td>
+									<?php
+								} else{
+									?>
+										<td>&nbsp;</td>
+									<?php
+								}
+							?>
+						</tr>
+						<?php
+					}
+				} 
+			?>
+			<?php
+				if ($attribs_special_checked) {
+					foreach ($attribs_special_checked as $item){
 						?>
 						<tr>
 							<td><?php echo $item->name; ?></td>

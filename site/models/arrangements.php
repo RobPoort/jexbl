@@ -190,7 +190,7 @@ class JexBookingModelArrangements extends JModel
 	 * method om prijzen te berekenen van de geselecteerde attribs	 
 	 * @return objectlist
 	 */
-	function getSelectedAttribs($data,$attribs_type){		
+	function getSelectedAttribs($data,$attribs_type, $total){		
 		
 		//voor de attribprijs, moet price met aantal nachten vermenigvuldigd worden
 		$nights = $this->getNights();
@@ -311,25 +311,64 @@ class JexBookingModelArrangements extends JModel
 					$db->setQuery($query);
 					$result = $db->loadObject();
 					
-					$result->number = 1;
-					$result->total_attrib_price = (double)$result->special_price;
-					if($result->is_pn_special){
-						$result->total_attrib_price = (double)$result->special_price * $nights;
+					if($result){
+						$result->number = 1;
+						$result->total_attrib_price = (double)$result->special_price;
+						if($result->is_pn_special){
+							$result->total_attrib_price = (double)$result->special_price * $nights;
+						}
+						$result->price = (double)$result->special_price;
+						if($result->is_pn_special){
+							$result->price = (double)$result->special_price * $nights;
+						}
+						if($result->is_pp_special){
+							$result->total_attrib_price = (double)$result->total_attrib_price * $persons;
+						
+							$result->persons = $persons;
+						}
+						
+						$rows[] = $result;
 					}
-					$result->price = (double)$result->special_price;
-					if($result->is_pn_special){
-						$result->price = (double)$result->special_price * $nights;
-					}
-					if($result->is_pp_special){
-						$result->total_attrib_price = (double)$result->total_attrib_price * $persons;
-					
-						$result->persons = $persons;
-					}
-					$rows[] = $result;
 				}
 			}
-		}		
-		
+		}	elseif($attribs_type == 5){
+			//special checked percent
+			foreach($data['special'][special_checked] as $key=>$number){
+				if((int)$number > 0){
+					$attrib_id = (int)$key;
+					$db = JFactory::getDbo();
+					$query = $db->getQuery(true);
+					$query->from('#__jexbooking_attributes');
+					$query->select('*');
+					$query->where('id='.$attrib_id.' AND published=1 AND use_percent=1');
+					$db->setQuery($query);
+					$result = $db->loadObject();
+					
+					if($result){
+						$result->number = 1;
+						$result->total_attrib_price = (double)$result->special_price;
+						if($result->is_pn_special){
+							$result->total_attrib_price = (double)$result->special_price * $nights;
+						}
+						$result->price = (double)$result->special_price;
+						if($result->is_pn_special){
+							$result->price = (double)$result->special_price * $nights;
+						}
+						if($result->is_pp_special){
+							$result->total_attrib_price = (double)$result->total_attrib_price * $persons;
+					
+							$result->persons = $persons;
+						}
+						$result->total_attrib_price_percent = ($total / 100) * (double)$result->percent;						
+					
+						$rows['percent'][] = $result;
+					}
+				}
+			}
+		}	
+		echo '<pre>';
+		var_dump($rows['percent']);
+		echo '</pre>';
 		return $rows;
 	}
 }
