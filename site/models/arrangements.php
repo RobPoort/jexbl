@@ -366,9 +366,7 @@ class JexBookingModelArrangements extends JModel
 				}
 			}
 		}	
-		echo '<pre>';
-		var_dump($rows['percent']);
-		echo '</pre>';
+		
 		return $rows;
 	}
 }

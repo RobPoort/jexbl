@@ -125,12 +125,62 @@ $extras = $this->extras;
 				<td>&nbsp;</td>				
 				<td style="text-align:left;">+</td>
 				<td>&nbsp;</td>
-			</tr>
-			<tr>				
-				<td style="text-align:right;font-weight:bold;">totaal:</td>
-				<td style="font-weight:bold;">&euro;<?php echo number_format($this->total_price, 2, ',','.'); ?></td>
-				<td>&nbsp;</td>
-			</tr>
+			</tr>			
+			<?php
+			if(count($this->percent_items) > 0){
+				?>
+				<tr>				
+					<td style="text-align:right;font-weight:bold;">subtotaal:</td>
+					<td style="font-weight:bold;">&euro;<?php echo number_format($this->total_price, 2, ',','.'); ?></td>
+					<td>&nbsp;</td>
+				</tr>				
+				<?php
+				foreach($this->percent_items as $item){
+				?>				
+				<tr>
+					<td><?php echo $item->name; ?></td>
+					<td>
+					&euro;&nbsp;
+					<?php 
+						echo number_format($item->total_attrib_price, 2, ',','.');
+						if($item->total_attrib_price_percent){
+							?>
+							&nbsp;+&nbsp;&euro;&nbsp;
+							<?php
+							echo number_format($item->total_attrib_price_percent, 2, ',', '.');
+						}
+					 ?>
+					</td>
+					<td>
+					<?php 
+					if($item->total_attrib_price_percent){
+						echo '('.$item->percent.'%&nbsp;van&nbsp;&euro;&nbsp;'.number_format($this->total_price, 2, ',','.').')';
+					} else {
+						echo '&nbsp;';
+					}
+					?>
+					</td>
+				</tr>
+				<?php
+				}
+				?>
+				<tr><td colspan="3">&nbsp;</td></tr>
+				<tr>				
+					<td style="text-align:right;font-weight:bold;">totaal:</td>
+					<td style="font-weight:bold;">&euro;<?php echo number_format($this->total_price_def, 2, ',','.'); ?></td>
+					<td>&nbsp;</td>
+				</tr>
+				<?php
+			} else{
+				?>
+					<tr>				
+					<td style="text-align:right;font-weight:bold;">totaal:</td>
+					<td style="font-weight:bold;">&euro;<?php echo number_format($this->total_price, 2, ',','.'); ?></td>
+					<td>&nbsp;</td>
+				</tr>
+				<?php
+			} 
+			?>
 		</table>
 	</fieldset>
 	<form method="post" action="">
@@ -211,7 +261,3 @@ $extras = $this->extras;
 		</form>
 	</fieldset>
 </div>
-<pre>
-		<?php var_dump($data = $this->app->getUserState("option_jbl")); ?>
-		<?php //var_dump($attribs_special_required); ?>
-	</pre>

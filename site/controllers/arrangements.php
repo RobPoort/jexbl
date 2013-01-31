@@ -154,17 +154,30 @@ class JexBookingControllerArrangements extends JController
 		//nu percent berekeningen, indien nodig
 		$total_percent = 0;
 		$total_percent_price = 0;
+		$percent_items = array();
 		if(array_key_exists('special', $data)){
 			if(array_key_exists('special_checked', $data['special'])){
 				$this->checked_percent = $model->getSelectedAttribs($data, 5, $total);
 				if($this->checked_percent['percent']){
+					
 					foreach($this->checked_percent['percent'] as $percent){
+						$percent_items[] = $percent;
 						$total_percent += $percent->total_attrib_price_percent;
+						$total_percent_price += $percent->price;
+						
 					}					
 				}				
 			}
+			$app->setUserState("option_jbl.percent_items", $percent_items);
 			$app->setUserState("option_jbl.total_price_percent", $total_percent);
+			$app->setUserState("option_jbl.total_price_percent_price", $total_percent_price);
 			
+		}
+		if(count($percent_items) > 0){
+			$this->total_price_def = $total + $total_percent + $total_percent_price;
+			$app->setUserState("option_jbl.total_price_def", $this->total_price_def);
+		} else {
+			$app->setUserState("option_jbl.total_price_def", $total);
 		}
 		
 	}
