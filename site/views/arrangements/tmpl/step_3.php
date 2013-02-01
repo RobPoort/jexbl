@@ -264,9 +264,9 @@ window.addEvent('domready' function(){
 			</table>
 		</fieldset>
 		<fieldset class="jbl_form" id="button">			
-			<input type="submit" name="sendButton" value="VERZENDEN" class="buttonNext" />		
-			<input type="hidden" name="task" value="arrangements.process" />
-			 <input type="hidden" name="step" value="3" />			 
+			<input type="submit" name="sendButton" value="VERZENDEN" class="buttonNext" />			
+			 <input type="hidden" name="step" value="3" />
+			 <input type="hidden" name="task" value="arrangements.setStep" />		 
 	</form>
 	<div class="clear">&nbsp;</div>
 		<form method="post" action="">

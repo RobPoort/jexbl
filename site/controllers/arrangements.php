@@ -35,6 +35,9 @@ class JexBookingControllerArrangements extends JController
 				$this->calculatePrice();
 				$app->input->set('layout','step_3');
 				break;
+			case 3:
+				$app->input->set('layout', 'step_4');
+				break;
 			default :
 				$app->input->set('layout', 'default');
 				break;
