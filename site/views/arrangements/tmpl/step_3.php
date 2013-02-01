@@ -13,6 +13,20 @@ $attribs_special_required = $this->attrib_prices_special_required;
 $attribs_special_checked = $this->attrib_prices_special_checked;
 $extras = $this->extras;
 ?>
+<script>
+window.addEvent('domready' function(){
+	$('form.form-validate').addEvent('submit', function(evt){
+		// PREVENT FORM FROM BEING SUBMITTED
+		evt.preventDefault();
+		var form = evt.target;
+		if(! document.formvalidator.isValid(form) ){
+			// DISPLAY ERROR MESSAGE HERE
+			return false;
+		}
+		form.submit();
+	});
+});
+</script>
 <div class="jbl_prijsberekening" id="jbl_prijsberekening">
 	<fieldset class="jbl_form"><legend>Uw prijsberekening:</legend>
 		<table class="jbl_form_table">
@@ -189,7 +203,7 @@ $extras = $this->extras;
 			?>
 		</table>
 	</fieldset>
-	<form method="post" action="">
+	<form method="post" action="" class="form-validate">
 		<?php
 		if($this->extras){
 			?>
@@ -224,7 +238,7 @@ $extras = $this->extras;
 					<td><input type="text" name="jbl_form[surname]" value="" class="jbl_input_text" /></td>
 				</tr>
 				<tr>
-					<td class="jbl_label_naw">Achternaam:*</td>
+					<td class="jbl_label_naw">*Achternaam:</td>
 					<td><input type="text" name="jbl_form[name]" value="" class="jbl_input_text" required="required" /></td>
 				</tr>
 				<tr>
@@ -240,24 +254,19 @@ $extras = $this->extras;
 					<td><input type="text" name="jbl_form[city]" value="" class="jbl_input_text" /></td>
 				</tr>
 				<tr>
-					<td class="jbl_label_naw">e-mail:</td>
-					<td><input type="text" name="jbl_form[mail]" value="" class="jbl_input_text" /></td>
+					<td class="jbl_label_naw">*e-mail:</td>
+					<td><input type="text" name="jbl_form[mail]" value="" class="jbl_input_text" required="required" /></td>
 				</tr>
 				<tr>
-					<td class="jbl_label_naw">Telefoon:</td>
-					<td><input type="text" name="jbl_form[phone]" value="" class="jbl_input_text" /></td>
-				</tr>
-				<tr>
-					<td class="jbl_label_naw">Mobiel:</td>
-					<td><input type="text" name="jbl_form[mobile]" value="" class="jbl_input_text" /></td>
-				</tr>				
+					<td class="jbl_label_naw">*Telefoon:</td>
+					<td><input type="text" name="jbl_form[phone]" value="" class="jbl_input_text" required="required" /></td>
+				</tr>								
 			</table>
 		</fieldset>
-		<fieldset class="jbl_form" id="button">
-			<button class="buttonNext" onClick="this.form.submit()" name="final" value="1">VERZENDEN</button>		
-			<!-- <input type="hidden" name="task" value="arrangements.process" /> -->
-			 <input type="hidden" name="step" value="2" />
-			 <input type="hidden" name="task" value="arrangements.setStep" />  
+		<fieldset class="jbl_form" id="button">			
+			<input type="submit" name="sendButton" value="VERZENDEN" class="buttonNext" />		
+			<input type="hidden" name="task" value="arrangements.process" />
+			 <input type="hidden" name="step" value="3" />			 
 	</form>
 	<div class="clear">&nbsp;</div>
 		<form method="post" action="">
