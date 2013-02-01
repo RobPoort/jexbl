@@ -277,6 +277,3 @@ window.addEvent('domready' function(){
 		</form>
 	</fieldset>
 </div>
-<pre>
-<?php var_dump($this->app->getUserState("option_jbl")); ?>
-</pre>

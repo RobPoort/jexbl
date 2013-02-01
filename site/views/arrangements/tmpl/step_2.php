@@ -82,6 +82,7 @@ $attribs = $this->attribs;
 	<fieldset class="jbl_form" id="button">
 		<input type="hidden" name="task" value="arrangements.setStep" />
 		<input type="hidden" name="step" value="2" />
+		<input type="hidden" name="jbl_form[state_check]" value="1" />
 		<?php
 			if($this->special_attribs['required']){
 				foreach($this->special_attribs['required'] as $attrib){
@@ -100,6 +101,3 @@ $attribs = $this->attribs;
 		<input type="hidden" name="step" value="0" />
 		</form>
 	</fieldset>
-<pre>
-<?php var_dump($this->app->getUserState("option_jbl")); ?>
-</pre>
