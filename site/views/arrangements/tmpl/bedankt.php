@@ -6,5 +6,10 @@ defined('_JEXEC') or die('Restricted Access');
 <?php
 $app = JFactory::getApplication();
 $mailfrom	= $app->getCfg('sitename');
-var_dump($mailfrom);
+$state = $app->getUserState("option_jbl");
 ?>
+<pre>
+	<?php
+		var_dump($state); 
+	?>
+</pre>
