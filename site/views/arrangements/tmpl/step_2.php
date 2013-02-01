@@ -99,4 +99,7 @@ $attribs = $this->attribs;
 		<input type="hidden" name="task" value="arrangements.setStep" />
 		<input type="hidden" name="step" value="0" />
 		</form>
-	</fieldset>	
+	</fieldset>
+<pre>
+<?php var_dump($this->app->getUserState("option_jbl")); ?>
+</pre>

@@ -261,7 +261,8 @@ class JexBookingModelArrangements extends JModel
 					}
 					if($result->is_pp){
 						$result->total_attrib_price = (double)$result->total_attrib_price * $persons;
-						$result->price = (double)$result->price * $persons;
+						$result->single_price = $result->price;
+						$result->price = (double)$result->price * $persons;						
 						$result->persons = $persons;
 					}
 					$rows[] = $result;

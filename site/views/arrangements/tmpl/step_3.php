@@ -66,7 +66,13 @@ $extras = $this->extras;
 						<tr>
 							<td><?php echo $item->name; ?></td>
 							<td>&euro;&nbsp;<?php echo number_format($item->total_attrib_price, 2, ',','.'); ?></td>
-							<td>&nbsp;</td>
+							<td>
+							<?php
+								if($item->is_pp){
+									echo '('.$item->persons.'&nbsp;personen&nbsp;&aacute;&nbsp;'.number_format($item->single_price, 2, ',','.').')';
+								} 
+							?>
+							</td>
 						</tr>
 						<?php
 					}
@@ -218,8 +224,8 @@ $extras = $this->extras;
 					<td><input type="text" name="jbl_form[surname]" value="" class="jbl_input_text" /></td>
 				</tr>
 				<tr>
-					<td class="jbl_label_naw">Achternaam:</td>
-					<td><input type="text" name="jbl_form[name]" value="" class="jbl_input_text" /></td>
+					<td class="jbl_label_naw">Achternaam:*</td>
+					<td><input type="text" name="jbl_form[name]" value="" class="jbl_input_text" required="required" /></td>
 				</tr>
 				<tr>
 					<td class="jbl_label_naw">Straat + huisnummer:</td>
@@ -249,8 +255,9 @@ $extras = $this->extras;
 		</fieldset>
 		<fieldset class="jbl_form" id="button">
 			<button class="buttonNext" onClick="this.form.submit()" name="final" value="1">VERZENDEN</button>		
-			<input type="hidden" name="task" value="arrangements.process" />
-			<!-- <input type="hidden" name="step" value="3" /> -->
+			<!-- <input type="hidden" name="task" value="arrangements.process" /> -->
+			 <input type="hidden" name="step" value="2" />
+			 <input type="hidden" name="task" value="arrangements.setStep" />  
 	</form>
 	<div class="clear">&nbsp;</div>
 		<form method="post" action="">
@@ -261,3 +268,6 @@ $extras = $this->extras;
 		</form>
 	</fieldset>
 </div>
+<pre>
+<?php var_dump($this->app->getUserState("option_jbl")); ?>
+</pre>

@@ -62,6 +62,8 @@ class JexBookingControllerArrangements extends JController
 		
 		//eerst userState opschonen, zodat bij voor 2e keer invullen formulier niet waarden uit de eerste keer bewaard blijven. arr_id moet er wel weer in
 		$arr_id = $app->getUserState("option_jbl.arr_id");		
+		
+		//TODO er moet gechecked worden of er al een berekening ìs, voordat userState opnieuw gevuld wordt!!
 		$app->setUserState("option_jbl", null);
 		$app->setUserState("option_jbl.arr_id", $arr_id);
 		
