@@ -27,6 +27,7 @@ window.addEvent('domready' function(){
 	});
 });
 </script>
+<h2>step_3</h2>
 <div class="jbl_prijsberekening" id="jbl_prijsberekening">
 	<fieldset class="jbl_form"><legend>Uw prijsberekening:</legend>
 		<table class="jbl_form_table">
@@ -264,7 +265,7 @@ window.addEvent('domready' function(){
 			</table>
 		</fieldset>
 		<fieldset class="jbl_form" id="button">			
-			<input type="submit" name="sendButton" value="VERZENDEN" class="buttonNext" />			
+			<input type="submit" name="sendButton" value="VOLGENDE" class="buttonNext" />			
 			 <input type="hidden" name="step" value="3" />
 			 <input type="hidden" name="task" value="arrangements.setStep" />		 
 	</form>
@@ -277,3 +278,10 @@ window.addEvent('domready' function(){
 		</form>
 	</fieldset>
 </div>
+	<pre>
+		<?php
+			$app = JFactory::getApplication();
+			$state = $app->getUserState("option_jbl");
+			var_dump($state); 
+		?>
+	</pre>

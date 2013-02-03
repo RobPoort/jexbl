@@ -6,7 +6,7 @@ class JexBookingControllerArrangements extends JController
 {
 	function display($cachable = false){
 		
-		
+		var_dump('testkip');
 		parent::display($cachable);
 	}
 	
@@ -23,19 +23,29 @@ class JexBookingControllerArrangements extends JController
 		
 		//nu layout bepalen en userState vullen
 		switch($step){
-			case 0:
+			case 0:				
 				$app->input->set('layout', 'default');
 				break;
 			case 1:
+				$arr_id = $app->getUserState("option_jbl.arr_price")->id;
+				var_dump($arr_id);
+				if($arr_id){
+					$app->setUserState("option_jbl.arr_id", $arr_id);
+				}
+				$this->calculatePrice();
 				$app->input->set('layout', 'step_2');
+				
 				$arr_id = $app->input->get('arrangementSelect');
-				$app->setUserState("option_jbl.arr_id", $arr_id);				
+				$app->setUserState("option_jbl.arr_id", $arr_id);
+								
 				break;
 			case 2:
 				$this->calculatePrice();
 				$app->input->set('layout','step_3');
 				break;
 			case 3:
+				
+				$this->calculatePrice();
 				$app->input->set('layout', 'step_4');
 				break;
 			default :
@@ -67,7 +77,7 @@ class JexBookingControllerArrangements extends JController
 		$arr_id = $app->getUserState("option_jbl.arr_id");		
 		
 		//TODO er moet gechecked worden of er al een berekening ìs, voordat userState opnieuw gevuld wordt!!
-		$app->setUserState("option_jbl", null);
+		//$app->setUserState("option_jbl", null);
 		$app->setUserState("option_jbl.arr_id", $arr_id);
 		
 		$state_check = $app->input->get('jbl_form',null,null);
@@ -75,7 +85,11 @@ class JexBookingControllerArrangements extends JController
 			//nu eerst data uit form step_2 halen
 			$data = array();		
 			$data = $app->input->get('jbl_form',null,null);
+			if($data['arr_id']){
 			$data['arr_id'] = $arr_id;
+			} else{
+				$arr_id = $app->getUserState("option_jbl.arr_id");
+			}
 			if($data['special']){
 				$app->setUserState("option_jbl.special", $data['special']);
 			}
@@ -98,7 +112,9 @@ class JexBookingControllerArrangements extends JController
 			//prijzen met key 'checked' ophalen, indien aanwezig
 			if (array_key_exists('checked', $data)) {
 				$this->attrib_prices_checked = $model->getSelectedAttribs($data, 2, null);
-			}
+			} elseif($app->getUserState("option_jbl.attrib_prices_checked")){				
+				$this->attrib_prices_checked = $app->getUserState("option_jbl.attrib_prices_checked");
+			}					
 			
 			//prijzen met key special required ophalen
 			if(array_key_exists('special', $data)){

@@ -27,3 +27,10 @@ JHtml::stylesheet('jbl.css','components/com_jexbooking/css/');
 		<input type="hidden" name="step" value="1" />
 	</fieldset>
 </form>
+	<pre>
+		<?php
+			$app = JFactory::getApplication();
+			$state = $app->getUserState("option_jbl");
+			var_dump($state); 
+		?>
+	</pre>

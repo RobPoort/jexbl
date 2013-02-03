@@ -31,6 +31,7 @@ class JexBookingViewArrangements extends JView
 				$this->total_percent = $this->app->getUserState("option_jbl.total_price_percent");
 				$this->total_percent_price = $this->app->getUserState("option_jbl.total_price_percent_price");
 				
+				
 		}
 		$this->data = $this->app->input->get('jbl_form',null,null);
 		

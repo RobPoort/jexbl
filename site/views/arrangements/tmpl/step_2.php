@@ -7,7 +7,9 @@ JHtml::stylesheet('jbl.css','components/com_jexbooking/css/');
 //alleen omdat het minder typen is :)
 $item = $this->item;
 $attribs = $this->attribs;
+$app = $this->app;
 ?>
+<h2>step_2</h2>
 <form action="" method="post">
 	<fieldset class="jbl_form" id="jbl_has_number"><legend><?php echo ucfirst($item->name);?></legend>
 		<table class="jbl_form_table">
@@ -33,20 +35,41 @@ $attribs = $this->attribs;
 			<fieldset class="jbl_form" id="jbl_attribs_has_price">
 				<table class="jbl_form_table">
 				<?php
+					
+					$attribs_checked = $app->getUserState("option_jbl.attrib_prices_checked");
+					$attrib_prices_number = $app->getUserState("option_jbl.attrib_prices_number");				
+					
 					foreach($attribs as $attrib){
 						if($attrib->has_number){
+							$value = 0;
+							if($attrib_prices_number){
+								foreach($attrib_prices_number as $item){
+									if($attrib->id == $item->id){
+										$value = $item->number;
+									}
+								}
+							}																			
 							?>
 								<tr>
-								<td class="jbl_form_checkbox">&nbsp;</td><td class="jbl_form_left"><label <?php if($attrib->desc) : ?>class="hasTip" title="<?php echo $attrib->desc; ?>" <?php endif; ?>><?php echo $attrib->name; ?></label></td><td class="jbl_form_right">&nbsp;x&nbsp;<input type="text" name="jbl_form[number][<?php echo $attrib->id; ?>]" value="0" class="jbl_input_number" /></td>
+								<td class="jbl_form_checkbox">&nbsp;</td><td class="jbl_form_left"><label <?php if($attrib->desc) : ?>class="hasTip" title="<?php echo $attrib->desc; ?>" <?php endif; ?>><?php echo $attrib->name; ?></label></td><td class="jbl_form_right">&nbsp;x&nbsp;<input type="text" name="jbl_form[number][<?php echo $attrib->id; ?>]" value="<?php echo $value; ?>" class="jbl_input_number" /></td>
 								</tr>
 							<?php
 						} else{
+							$checked = '';
+							if($attribs_checked){
+								foreach($attribs_checked as $item){
+									if($attrib->id == $item->id){
+										$checked = 'checked="checked"';
+									}
+								}
+							}
 							?>
 								<tr>
-								<td class="jbl_form_checkbox"><input type="checkbox" class="jbl_input_checkbox" name="jbl_form[checked][<?php echo $attrib->id; ?>]" value="1" /></td><td class="jbl_form_left"><label <?php if($attrib->desc) : ?>class="hasTip" title="<?php echo $attrib->desc; ?>" <?php endif; ?>><?php echo $attrib->name; ?>&nbsp;</label></td><td class="jbl_form_right">&nbsp;</td>
+								<td class="jbl_form_checkbox"><input type="checkbox" class="jbl_input_checkbox" name="jbl_form[checked][<?php echo $attrib->id; ?>]" value="1" <?php echo $checked; ?> /></td><td class="jbl_form_left"><label <?php if($attrib->desc) : ?>class="hasTip" title="<?php echo $attrib->desc; ?>" <?php endif; ?>><?php echo $attrib->name; ?>&nbsp;</label></td><td class="jbl_form_right">&nbsp;</td>
 								</tr>
 							<?php
 						}
+					
 					}
 				?>
 				</table>
@@ -101,3 +124,10 @@ $attribs = $this->attribs;
 		<input type="hidden" name="step" value="0" />
 		</form>
 	</fieldset>
+	<pre>
+		<?php
+			$app = JFactory::getApplication();
+			$state = $app->getUserState("option_jbl");
+			var_dump($state); 
+		?>
+	</pre>
