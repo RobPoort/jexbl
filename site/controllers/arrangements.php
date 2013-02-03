@@ -6,7 +6,7 @@ class JexBookingControllerArrangements extends JController
 {
 	function display($cachable = false){
 		
-		var_dump('testkip');
+		
 		parent::display($cachable);
 	}
 	
@@ -27,15 +27,17 @@ class JexBookingControllerArrangements extends JController
 				$app->input->set('layout', 'default');
 				break;
 			case 1:
-				$arr_id = $app->getUserState("option_jbl.arr_price")->id;
-				var_dump($arr_id);
+				$arr_id = $app->getUserState("option_jbl.arr_price")->id;				
 				if($arr_id){
 					$app->setUserState("option_jbl.arr_id", $arr_id);
-				}
-				$this->calculatePrice();
+					}
+				$this->calculatePrice();				
 				$app->input->set('layout', 'step_2');
 				
-				$arr_id = $app->input->get('arrangementSelect');
+				if(!$app->getUserState("option_jbl.arr_id")){
+					$arr_id = $app->input->get('arrangementSelect');
+				}
+				// dit is 'm
 				$app->setUserState("option_jbl.arr_id", $arr_id);
 								
 				break;
