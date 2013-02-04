@@ -45,8 +45,7 @@ class JexBookingControllerArrangements extends JController
 				$this->calculatePrice();
 				$app->input->set('layout','step_3');
 				break;
-			case 3:
-				
+			case 3:								
 				$this->calculatePrice();
 				$app->input->set('layout', 'step_4');
 				break;
@@ -75,14 +74,13 @@ class JexBookingControllerArrangements extends JController
 		
 		$app = JFactory::getApplication();
 		
-		//eerst userState opschonen, zodat bij voor 2e keer invullen formulier niet waarden uit de eerste keer bewaard blijven. arr_id moet er wel weer in
+		
 		$arr_id = $app->getUserState("option_jbl.arr_id");		
 		
-		//TODO er moet gechecked worden of er al een berekening ìs, voordat userState opnieuw gevuld wordt!!
-		//$app->setUserState("option_jbl", null);
+		
 		$app->setUserState("option_jbl.arr_id", $arr_id);
 		
-		$state_check = $app->input->get('jbl_form',null,null);
+		$state_check = $app->input->get('jbl_form',null,null);		
 		if($state_check['state_check'] == 1){
 			//nu eerst data uit form step_2 halen
 			$data = array();		
@@ -133,6 +131,21 @@ class JexBookingControllerArrangements extends JController
 			}
 	
 			
+			//de extras, comment en naw ophalen, indien aanwezig, en ook in userState zetten			
+			if(array_key_exists('extras', $data)){				
+				if(array_key_exists('checked', $data['extras'])){
+					$this->attrib_extras_checked = $model->getSelectedAttribs($data,6, null);					
+				}
+				if(array_key_exists('number', $data['extras'])){
+					$this->attrib_extras_number = $model->getSelectedAttribs($data,7,null);
+				}
+			}
+			if(array_key_exists('naw', $data)){
+				$this->naw = $data['naw'];
+			}
+			if(array_key_exists('comment', $data)){
+				$this->comment = htmlentities($data['comment']);
+			}
 			
 			//de berekeningen in de userState zetten
 			$app->setUserState("option_jbl.arr_price", $this->arr_price);
@@ -147,6 +160,19 @@ class JexBookingControllerArrangements extends JController
 			}
 			if($this->attrib_prices_special_checked){
 				$app->setUserState("option_jbl.attrib_prices_special_checked", $this->attrib_prices_special_checked);
+			}
+			//de extras in de userState zetten
+			if($this->attrib_extras_checked){
+				$app->setUserState("option_jbl.attrib_extras_checked", $this->attrib_extras_checked);
+			}
+			if($this->attrib_extras_number){
+				$app->setUserState("option_jbl.attrib_extras_number", $this->attrib_extras_number);
+			}
+			if($this->naw){
+				$app->setUserState("option_jbl.naw", $this->naw);
+			}
+			if($this->comment){
+				$app->setUserState("option_jbl.comment", $this->comment);
 			}
 			
 			//totaalprijs berekenen

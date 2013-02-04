@@ -334,7 +334,7 @@ class JexBookingModelArrangements extends JModel
 			}
 		}	elseif($attribs_type == 5){
 			//special checked percent
-			foreach($data['special'][special_checked] as $key=>$number){
+			foreach($data['special']['special_checked'] as $key=>$number){
 				if((int)$number > 0){
 					$attrib_id = (int)$key;
 					$db = JFactory::getDbo();
@@ -366,7 +366,28 @@ class JexBookingModelArrangements extends JModel
 					}
 				}
 			}
-		}	
+		}	elseif($attribs_type == 6){
+			//extras checked
+			
+			foreach($data['extras']['checked'] as $key=>$number){
+				if($number > 0){
+					$attrib_id = (int)$key;
+					$db = JFactory::getDbo();
+					$query = $db->getQuery(true);
+					$query->from('#__jexbooking_attributes');
+					$query->select('*');
+					$query->where('id='.$attrib_id.' AND published=1');
+					$db->setQuery($query);
+					$result = $db->loadObject();
+					
+					if($result){
+						$result->number = 1;
+						$result->persons = $persons;
+					}
+					$rows[] = $result;
+				}
+			}
+		}
 		
 		return $rows;
 	}

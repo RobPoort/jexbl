@@ -12,6 +12,8 @@ $attribs_number = $this->attrib_prices_number;
 $attribs_checked = $this->attrib_prices_checked;
 $attribs_special_required = $this->attrib_prices_special_required;
 $attribs_special_checked = $this->attrib_prices_special_checked;
+$attribs_extras_checked = $this->attribs_extras_checked;
+$attribs_extras_number = $this->attribs_extras_number;
 
 
 $mailfrom	= $this->app->getCfg('sitename');
@@ -243,6 +245,51 @@ $naw = $form['naw'];
 			<input type="hidden" name="jbl_form[state_check]" value="1" />
 	</form>
 	</fieldset>
+	<?php
+	 if($attribs_extras_checked || $attribs_extras_number){
+	?>
+	<fieldset class="jbl_form"><legend>Uw extra wensen:</legend>
+		<table class="jbl_form_table">
+			<?php
+				if($attribs_extras_checked){
+					foreach($attribs_extras_checked as $item){
+						?>
+						<tr>
+							<td><?php echo $item->name; ?></td>
+							<td>
+								<?php
+									if($item->persons > 1){
+										echo '(&aacute;&nbsp;'.$item->persons.'&nbsp;personen)';
+									} 
+								?>
+							</td>
+						</tr>
+						<?php
+					}
+				}
+				if($attribs_extras_number){
+					foreach($attribs_extras_number as $item){
+						?>
+						<tr>
+							<td><?php echo $item->name; ?></td>
+							<td>(<?php echo $item->number; ?>&nbsp;maal)</td>
+						</tr>
+						<?php
+					}
+				} 
+			?>
+			<tr><td colspan="2">&nbsp;</td></tr>
+		</table>
+		<form method="post" action="">
+			<input type="submit" name="sendButton" value="WIJZIG" class="buttonNext" />			
+			<input type="hidden" name="step" value="2" />
+			<input type="hidden" name="task" value="arrangements.setStep" />			
+			<input type="hidden" name="jbl_form[state_check]" value="1" />
+	</form>
+	</fieldset>
+	<?php
+	} 
+	?>
 	<fieldset class="jbl_form"><legend>Uw opmerkingen:</legend>
 		<p><?php echo $form['comment']; ?></p>
 		<p>&nbsp;</p>
@@ -253,9 +300,10 @@ $naw = $form['naw'];
 			<input type="hidden" name="jbl_form[state_check]" value="1" />
 		</form>
 	</fieldset>
-	<!-- <input type="hidden" name="task" value="arrangements.process" /> -->
-	<pre>
-		<?php
-			var_dump($form); 
-		?>
-	</pre>
+	<fieldset class="jbl_form"><legend>Heeft u alles gecontroleerd?</legend>
+		<form method="post" action="">
+			<input type="submit" name="sendButton" value="VERZENDEN" class="buttonNext" />
+			<input type="hidden" name="task" value="arrangements.process" />
+		</form>
+	</fieldset>
+	

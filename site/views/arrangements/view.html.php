@@ -23,6 +23,10 @@ class JexBookingViewArrangements extends JView
 				$this->attrib_prices_special_required = $this->app->getUserState("option_jbl.attrib_prices_special_required");
 				$this->attrib_prices_special_checked = $this->app->getUserState("option_jbl.attrib_prices_special_checked");
 				
+				//extras
+				$this->attribs_extras_checked = $this->app->getUserState("option_jbl.attrib_extras_checked");
+				$this->attribs_extras_number = $this->app->getUserState("option_jbl.attrib_extras_number");
+				
 				$this->total_price = $this->app->getUserState("option_jbl.total_price");
 				
 				//hieronder de percent items en prijs

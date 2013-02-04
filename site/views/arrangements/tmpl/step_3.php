@@ -5,6 +5,7 @@ JHtml::_('behavior.tooltip');
 JHtml::stylesheet('jbl.css','components/com_jexbooking/css/');
 
 $this->app = JFactory::getApplication();
+$app = $this->app;
 $this->step = (int)$this->app->input->get('step');
 $arrangement = $this->arrangement;
 $attribs_number = $this->attrib_prices_number;
@@ -210,17 +211,37 @@ window.addEvent('domready' function(){
 			<fieldset class="jbl_form"><legend class="hasTip" title="Hier kunt u nog extra wensen opgeven">Extra's:</legend>
 				<table class="jbl_form_table">
 					<?php
+						$attrib_extras_checked = $app->getUserState("option_jbl.attrib_extras_checked");
+						$attrib_extras_number = $app->getUserState("option_jbl.attrib_extras_number");
 						foreach($extras as $attrib){
 							if($attrib->has_number){
+								$value = 0;
+								if($attrib_extras_number){
+									foreach($attrib_extras_number as $key=>$val){
+										if($attrib->id == $val->id){
+											$value = $val->number;
+										}
+									}
+								}
 								?>
 									<tr>
-									<td class="jbl_form_checkbox">&nbsp;</td><td class="jbl_form_left"><label <?php if($attrib->desc) : ?>class="hasTip" title="<?php echo $attrib->desc; ?>" <?php endif; ?>><?php echo $attrib->name; ?></label></td><td class="jbl_form_right">&nbsp;x&nbsp;<input type="text" name="jbl_form[extras][number][<?php echo $attrib->id; ?>]" value="0" class="jbl_input_number" /></td>
+									<td class="jbl_form_checkbox">&nbsp;</td><td class="jbl_form_left"><label <?php if($attrib->desc) : ?>class="hasTip" title="<?php echo $attrib->desc; ?>" <?php endif; ?>><?php echo $attrib->name; ?></label></td><td class="jbl_form_right">&nbsp;x&nbsp;<input type="text" name="jbl_form[extras][number][<?php echo $attrib->id; ?>]" value="<?php echo $value; ?>" class="jbl_input_number" /></td>
 									</tr>
 								<?php
 							} else{
+								$checked = '';
+								
+								if($attrib_extras_checked){
+									foreach($attrib_extras_checked as $key=>$value){										
+										if($attrib->id == $value->id){
+											$checked = 'checked="checked"';
+											
+										}
+									}
+								}
 								?>
 									<tr>
-									<td class="jbl_form_checkbox"><input type="checkbox" class="jbl_input_checkbox" name="jbl_form[extras][checked][<?php echo $attrib->id; ?>]" value="1" /></td><td class="jbl_form_left"><label <?php if($attrib->desc) : ?>class="hasTip" title="<?php echo $attrib->desc; ?>" <?php endif; ?>><?php echo $attrib->name; ?>&nbsp;</label></td><td class="jbl_form_right">&nbsp;</td>
+									<td class="jbl_form_checkbox"><input type="checkbox" class="jbl_input_checkbox" name="jbl_form[extras][checked][<?php echo $attrib->id; ?>]" value="1" <?php echo $checked; ?> /></td><td class="jbl_form_left"><label <?php if($attrib->desc) : ?>class="hasTip" title="<?php echo $attrib->desc; ?>" <?php endif; ?>><?php echo $attrib->name; ?>&nbsp;</label></td><td class="jbl_form_right">&nbsp;</td>
 									</tr>
 								<?php
 							}
@@ -232,45 +253,57 @@ window.addEvent('domready' function(){
 		} 
 		?>
 		<fieldset class="jbl_form"><legend>Uw NAW-gegevens:</legend>
+			<?php
+				$naw = $app->getUserState("option_jbl.naw"); 
+			?>
 			<table class="jbl_form_table" id="">
 				<tr>
 					<td class="jbl_label_naw">Voornaam:</td>
-					<td><input type="text" name="jbl_form[naw][surname]" value="" class="jbl_input_text" /></td>
+					<td><input type="text" name="jbl_form[naw][surname]" value="<?php echo $naw['surname']; ?>" class="jbl_input_text" /></td>
 				</tr>
 				<tr>
 					<td class="jbl_label_naw">*Achternaam:</td>
-					<td><input type="text" name="jbl_form[naw][name]" value="" class="jbl_input_text" required="required" /></td>
+					<td><input type="text" name="jbl_form[naw][name]" value="<?php echo $naw['name']; ?>" class="jbl_input_text" required="required" /></td>
 				</tr>
 				<tr>
 					<td class="jbl_label_naw">Straat + huisnummer:</td>
-					<td><input type="text" name="jbl_form[naw][street]" value="" class="jbl_input_text" /><input type="text" name="jbl_form[naw][street_number]" value="" class="jbl_input_text" style="width:20px;margin-left:3px;"/></td>
+					<td><input type="text" name="jbl_form[naw][street]" value="<?php echo $naw['street']; ?>" class="jbl_input_text" /><input type="text" name="jbl_form[naw][street_number]" value="<?php echo $naw['street_number']; ?>" class="jbl_input_text" style="width:20px;margin-left:3px;"/></td>
 				</tr>
 				<tr>
 					<td class="jbl_label_naw">Postcode:</td>
-					<td><input type="text" name="jbl_form[naw][zipcode]" value="" class="jbl_input_text" /></td>
+					<td><input type="text" name="jbl_form[naw][zipcode]" value="<?php echo $naw['zipcode']; ?>" class="jbl_input_text" /></td>
 				</tr>
 				<tr>
 					<td class="jbl_label_naw">Plaats:</td>
-					<td><input type="text" name="jbl_form[naw][city]" value="" class="jbl_input_text" /></td>
+					<td><input type="text" name="jbl_form[naw][city]" value="<?php echo $naw['city']; ?>" class="jbl_input_text" /></td>
 				</tr>
 				<tr>
 					<td class="jbl_label_naw">*e-mail:</td>
-					<td><input type="text" name="jbl_form[naw][mail]" value="" class="jbl_input_text" required="required" /></td>
+					<td><input type="text" name="jbl_form[naw][mail]" value="<?php echo $naw['mail']; ?>" class="jbl_input_text" required="required" /></td>
 				</tr>
 				<tr>
 					<td class="jbl_label_naw">*Telefoon:</td>
-					<td><input type="text" name="jbl_form[naw][phone]" value="" class="jbl_input_text" required="required" /></td>
+					<td><input type="text" name="jbl_form[naw][phone]" value="<?php echo $naw['phone']; ?>" class="jbl_input_text" required="required" /></td>
 				</tr>								
 			</table>
 		</fieldset>
 	<fieldset class="jbl_form"><legend>Eventuele opmerkingen:</legend>
+		<?php
+			$value = '';
+			$comment = $app->getUserState("option_jbl.comment");			
+			if($comment){
+				$value = $comment;
+			} 
+		?>
 		<textarea rows="15" cols="85" name="jbl_form[comment]" value="" >
+			<?php echo $comment; ?>
 		</textarea>
 	</fieldset>
 	<fieldset class="jbl_form" id="button">			
 			<input type="submit" name="sendButton" value="VOLGENDE" class="buttonNext" />			
 			 <input type="hidden" name="step" value="3" />
-			 <input type="hidden" name="task" value="arrangements.setStep" />		 
+			 <input type="hidden" name="task" value="arrangements.setStep" />
+			 <input type="hidden" name="jbl_form[state_check]" value="1" />		 
 	</form>
 	<div class="clear">&nbsp;</div>
 		<form method="post" action="">
