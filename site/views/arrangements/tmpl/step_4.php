@@ -17,14 +17,14 @@ $attribs_extras_number = $this->attribs_extras_number;
 
 
 $mailfrom	= $this->app->getCfg('sitename');
-$state = $this->app->getUserState("option_jbl");
+$state = $this->state;
 $form = $this->app->input->get("jbl_form",null,null);
 $naw = $form['naw'];
 //TODO bovenstaande filteren, zitten nog overbodige dingen van oude bedankt pagina in
 ?>
 
 <h1>Overzicht:</h1>
-
+<h2>step_4</h2>
 
 	<div class="jbl_prijsberekening" id="jbl_prijsberekening">
 	
@@ -187,7 +187,7 @@ $naw = $form['naw'];
 					?>
 					<tr><td colspan="3">&nbsp;</td></tr>
 					<tr>				
-						<td style="text-align:right;font-weight:bold;">totaal:</td>
+						<td style="text-align:right;font-weight:bold;">totaal:(regel 190, $this->total_price_def)</td>
 						<td style="font-weight:bold;">&euro;<?php echo number_format($this->total_price_def, 2, ',','.'); ?></td>
 						<td>&nbsp;</td>
 					</tr>
@@ -195,7 +195,7 @@ $naw = $form['naw'];
 				} else{
 					?>
 						<tr>				
-						<td style="text-align:right;font-weight:bold;">totaal:</td>
+						<td style="text-align:right;font-weight:bold;">totaal:(regel 198, $this->total_price)</td>
 						<td style="font-weight:bold;">&euro;<?php echo number_format($this->total_price, 2, ',','.'); ?></td>
 						<td>&nbsp;</td>
 					</tr>
@@ -211,7 +211,9 @@ $naw = $form['naw'];
 		</form>
 		</fieldset>
 	</div>
-	
+	<pre>
+		<?php var_dump($arrangement,$this->data); ?>
+	</pre>
 	<fieldset class="jbl_form"><legend>Uw gegevens:</legend>
 		<table class="jbl_form_table">
 			<tr>
@@ -306,4 +308,4 @@ $naw = $form['naw'];
 			<input type="hidden" name="task" value="arrangements.process" />
 		</form>
 	</fieldset>
-	
+	<pre>

@@ -28,6 +28,7 @@ window.addEvent('domready' function(){
 	});
 });
 </script>
+<h2>step_3</h2>
 <div class="jbl_prijsberekening" id="jbl_prijsberekening">
 	<fieldset class="jbl_form"><legend>Uw prijsberekening:</legend>
 		<table class="jbl_form_table">
@@ -151,7 +152,7 @@ window.addEvent('domready' function(){
 			if(count($this->percent_items) > 0){
 				?>
 				<tr>				
-					<td style="text-align:right;font-weight:bold;">subtotaal:</td>
+					<td style="text-align:right;font-weight:bold;">subtotaal:(regel 155, $this->total_price)</td>
 					<td style="font-weight:bold;">&euro;<?php echo number_format($this->total_price, 2, ',','.'); ?></td>
 					<td>&nbsp;</td>
 				</tr>				
@@ -163,19 +164,19 @@ window.addEvent('domready' function(){
 					<td>
 					&euro;&nbsp;
 					<?php 
-						echo number_format($item->total_attrib_price, 2, ',','.');
+						echo number_format($item->total_attrib_price, 2, ',','.').' $item->total_attrib_price';
 						if($item->total_attrib_price_percent){
 							?>
 							&nbsp;+&nbsp;&euro;&nbsp;
 							<?php
-							echo number_format($item->total_attrib_price_percent, 2, ',', '.');
+							echo number_format($item->total_attrib_price_percent, 2, ',', '.').' $item->total_attrib_price_percent';
 						}
 					 ?>
 					</td>
 					<td>
 					<?php 
 					if($item->total_attrib_price_percent){
-						echo '('.$item->percent.'%&nbsp;van&nbsp;&euro;&nbsp;'.number_format($this->total_price, 2, ',','.').')';
+						echo '('.$item->percent.'%&nbsp;van&nbsp;&euro;&nbsp;'.number_format($this->total_price, 2, ',','.').') $this->total_price';
 					} else {
 						echo '&nbsp;';
 					}
@@ -187,7 +188,7 @@ window.addEvent('domready' function(){
 				?>
 				<tr><td colspan="3">&nbsp;</td></tr>
 				<tr>				
-					<td style="text-align:right;font-weight:bold;">totaal:</td>
+					<td style="text-align:right;font-weight:bold;">totaal:(regel 191, $this->total_price_def)</td>
 					<td style="font-weight:bold;">&euro;<?php echo number_format($this->total_price_def, 2, ',','.'); ?></td>
 					<td>&nbsp;</td>
 				</tr>
@@ -195,7 +196,7 @@ window.addEvent('domready' function(){
 			} else{
 				?>
 					<tr>				
-					<td style="text-align:right;font-weight:bold;">totaal:</td>
+					<td style="text-align:right;font-weight:bold;">totaal:(regel 199, $this->total_price)</td>
 					<td style="font-weight:bold;">&euro;<?php echo number_format($this->total_price, 2, ',','.'); ?></td>
 					<td>&nbsp;</td>
 				</tr>
@@ -252,6 +253,9 @@ window.addEvent('domready' function(){
 			<?php
 		} 
 		?>
+		<pre>
+		<?php var_dump($arrangement,$this->data); ?>
+		</pre>
 		<fieldset class="jbl_form"><legend>Uw NAW-gegevens:</legend>
 			<?php
 				$naw = $app->getUserState("option_jbl.naw"); 

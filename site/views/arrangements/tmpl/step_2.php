@@ -8,8 +8,9 @@ JHtml::stylesheet('jbl.css','components/com_jexbooking/css/');
 $item = $this->item;
 $attribs = $this->attribs;
 $app = $this->app;
-$state = $app->getUserState("option_jbl");
+$state = $this->state;
 ?>
+<h2>step_2</h2>
 <form action="" method="post">
 	<fieldset class="jbl_form" id="jbl_has_number"><legend><?php echo ucfirst($item->name);?></legend>
 		<table class="jbl_form_table">
@@ -148,3 +149,6 @@ $state = $app->getUserState("option_jbl");
 		<!-- <input type="hidden" name="step" value="0" /> -->
 		</form>
 	</fieldset>
+	<pre>
+		<?php var_dump($arrangement,$this->data); ?>
+	</pre>
