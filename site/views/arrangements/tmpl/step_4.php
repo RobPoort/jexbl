@@ -243,4 +243,19 @@ $naw = $form['naw'];
 			<input type="hidden" name="jbl_form[state_check]" value="1" />
 	</form>
 	</fieldset>
+	<fieldset class="jbl_form"><legend>Uw opmerkingen:</legend>
+		<p><?php echo $form['comment']; ?></p>
+		<p>&nbsp;</p>
+		<form method="post" action="">
+			<input type="submit" name="sendButton" value="WIJZIG" class="buttonNext" />			
+			<input type="hidden" name="step" value="2" />
+			<input type="hidden" name="task" value="arrangements.setStep" />			
+			<input type="hidden" name="jbl_form[state_check]" value="1" />
+		</form>
+	</fieldset>
 	<!-- <input type="hidden" name="task" value="arrangements.process" /> -->
+	<pre>
+		<?php
+			var_dump($form); 
+		?>
+	</pre>

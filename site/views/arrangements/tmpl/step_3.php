@@ -214,13 +214,13 @@ window.addEvent('domready' function(){
 							if($attrib->has_number){
 								?>
 									<tr>
-									<td class="jbl_form_checkbox">&nbsp;</td><td class="jbl_form_left"><label <?php if($attrib->desc) : ?>class="hasTip" title="<?php echo $attrib->desc; ?>" <?php endif; ?>><?php echo $attrib->name; ?></label></td><td class="jbl_form_right">&nbsp;x&nbsp;<input type="text" name="jbl_form[number][<?php echo $attrib->id; ?>]" value="0" class="jbl_input_number" /></td>
+									<td class="jbl_form_checkbox">&nbsp;</td><td class="jbl_form_left"><label <?php if($attrib->desc) : ?>class="hasTip" title="<?php echo $attrib->desc; ?>" <?php endif; ?>><?php echo $attrib->name; ?></label></td><td class="jbl_form_right">&nbsp;x&nbsp;<input type="text" name="jbl_form[extras][number][<?php echo $attrib->id; ?>]" value="0" class="jbl_input_number" /></td>
 									</tr>
 								<?php
 							} else{
 								?>
 									<tr>
-									<td class="jbl_form_checkbox"><input type="checkbox" class="jbl_input_checkbox" name="jbl_form[checked][<?php echo $attrib->id; ?>]" value="1" /></td><td class="jbl_form_left"><label <?php if($attrib->desc) : ?>class="hasTip" title="<?php echo $attrib->desc; ?>" <?php endif; ?>><?php echo $attrib->name; ?>&nbsp;</label></td><td class="jbl_form_right">&nbsp;</td>
+									<td class="jbl_form_checkbox"><input type="checkbox" class="jbl_input_checkbox" name="jbl_form[extras][checked][<?php echo $attrib->id; ?>]" value="1" /></td><td class="jbl_form_left"><label <?php if($attrib->desc) : ?>class="hasTip" title="<?php echo $attrib->desc; ?>" <?php endif; ?>><?php echo $attrib->name; ?>&nbsp;</label></td><td class="jbl_form_right">&nbsp;</td>
 									</tr>
 								<?php
 							}
@@ -263,7 +263,11 @@ window.addEvent('domready' function(){
 				</tr>								
 			</table>
 		</fieldset>
-		<fieldset class="jbl_form" id="button">			
+	<fieldset class="jbl_form"><legend>Eventuele opmerkingen:</legend>
+		<textarea rows="15" cols="85" name="jbl_form[comment]" value="" >
+		</textarea>
+	</fieldset>
+	<fieldset class="jbl_form" id="button">			
 			<input type="submit" name="sendButton" value="VOLGENDE" class="buttonNext" />			
 			 <input type="hidden" name="step" value="3" />
 			 <input type="hidden" name="task" value="arrangements.setStep" />		 
