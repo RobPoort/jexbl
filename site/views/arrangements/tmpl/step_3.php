@@ -27,7 +27,6 @@ window.addEvent('domready' function(){
 	});
 });
 </script>
-<h2>step_3</h2>
 <div class="jbl_prijsberekening" id="jbl_prijsberekening">
 	<fieldset class="jbl_form"><legend>Uw prijsberekening:</legend>
 		<table class="jbl_form_table">
@@ -236,31 +235,31 @@ window.addEvent('domready' function(){
 			<table class="jbl_form_table" id="">
 				<tr>
 					<td class="jbl_label_naw">Voornaam:</td>
-					<td><input type="text" name="jbl_form[surname]" value="" class="jbl_input_text" /></td>
+					<td><input type="text" name="jbl_form[naw][surname]" value="" class="jbl_input_text" /></td>
 				</tr>
 				<tr>
 					<td class="jbl_label_naw">*Achternaam:</td>
-					<td><input type="text" name="jbl_form[name]" value="" class="jbl_input_text" required="required" /></td>
+					<td><input type="text" name="jbl_form[naw][name]" value="" class="jbl_input_text" required="required" /></td>
 				</tr>
 				<tr>
 					<td class="jbl_label_naw">Straat + huisnummer:</td>
-					<td><input type="text" name="jbl_form[street]" value="" class="jbl_input_text" /><input type="text" name="jbl_form[street_number]" value="" class="jbl_input_text" style="width:20px;margin-left:3px;"/></td>
+					<td><input type="text" name="jbl_form[naw][street]" value="" class="jbl_input_text" /><input type="text" name="jbl_form[naw][street_number]" value="" class="jbl_input_text" style="width:20px;margin-left:3px;"/></td>
 				</tr>
 				<tr>
 					<td class="jbl_label_naw">Postcode:</td>
-					<td><input type="text" name="jbl_form[zipcode]" value="" class="jbl_input_text" /></td>
+					<td><input type="text" name="jbl_form[naw][zipcode]" value="" class="jbl_input_text" /></td>
 				</tr>
 				<tr>
 					<td class="jbl_label_naw">Plaats:</td>
-					<td><input type="text" name="jbl_form[city]" value="" class="jbl_input_text" /></td>
+					<td><input type="text" name="jbl_form[naw][city]" value="" class="jbl_input_text" /></td>
 				</tr>
 				<tr>
 					<td class="jbl_label_naw">*e-mail:</td>
-					<td><input type="text" name="jbl_form[mail]" value="" class="jbl_input_text" required="required" /></td>
+					<td><input type="text" name="jbl_form[naw][mail]" value="" class="jbl_input_text" required="required" /></td>
 				</tr>
 				<tr>
 					<td class="jbl_label_naw">*Telefoon:</td>
-					<td><input type="text" name="jbl_form[phone]" value="" class="jbl_input_text" required="required" /></td>
+					<td><input type="text" name="jbl_form[naw][phone]" value="" class="jbl_input_text" required="required" /></td>
 				</tr>								
 			</table>
 		</fieldset>
@@ -278,10 +277,3 @@ window.addEvent('domready' function(){
 		</form>
 	</fieldset>
 </div>
-	<pre>
-		<?php
-			$app = JFactory::getApplication();
-			$state = $app->getUserState("option_jbl");
-			var_dump($state); 
-		?>
-	</pre>

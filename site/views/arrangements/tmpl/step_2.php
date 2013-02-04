@@ -8,8 +8,8 @@ JHtml::stylesheet('jbl.css','components/com_jexbooking/css/');
 $item = $this->item;
 $attribs = $this->attribs;
 $app = $this->app;
+$state = $app->getUserState("option_jbl");
 ?>
-<h2>step_2</h2>
 <form action="" method="post">
 	<fieldset class="jbl_form" id="jbl_has_number"><legend><?php echo ucfirst($item->name);?></legend>
 		<table class="jbl_form_table">
@@ -17,8 +17,12 @@ $app = $this->app;
 			<td class="jbl_form_checkbox">&nbsp;&nbsp;&nbsp;</td>
 			<?php
 				if($item->is_pp){
+					$number_pp = 2;
+					if($state->arr_price->number_pp){
+						$number_pp = $state->arr_price->number_pp;
+					}
 					?>				
-					<td class="jbl_form_left"><label>Aantal personen:&nbsp;</label></td><td class="jbl_form_right">&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="jbl_form[number_pp]" value="2" class="jbl_input_number" /></td>				
+					<td class="jbl_form_left"><label>Aantal personen:&nbsp;</label></td><td class="jbl_form_right">&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="jbl_form[number_pp]" value="<?php echo $number_pp; ?>" class="jbl_input_number" /></td>				
 					<?php
 				} else{
 					?>					
@@ -76,6 +80,10 @@ $app = $this->app;
 			</fieldset>
 			<?php
 			}
+			$attribs_special = $app->getUserState("option_jbl.special");
+			$attribs_special_checked = $attribs_special['special_checked'];
+			
+			$attrib_special_number = $attribs_special['special_nummer'];
 			if($this->special_attribs['not_required']){
 				?>
 				<fieldset class="jbl_form" id="jbl_attribs_has_price">
@@ -83,15 +91,31 @@ $app = $this->app;
 						<?php
 							foreach($this->special_attribs['not_required'] as $attrib){
 								if($attrib->has_number){
+									$value = 0;
+									if($attrib_special_number){
+										foreach($attrib_special_number as $item){
+											if($attrib->id == $item->id){
+												$value = $item->number;
+											}
+										}
+									}
 									?>
 										<tr>
-										<td class="jbl_form_checkbox">&nbsp;</td><td class="jbl_form_left"><label <?php if($attrib->desc) : ?>class="hasTip" title="<?php echo $attrib->desc; ?>" <?php endif; ?>><?php echo $attrib->name; ?></label></td><td class="jbl_form_right">&nbsp;x&nbsp;<input type="text" name="jbl_form[special][special_number][<?php echo $attrib->id; ?>]" value="0" class="jbl_input_number" /></td>
+										<td class="jbl_form_checkbox">&nbsp;</td><td class="jbl_form_left"><label <?php if($attrib->desc) : ?>class="hasTip" title="<?php echo $attrib->desc; ?>" <?php endif; ?>><?php echo $attrib->name; ?></label></td><td class="jbl_form_right">&nbsp;x&nbsp;<input type="text" name="jbl_form[special][special_number][<?php echo $attrib->id; ?>]" value="<?php echo $value; ?>" class="jbl_input_number" /></td>
 										</tr>
 									<?php
 								} else{
+									$checked = '';
+									if($attribs_special_checked){
+										foreach($attribs_special_checked as $key=>$value){
+											if($attrib->id == $key && $value == 1){
+												$checked = 'checked="checked"';
+											}
+										}
+									}
 									?>
 										<tr>
-										<td class="jbl_form_checkbox"><input type="checkbox" class="jbl_input_checkbox" name="jbl_form[special][special_checked][<?php echo $attrib->id; ?>]" value="1" /></td><td class="jbl_form_left"><label <?php if($attrib->desc) : ?>class="hasTip" title="<?php echo $attrib->desc; ?>" <?php endif; ?>><?php echo $attrib->name; ?>&nbsp;</label></td><td class="jbl_form_right">&nbsp;</td>
+										<td class="jbl_form_checkbox"><input type="checkbox" class="jbl_input_checkbox" name="jbl_form[special][special_checked][<?php echo $attrib->id; ?>]" value="1" <?php echo $checked; ?> /></td><td class="jbl_form_left"><label <?php if($attrib->desc) : ?>class="hasTip" title="<?php echo $attrib->desc; ?>" <?php endif; ?>><?php echo $attrib->name; ?>&nbsp;</label></td><td class="jbl_form_right">&nbsp;</td>
 										</tr>
 									<?php
 								}
@@ -124,10 +148,3 @@ $app = $this->app;
 		<!-- <input type="hidden" name="step" value="0" /> -->
 		</form>
 	</fieldset>
-	<pre>
-		<?php
-			$app = JFactory::getApplication();
-			$state = $app->getUserState("option_jbl");
-			var_dump($state); 
-		?>
-	</pre>

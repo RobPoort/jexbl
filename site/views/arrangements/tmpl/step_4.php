@@ -13,24 +13,21 @@ $attribs_checked = $this->attrib_prices_checked;
 $attribs_special_required = $this->attrib_prices_special_required;
 $attribs_special_checked = $this->attrib_prices_special_checked;
 
-$app = JFactory::getApplication();
-$mailfrom	= $app->getCfg('sitename');
-$state = $app->getUserState("option_jbl");
-$form = $app->input->get("jbl_form",null,null);
+
+$mailfrom	= $this->app->getCfg('sitename');
+$state = $this->app->getUserState("option_jbl");
+$form = $this->app->input->get("jbl_form",null,null);
+$naw = $form['naw'];
 //TODO bovenstaande filteren, zitten nog overbodige dingen van oude bedankt pagina in
 ?>
-<h2>step_4</h2>
+
 <h1>Overzicht:</h1>
 
 
 	<div class="jbl_prijsberekening" id="jbl_prijsberekening">
-	<form method="post" action="">
+	
 		<fieldset class="jbl_form"><legend>Uw prijsberekening:</legend>
-			<input type="submit" name="sendButton" value="WIJZIG" class="buttonNext" />			
-			<input type="hidden" name="step" value="1" />
-			<input type="hidden" name="task" value="arrangements.setStep" />
-			
-	</form>
+		
 			<table class="jbl_form_table">
 				<tr>
 					<td>
@@ -204,21 +201,46 @@ $form = $app->input->get("jbl_form",null,null);
 				} 
 				?>
 			</table>
+		<form method="post" action="">
+			<input type="submit" name="sendButton" value="WIJZIG" class="buttonNext" />			
+			<input type="hidden" name="step" value="1" />
+			<input type="hidden" name="task" value="arrangements.setStep" />
+			
+		</form>
 		</fieldset>
 	</div>
+	
+	<fieldset class="jbl_form"><legend>Uw gegevens:</legend>
+		<table class="jbl_form_table">
+			<tr>
+				<td class="naw_left">dhr/mw:</td>
+				<td><?php echo $naw['surname'].'&nbsp;'.$naw['name']; ?></td>
+			</tr>
+			<tr>
+				<td class="naw_left">adres:</td>
+				<td><?php echo $naw['street'].'&nbsp;'.$naw['street_number']; ?></td>
+			</tr>
+			<tr>
+				<td class="naw_left">&nbsp;</td>
+				<td><?php echo $naw['zipcode'].'&nbsp;'.$naw['city']; ?></td>
+			</tr>
+			<tr>
+				<td class="naw_left">telefoon:</td>
+				<td><?php echo $naw['phone']; ?></td>
+			</tr>
+			<tr>
+				<td class="naw_left">e-mail:</td>
+				<td><?php echo $naw['mail']; ?></td>
+			</tr>
+			<tr>
+				<td colspan="2">&nbsp;</td>
+			</tr>
+		</table>
 	<form method="post" action="">
-		<fieldset class="jbl_form"><legend>Uw gegevens:</legend>
 			<input type="submit" name="sendButton" value="WIJZIG" class="buttonNext" />			
 			<input type="hidden" name="step" value="2" />
 			<input type="hidden" name="task" value="arrangements.setStep" />			
 			<input type="hidden" name="jbl_form[state_check]" value="1" />
 	</form>
+	</fieldset>
 	<!-- <input type="hidden" name="task" value="arrangements.process" /> -->
-<!-- </form> -->
-	<pre>
-		<?php
-			$app = JFactory::getApplication();
-			$state = $app->getUserState("option_jbl");
-			var_dump($state); 
-		?>
-	</pre>
