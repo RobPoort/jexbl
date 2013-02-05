@@ -41,7 +41,7 @@ window.addEvent('domready' function(){
 				</td>
 				<td>
 					&euro;<?php echo number_format($arrangement->total_arr_price, 2, ',','.');?>
-					<input type="hidden" name="final[name_value]" value="&euro;<?php echo number_format($arrangement->total_arr_price, 2, ',','.');?>" />
+					<input type="hidden" name="final[name_value]" value="&euro;&nbsp;<?php echo number_format($arrangement->total_arr_price, 2, ',','.');?>" />
 				</td>
 				<td>
 					<?php
@@ -351,9 +351,9 @@ window.addEvent('domready' function(){
 		<?php
 		var_dump($this->data);
 		echo '<hr />';
-		var_dump($state);
+		var_dump($this->app->input->get("final",null,null));
 		echo '<hr />';
-		var_dump($this->arrangement); 
+		//var_dump($this->arrangement); 
 		?>
 	</pre>
 		<fieldset class="jbl_form"><legend>Uw NAW-gegevens:</legend>

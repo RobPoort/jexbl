@@ -14,7 +14,7 @@ $attribs_special_required = $this->attrib_prices_special_required;
 $attribs_special_checked = $this->attrib_prices_special_checked;
 $attribs_extras_checked = $this->attribs_extras_checked;
 $attribs_extras_number = $this->attribs_extras_number;
-
+$final = $this->app->input->get("final",null,null);
 
 $mailfrom	= $this->app->getCfg('sitename');
 $state = $this->state;
@@ -33,28 +33,22 @@ $naw = $form['naw'];
 			<table class="jbl_form_table">
 				<tr>
 					<td>
-						<?php echo $arrangement->name; ?>
+						<?php echo $final['name']; ?>
 					</td>
 					<td>
-						&euro;<?php echo number_format($arrangement->total_arr_price, 2, ',','.');?>
+						<?php echo $final['name_value']; ?>
 					</td>
-					<td>
-						<?php
-							if($arrangement->number_pp){
-								echo '('.$arrangement->number_pp.'&nbsp;personen&nbsp;&aacute;&nbsp;&euro;&nbsp;'.number_format($arrangement->price, 2, ',','.').')';
-							} 
-						?>
-					</td>
+					<td><?php echo $final['name_number_pp']; ?></td>
 				</tr>
 				<tr>
 					<td>
-						&nbsp;
+						Periode:
 					</td>
 					<td>
-						Van:&nbsp;<?php echo $arrangement->start_date; ?>
+						<?php echo $final['start_date']; ?>
 					</td>
 					<td>
-						Tot:&nbsp;<?php echo $arrangement->end_date; ?>
+						<?php echo $final['end_date']; ?>
 					</td>
 					
 				</tr>
@@ -62,56 +56,40 @@ $naw = $form['naw'];
 					<td colspan="3">&nbsp;</td>
 				</tr>
 				<?php
-					if ($attribs_number) {
-						foreach ($attribs_number as $item){
+					if ($final['attribs_number']) {
+						foreach ($final['attribs_number'] as $item){
 							?>
 							<tr>
-								<td><?php echo $item->name; ?></td>
-								<td>&euro;&nbsp;<?php echo number_format($item->total_attrib_price, 2, ',','.'); ?></td>
-								<td>(<?php echo $item->number;?>&nbsp;maal&nbsp;&euro;&nbsp;<?php echo number_format($item->price, 2, ',','.'); ?>)</td>
+								<td><?php echo $item['name']; ?></td>
+								<td><?php echo $final['price']; ?></td>
+								<td><?php echo $final['number_info']; ?></td>							
 							</tr>
 							<?php
 						}
 					} 
 				?>
 				<?php
-					if ($attribs_checked) {
-						foreach ($attribs_checked as $item){
+					if ($final['attribs_checked']) {
+						foreach ($final['attribs_checked'] as $item){
 							?>
 							<tr>
-								<td><?php echo $item->name; ?></td>
-								<td>&euro;&nbsp;<?php echo number_format($item->total_attrib_price, 2, ',','.'); ?></td>
-								<td>
-								<?php
-									if($item->is_pp){
-										echo '('.$item->persons.'&nbsp;personen&nbsp;&aacute;&nbsp;'.number_format($item->single_price, 2, ',','.').')';
-									} 
-								?>
-								</td>
+								<td><?php echo $item['name']; ?></td>
+								<td><?php echo $item['price']; ?></td>
+								<td><?php echo $item['number_info']; ?></td>
 							</tr>
 							<?php
 						}
 					} 
 				?>
 				<?php
-					if ($attribs_special_required) {
-						foreach ($attribs_special_required as $item){
-							if($item->price > 0){
+					if ($final['attribs_special_required']) {
+						foreach ($final['attribs_special_required'] as $item){
+							if($item['price'] > 0){
 							?>
 							<tr>
-								<td><?php echo $item->name; ?></td>
-								<td>&euro;&nbsp;<?php echo number_format($item->total_attrib_price, 2, ',','.'); ?></td>
-								<?php
-									if($item->is_pp_special){
-										?>
-										<td>(<?php echo $item->persons;?>&nbsp;personen&nbsp;&aacute;&nbsp;&euro;&nbsp;<?php echo number_format($item->price, 2, ',','.'); ?>)</td>
-										<?php
-									} else{
-										?>
-											<td>&nbsp;</td>
-										<?php
-									}
-								?>
+								<td><?php echo $item['name']; ?></td>
+								<td><?php echo $item['price']; ?></td>
+								<td><?php echo $item['number_info']; ?></td>
 							</tr>
 							<?php
 							}
@@ -119,23 +97,13 @@ $naw = $form['naw'];
 					} 
 				?>
 				<?php
-					if ($attribs_special_checked) {
-						foreach ($attribs_special_checked as $item){
+					if ($final['attribs_special_checked']) {
+						foreach ($final['attribs_special_checked'] as $item){
 							?>
 							<tr>
-								<td><?php echo $item->name; ?></td>
-								<td>&euro;&nbsp;<?php echo number_format($item->total_attrib_price, 2, ',','.'); ?></td>
-								<?php
-									if($item->is_pp_special){
-										?>
-										<td>(<?php echo $item->persons;?>&nbsp;personen&nbsp;&aacute;&nbsp;&euro;&nbsp;<?php echo number_format($item->price, 2, ',','.'); ?>)</td>
-										<?php
-									} else{
-										?>
-											<td>&nbsp;</td>
-										<?php
-									}
-								?>
+								<td><?php echo $item['name']; ?></td>
+								<td><?php echo $item['price']; ?></td>
+								<td><?php echo $item['number_info']; ?></td>
 							</tr>
 							<?php
 						}
@@ -150,56 +118,37 @@ $naw = $form['naw'];
 					<td>&nbsp;</td>
 				</tr>			
 				<?php
-				if(count($this->percent_items) > 0){
+				if(count($final['percent_items']) > 0){ //TODO hier kan het eventueel (weer) fout gaan, denk hierbij aan diepte van de multi-dimensional array
 					?>
 					<tr>				
-						<td style="text-align:right;font-weight:bold;">subtotaal:</td>
-						<td style="font-weight:bold;">&euro;<?php echo number_format($this->total_price, 2, ',','.'); ?></td>
-						<td>&nbsp;</td>
+						<td style="text-align:right;font-weight:bold;"><?php echo $final['subtotaal']; ?></td>
+						<td style="font-weight:bold;"><?php echo $final['subtotaal_value']; ?></td>
+						<td><?php echo $final['subtotaal_extra']; ?></td>
 					</tr>				
 					<?php
-					foreach($this->percent_items as $item){
+					foreach($final['percent_items'] as $item){
 					?>				
 					<tr>
-						<td><?php echo $item->name; ?></td>
-						<td>
-						&euro;&nbsp;
-						<?php 
-							echo number_format($item->total_attrib_price, 2, ',','.');
-							if($item->total_attrib_price_percent){
-								?>
-								&nbsp;+&nbsp;&euro;&nbsp;
-								<?php
-								echo number_format($item->total_attrib_price_percent, 2, ',', '.');
-							}
-						 ?>
-						</td>
-						<td>
-						<?php 
-						if($item->total_attrib_price_percent){
-							echo '('.$item->percent.'%&nbsp;van&nbsp;&euro;&nbsp;'.number_format($this->total_price, 2, ',','.').')';
-						} else {
-							echo '&nbsp;';
-						}
-						?>
-						</td>
+						<td><?php echo $item['name']; ?></td>
+						<td><?php echo $item['price']; ?></td>
+						<td><?php echo $item['number_info']; ?></td>
 					</tr>
 					<?php
 					}
 					?>
 					<tr><td colspan="3">&nbsp;</td></tr>
 					<tr>				
-						<td style="text-align:right;font-weight:bold;">totaal:</td>
-						<td style="font-weight:bold;">&euro;<?php echo number_format($this->total_price_def, 2, ',','.'); ?></td>
-						<td>&nbsp;</td>
+						<td style="text-align:right;font-weight:bold;"><?php echo $final['totaal']; //TODO ook hier opletten of het juiste wordt getoond ?></td>
+						<td style="font-weight:bold;"><?php echo $final['totaal_value']; ?></td>
+						<td><?php echo $final['totaal_extra']; ?></td>
 					</tr>
 					<?php
 				} else{
 					?>
 						<tr>				
-						<td style="text-align:right;font-weight:bold;">totaal:</td>
-						<td style="font-weight:bold;">&euro;<?php echo number_format($this->total_price, 2, ',','.'); ?></td>
-						<td>&nbsp;</td>
+						<td style="text-align:right;font-weight:bold;"><?php echo $final['totaal']; ?></td>
+						<td style="font-weight:bold;"><?php echo $final['totaal_value']; ?></td>
+						<td><?php echo $final['totaal_extra']; ?></td>
 					</tr>
 					<?php
 				} 

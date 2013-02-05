@@ -31,7 +31,7 @@ JHtml::stylesheet('jbl.css','components/com_jexbooking/css/');
 		<?php
 		var_dump($this->data);
 		echo '<hr />';
-		var_dump($state);
+		var_dump($this->app->input->get("final",null,null));
 		echo '<hr />';
 		var_dump($this->arrangement); 
 		?>
