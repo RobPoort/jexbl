@@ -98,6 +98,7 @@ window.addEvent('domready' function(){
 			<?php
 				if ($attribs_special_required) {
 					foreach ($attribs_special_required as $item){
+						if($item->price > 0){
 						?>
 						<tr>
 							<td><?php echo $item->name; ?></td>
@@ -115,6 +116,7 @@ window.addEvent('domready' function(){
 							?>
 						</tr>
 						<?php
+						}
 					}
 				} 
 			?>
@@ -153,7 +155,7 @@ window.addEvent('domready' function(){
 			if(count($this->percent_items) > 0){
 				?>
 				<tr>				
-					<td style="text-align:right;font-weight:bold;">subtotaal:(regel 155, $this->total_price)</td>
+					<td style="text-align:right;font-weight:bold;">subtotaal:</td>
 					<td style="font-weight:bold;">&euro;<?php echo number_format($this->total_price, 2, ',','.'); ?></td>
 					<td>&nbsp;</td>
 				</tr>				
@@ -165,19 +167,19 @@ window.addEvent('domready' function(){
 					<td>
 					&euro;&nbsp;
 					<?php 
-						echo number_format($item->total_attrib_price, 2, ',','.').' $item->total_attrib_price';
+						echo number_format($item->total_attrib_price, 2, ',','.');
 						if($item->total_attrib_price_percent){
 							?>
 							&nbsp;+&nbsp;&euro;&nbsp;
 							<?php
-							echo number_format($item->total_attrib_price_percent, 2, ',', '.').' $item->total_attrib_price_percent';
+							echo number_format($item->total_attrib_price_percent, 2, ',', '.');
 						}
 					 ?>
 					</td>
 					<td>
 					<?php 
 					if($item->total_attrib_price_percent){
-						echo '('.$item->percent.'%&nbsp;van&nbsp;&euro;&nbsp;'.number_format($this->total_price, 2, ',','.').') $this->total_price';
+						echo '('.$item->percent.'%&nbsp;van&nbsp;&euro;&nbsp;'.number_format($this->total_price, 2, ',','.').')';
 					} else {
 						echo '&nbsp;';
 					}
@@ -189,7 +191,7 @@ window.addEvent('domready' function(){
 				?>
 				<tr><td colspan="3">&nbsp;</td></tr>
 				<tr>				
-					<td style="text-align:right;font-weight:bold;">totaal:(regel 191, $this->total_price_def)</td>
+					<td style="text-align:right;font-weight:bold;">totaal:</td>
 					<td style="font-weight:bold;">&euro;<?php echo number_format($this->total_price_def, 2, ',','.'); ?></td>
 					<td>&nbsp;</td>
 				</tr>
@@ -197,7 +199,7 @@ window.addEvent('domready' function(){
 			} else{
 				?>
 					<tr>				
-					<td style="text-align:right;font-weight:bold;">totaal:(regel 199, $this->total_price)</td>
+					<td style="text-align:right;font-weight:bold;">totaal:</td>
 					<td style="font-weight:bold;">&euro;<?php echo number_format($this->total_price, 2, ',','.'); ?></td>
 					<td>&nbsp;</td>
 				</tr>
@@ -205,7 +207,8 @@ window.addEvent('domready' function(){
 			} 
 			?>
 		</table>
-	</fieldset>
+	</fieldset>	
+	</form>
 	<form method="post" action="" class="form-validate">
 		<?php
 		if($this->extras){

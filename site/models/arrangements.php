@@ -281,7 +281,7 @@ class JexBookingModelArrangements extends JModel
 					$query = $db->getQuery(true);
 					$query->from('#__jexbooking_attributes');
 					$query->select('*');
-					$query->where('id='.$attrib_id.' AND published=1 AND use_special_price=1');
+					$query->where('id='.$attrib_id.' AND published=1 AND use_special_price=1 AND use_percent=0');
 					$db->setQuery($query);
 					$result = $db->loadObject();
 					

@@ -96,6 +96,7 @@ $naw = $form['naw'];
 				<?php
 					if ($attribs_special_required) {
 						foreach ($attribs_special_required as $item){
+							if($item->price > 0){
 							?>
 							<tr>
 								<td><?php echo $item->name; ?></td>
@@ -113,6 +114,7 @@ $naw = $form['naw'];
 								?>
 							</tr>
 							<?php
+							}
 						}
 					} 
 				?>
