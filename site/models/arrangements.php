@@ -200,7 +200,7 @@ class JexBookingModelArrangements extends JModel
 		$data = array();
 		$data = $app->input->get('jbl_form',null,null);
 		if($app->input->get('step') == 3){
-			$data = $app->getUserState("option_jbl");
+			//$data = $app->getUserState("option_jbl");
 		}
 		$persons = 1;
 		if(array_key_exists('number_pp', $data)){

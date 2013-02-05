@@ -31,32 +31,41 @@ window.addEvent('domready' function(){
 </script>
 <h2>step_3</h2>
 <div class="jbl_prijsberekening" id="jbl_prijsberekening">
+<form method="post" action="" class="form-validate">
 	<fieldset class="jbl_form"><legend>Uw prijsberekening:</legend>
 		<table class="jbl_form_table">
 			<tr>
 				<td>
 					<?php echo $arrangement->name; ?>
+					<input type="hidden" name="final[name]" value="<?php echo $arrangement->name; ?>" />
 				</td>
 				<td>
 					&euro;<?php echo number_format($arrangement->total_arr_price, 2, ',','.');?>
+					<input type="hidden" name="final[name_value]" value="&euro;<?php echo number_format($arrangement->total_arr_price, 2, ',','.');?>" />
 				</td>
 				<td>
 					<?php
 						if($arrangement->number_pp){
 							echo '('.$arrangement->number_pp.'&nbsp;personen&nbsp;&aacute;&nbsp;&euro;&nbsp;'.number_format($arrangement->price, 2, ',','.').')';
+							?>
+							<input type="hidden" name="final[name_number_pp]" value="<?php echo '('.$arrangement->number_pp.'&nbsp;personen&nbsp;&aacute;&nbsp;&euro;&nbsp;'.number_format($arrangement->price, 2, ',','.').')'; ?>" />
+							<?php
 						} 
 					?>
+					
 				</td>
 			</tr>
 			<tr>
 				<td>
-					&nbsp;
+					Periode:
 				</td>
 				<td>
-					Van:&nbsp<?php echo $arrangement->start_date; ?>
+					Van:&nbsp;<?php echo $arrangement->start_date; ?>
+					<input type="hidden" name="final[start_date]" value="Van:&nbsp;<?php echo $arrangement->start_date; ?>" />
 				</td>
 				<td>
 					Tot:&nbsp;<?php echo $arrangement->end_date; ?>
+					<input type="hidden" name="final[end_date]" value="Tot:&nbsp;<?php echo $arrangement->end_date; ?>" />
 				</td>
 				
 			</tr>
@@ -65,19 +74,26 @@ window.addEvent('domready' function(){
 			</tr>
 			<?php
 				if ($attribs_number) {
+					$i = 0;
 					foreach ($attribs_number as $item){
 						?>
 						<tr>
-							<td><?php echo $item->name; ?></td>
+							<td><?php echo $item->name; ?></td>							
 							<td>&euro;&nbsp;<?php echo number_format($item->total_attrib_price, 2, ',','.'); ?></td>
 							<td>(<?php echo $item->number;?>&nbsp;maal&nbsp;&euro;&nbsp;<?php echo number_format($item->price, 2, ',','.'); ?>)</td>
+							
 						</tr>
+						<input type="hidden" name="final[attribs_number][<?php echo $i; ?>][name]" value="<?php echo $item->name; ?>" />
+						<input type="hidden" name="final[attribs_number][<?php echo $i; ?>][price]" value="&euro;&nbsp;<?php echo number_format($item->total_attrib_price, 2, ',','.'); ?>" />
+						<input type="hidden" name="final[attribs_number][<?php echo $i; ?>][number_info]" value="(<?php echo $item->number;?>&nbsp;maal&nbsp;&euro;&nbsp;<?php echo number_format($item->price, 2, ',','.'); ?>)" />
 						<?php
+						$i++;
 					}
 				} 
 			?>
 			<?php
 				if ($attribs_checked) {
+					$i = 0;
 					foreach ($attribs_checked as $item){
 						?>
 						<tr>
@@ -90,13 +106,24 @@ window.addEvent('domready' function(){
 								} 
 							?>
 							</td>
+							<input type="hidden" name="final[attribs_checked][<?php echo $i; ?>][name]" value="<?php echo $item->name; ?>" />
+							<input type="hidden" name="final[attribs_checked][<?php echo $i; ?>][price]" value="&euro;&nbsp;<?php echo number_format($item->total_attrib_price, 2, ',','.'); ?>" />
+							<input type="hidden" name="final[attribs_checked][<?php echo $i; ?>][number_info]" value="
+								<?php
+									if($item->is_pp){
+										echo '('.$item->persons.'&nbsp;personen&nbsp;&aacute;&nbsp;'.number_format($item->single_price, 2, ',','.').')';
+									} 
+								?>
+							" />
 						</tr>
 						<?php
+						$i++;
 					}
 				} 
 			?>
 			<?php
 				if ($attribs_special_required) {
+					$i = 0;
 					foreach ($attribs_special_required as $item){
 						if($item->price > 0){
 						?>
@@ -114,14 +141,31 @@ window.addEvent('domready' function(){
 									<?php
 								}
 							?>
+							<input type="hidden" name="final[attribs_special_required][<?php echo $i; ?>][name]" value="<?php echo $item->name; ?>" />
+							<input type="hidden" name="final[attribs_special_required][<?php echo $i; ?>][price]" value="&euro;&nbsp;<?php echo number_format($item->total_attrib_price, 2, ',','.'); ?>" />
+							<input type="hidden" name="final[attribs_special_required][<?php echo $i; ?>][number_info]" value="
+							<?php
+								if($item->is_pp_special){
+									?>
+									(<?php echo $item->persons;?>&nbsp;personen&nbsp;&aacute;&nbsp;&euro;&nbsp;<?php echo number_format($item->price, 2, ',','.'); ?>)
+									<?php
+								} else{
+									?>
+										&nbsp;
+									<?php
+								}
+							?>" />
+							
 						</tr>
 						<?php
 						}
+						$i++;
 					}
 				} 
 			?>
 			<?php
 				if ($attribs_special_checked) {
+					$i = 0;
 					foreach ($attribs_special_checked as $item){
 						?>
 						<tr>
@@ -138,8 +182,24 @@ window.addEvent('domready' function(){
 									<?php
 								}
 							?>
+							<input type="hidden" name="final[attribs_special_checked][<?php echo $i; ?>][name]" value="<?php echo $item->name; ?>" />
+							<input type="hidden" name="final[attribs_special_checked][<?php echo $i; ?>][price]" value="&euro;&nbsp;<?php echo number_format($item->total_attrib_price, 2, ',','.'); ?>" />
+							<input type="hidden" name="final[attribs_special_checked][<?php echo $i; ?>][number_info]" value="
+							<?php
+								if($item->is_pp_special){
+									?>
+									(<?php echo $item->persons;?>&nbsp;personen&nbsp;&aacute;&nbsp;&euro;&nbsp;<?php echo number_format($item->price, 2, ',','.'); ?>)
+									<?php
+								} else{
+									?>
+										&nbsp;
+									<?php
+								}
+							?>" />
+							
 						</tr>
 						<?php
+						$i++;
 					}
 				} 
 			?>
@@ -158,9 +218,13 @@ window.addEvent('domready' function(){
 					<td style="text-align:right;font-weight:bold;">subtotaal:</td>
 					<td style="font-weight:bold;">&euro;<?php echo number_format($this->total_price, 2, ',','.'); ?></td>
 					<td>&nbsp;</td>
+					<input type="hidden" name="final[subtotaal]" value="subtotaal:" />
+					<input type="hidden" name="final[subtotaal_value]" value="&euro;<?php echo number_format($this->total_price, 2, ',','.'); ?>" />
+					<input type="hidden" name="final[subtotaal_extra]" value="" />
 				</tr>				
 				<?php
 				foreach($this->percent_items as $item){
+				$i = 0;
 				?>				
 				<tr>
 					<td><?php echo $item->name; ?></td>
@@ -185,15 +249,38 @@ window.addEvent('domready' function(){
 					}
 					?>
 					</td>
+					<input type="hidden" name="final[percent_items][<?php echo $i; ?>][name]" value="<?php echo $item->name; ?>" />
+					<input type="hidden" name="final[percent_items][<?php echo $i; ?>][price]" value="&euro;&nbsp;
+					<?php 
+						echo number_format($item->total_attrib_price, 2, ',','.');
+						if($item->total_attrib_price_percent){
+							?>
+							&nbsp;+&nbsp;&euro;&nbsp;
+							<?php
+							echo number_format($item->total_attrib_price_percent, 2, ',', '.');
+						}
+					 ?>" />					
+					<input type="hidden" name="final[percent_items][<?php echo $i; ?>][number_info]" value="
+					<?php 
+					if($item->total_attrib_price_percent){
+						echo '('.$item->percent.'%&nbsp;van&nbsp;&euro;&nbsp;'.number_format($this->total_price, 2, ',','.').')';
+					} else {
+						echo '&nbsp;';
+					}
+					?>"/>					
 				</tr>
 				<?php
+				$i++;
 				}
 				?>
 				<tr><td colspan="3">&nbsp;</td></tr>
 				<tr>				
 					<td style="text-align:right;font-weight:bold;">totaal:</td>
-					<td style="font-weight:bold;">&euro;<?php echo number_format($this->total_price_def, 2, ',','.'); ?></td>
+					<td style="font-weight:bold;">&euro;&nbsp;<?php echo number_format($this->total_price_def, 2, ',','.'); ?></td>
 					<td>&nbsp;</td>
+					<input type="hidden" name="final[totaal]" value="totaal:" />
+					<input type="hidden" name="final[totaal_value]" value="&euro;&nbsp;<?php echo number_format($this->total_price_def, 2, ',','.'); ?>" />
+					<input type="hidden" name="final[totaal_extra]" value="" />
 				</tr>
 				<?php
 			} else{
@@ -202,14 +289,17 @@ window.addEvent('domready' function(){
 					<td style="text-align:right;font-weight:bold;">totaal:</td>
 					<td style="font-weight:bold;">&euro;<?php echo number_format($this->total_price, 2, ',','.'); ?></td>
 					<td>&nbsp;</td>
+					<input type="hidden" name="final[totaal]" value="totaal:" />
+					<input type="hidden" name="final[totaal_value]" value="&euro;<?php echo number_format($this->total_price, 2, ',','.'); ?>" />
+					<input type="hidden" name="final[totaal_extra]" value="" />
 				</tr>
 				<?php
 			} 
 			?>
 		</table>
 	</fieldset>	
-	</form>
-	<form method="post" action="" class="form-validate">
+	
+	
 		<?php
 		if($this->extras){
 			?>
@@ -309,7 +399,7 @@ window.addEvent('domready' function(){
 				$value = $comment;
 			} 
 		?>
-		<textarea rows="15" cols="85" name="jbl_form[comment]" value="" >
+		<textarea rows="15" cols="85" name="jbl_form[comment]">
 			<?php echo $comment; ?>
 		</textarea>
 	</fieldset>
