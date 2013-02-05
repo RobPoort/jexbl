@@ -199,6 +199,9 @@ class JexBookingModelArrangements extends JModel
 		$app = JFactory::getApplication();
 		$data = array();
 		$data = $app->input->get('jbl_form',null,null);
+		if($app->input->get('step') == 3){
+			$data = $app->getUserState("option_jbl");
+		}
 		$persons = 1;
 		if(array_key_exists('number_pp', $data)){
 			$persons = $data['number_pp'];
@@ -334,6 +337,7 @@ class JexBookingModelArrangements extends JModel
 			}
 		}	elseif($attribs_type == 5){
 			//special checked percent
+			
 			foreach($data['special']['special_checked'] as $key=>$number){
 				if((int)$number > 0){
 					$attrib_id = (int)$key;
@@ -385,6 +389,40 @@ class JexBookingModelArrangements extends JModel
 						$result->persons = $persons;
 					}
 					$rows[] = $result;
+				}
+			}
+		} elseif($attribs_type == 7){
+			//special required percent
+			foreach($data['special']['special_required'] as $key=>$number){
+				if((int)$number > 0){
+					$attrib_id = (int)$key;
+					$db = JFactory::getDbo();
+					$query = $db->getQuery(true);
+					$query->from('#__jexbooking_attributes');
+					$query->select('*');
+					$query->where('id='.$attrib_id.' AND published=1 AND use_percent=1');
+					$db->setQuery($query);
+					$result = $db->loadObject();
+						
+					if($result){
+						$result->number = 1;
+						$result->total_attrib_price = (double)$result->special_price;
+						if($result->is_pn_special){
+							$result->total_attrib_price = (double)$result->special_price * $nights;
+						}
+						$result->price = (double)$result->special_price;
+						if($result->is_pn_special){
+							$result->price = (double)$result->special_price * $nights;
+						}
+						if($result->is_pp_special){
+							$result->total_attrib_price = (double)$result->total_attrib_price * $persons;
+								
+							$result->persons = $persons;
+						}
+						$result->total_attrib_price_percent = ($total / 100) * (double)$result->percent;
+							
+						$rows['percent'][] = $result;
+					}
 				}
 			}
 		}

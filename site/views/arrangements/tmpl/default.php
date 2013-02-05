@@ -27,6 +27,12 @@ JHtml::stylesheet('jbl.css','components/com_jexbooking/css/');
 		<input type="hidden" name="step" value="1" />
 	</fieldset>
 </form>
-	<pre>
-		<?php var_dump($arrangement,$this->data); ?>
+	<pre>		
+		<?php
+		var_dump($this->data);
+		echo '<hr />';
+		var_dump($state);
+		echo '<hr />';
+		var_dump($this->arrangement); 
+		?>
 	</pre>

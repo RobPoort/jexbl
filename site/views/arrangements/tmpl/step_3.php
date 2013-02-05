@@ -13,6 +13,7 @@ $attribs_checked = $this->attrib_prices_checked;
 $attribs_special_required = $this->attrib_prices_special_required;
 $attribs_special_checked = $this->attrib_prices_special_checked;
 $extras = $this->extras;
+$state = $this->state;
 ?>
 <script>
 window.addEvent('domready' function(){
@@ -253,9 +254,15 @@ window.addEvent('domready' function(){
 			<?php
 		} 
 		?>
-		<pre>
-		<?php var_dump($arrangement,$this->data); ?>
-		</pre>
+		<pre>		
+		<?php
+		var_dump($this->data);
+		echo '<hr />';
+		var_dump($state);
+		echo '<hr />';
+		var_dump($this->arrangement); 
+		?>
+	</pre>
 		<fieldset class="jbl_form"><legend>Uw NAW-gegevens:</legend>
 			<?php
 				$naw = $app->getUserState("option_jbl.naw"); 

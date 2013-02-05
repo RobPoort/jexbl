@@ -85,13 +85,23 @@ class JexBookingControllerArrangements extends JController
 			//nu eerst data uit form step_2 halen
 			$data = array();		
 			$data = $app->input->get('jbl_form',null,null);
+			
 			if($data['arr_id']){
 			$data['arr_id'] = $arr_id;
 			} else{
 				$arr_id = $app->getUserState("option_jbl.arr_id");
 			}
-			if($data['special']){
+			if($app->input->get('step') == 3){
+				//$data = $app->getUserState("option_jbl");
+			}
+			if($data['special'] ){
 				$app->setUserState("option_jbl.special", $data['special']);
+			}
+			if($data['checked']){
+				$app->setUserState("option_jbl.checked", $data['checked']);
+			}
+			if($data['number']){
+				$app->setUserState("option_jbl.number", $data['number']);
 			}
 			
 			//model ophalen
@@ -208,7 +218,7 @@ class JexBookingControllerArrangements extends JController
 			$percent_items = array();
 			if(array_key_exists('special', $data)){
 				if(array_key_exists('special_checked', $data['special'])){
-					$this->checked_percent = $model->getSelectedAttribs($data, 5, $total);
+					$this->checked_percent = $model->getSelectedAttribs($data, 5, $total);					
 					if($this->checked_percent['percent']){
 						
 						foreach($this->checked_percent['percent'] as $percent){
@@ -218,6 +228,16 @@ class JexBookingControllerArrangements extends JController
 							
 						}					
 					}				
+				}
+				if(array_key_exists('special_required', $data['special'])){
+					$this->required_percent = $model->getSelectedAttribs($data, 7, $total);
+					if($this->required_percent['percent']){
+						foreach($this->required_percent['percent'] as $percent){
+							$percent_items[] = $percent;
+							$total_percent += $percent->total_attrib_price_percent;
+							$total_percent_price += $percent->price;
+						}
+					}
 				}
 				$app->setUserState("option_jbl.percent_items", $percent_items);
 				$app->setUserState("option_jbl.total_price_percent", $total_percent);

@@ -151,7 +151,7 @@ $naw = $form['naw'];
 				if(count($this->percent_items) > 0){
 					?>
 					<tr>				
-						<td style="text-align:right;font-weight:bold;">subtotaal:</td>
+						<td style="text-align:right;font-weight:bold;">subtotaal:(regel 154, $this->total_price)</td>
 						<td style="font-weight:bold;">&euro;<?php echo number_format($this->total_price, 2, ',','.'); ?></td>
 						<td>&nbsp;</td>
 					</tr>				
@@ -187,7 +187,7 @@ $naw = $form['naw'];
 					?>
 					<tr><td colspan="3">&nbsp;</td></tr>
 					<tr>				
-						<td style="text-align:right;font-weight:bold;">totaal:(regel 190, $this->total_price_def)</td>
+						<td style="text-align:right;font-weight:bold;">totaal:(regel 191, $this->total_price_def)</td>
 						<td style="font-weight:bold;">&euro;<?php echo number_format($this->total_price_def, 2, ',','.'); ?></td>
 						<td>&nbsp;</td>
 					</tr>
@@ -211,8 +211,14 @@ $naw = $form['naw'];
 		</form>
 		</fieldset>
 	</div>
-	<pre>
-		<?php var_dump($arrangement,$this->data); ?>
+	<pre>		
+		<?php
+		var_dump($this->data);
+		echo '<hr />';
+		var_dump($state);
+		echo '<hr />';
+		var_dump($this->app->input->get('step'),$this->arrangement); 
+		?>
 	</pre>
 	<fieldset class="jbl_form"><legend>Uw gegevens:</legend>
 		<table class="jbl_form_table">
@@ -308,4 +314,3 @@ $naw = $form['naw'];
 			<input type="hidden" name="task" value="arrangements.process" />
 		</form>
 	</fieldset>
-	<pre>
