@@ -81,6 +81,17 @@
 			<option value="0">JNO</option>
 		</field>
 		<field
+			name="required"
+			type="list"
+			label="COM_JEXBOOKING_ARRANGEMENT_REQUIRED_LABEL"
+			description="COM_JEXBOOKING_ARRANGEMENT_REQUIRED_DESC"
+			default="0"
+			required="false"
+		>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field
 			name="published"
 			type="list"
 			label="JSTATUS"
