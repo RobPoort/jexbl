@@ -24,9 +24,7 @@ $naw = $form['naw'];
 ?>
 
 <h1>Overzicht:</h1>
-<h2>step_4</h2>
-
-	<div class="jbl_prijsberekening" id="jbl_prijsberekening">
+<div class="jbl_prijsberekening" id="jbl_prijsberekening">
 	
 		<fieldset class="jbl_form"><legend>Uw prijsberekening:</legend>
 		

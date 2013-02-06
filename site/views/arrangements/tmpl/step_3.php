@@ -29,7 +29,6 @@ window.addEvent('domready' function(){
 	});
 });
 </script>
-<h2>step_3</h2>
 <div class="jbl_prijsberekening" id="jbl_prijsberekening">
 <form method="post" action="" class="form-validate">
 	<fieldset class="jbl_form"><legend>Uw prijsberekening:</legend>
