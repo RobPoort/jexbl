@@ -149,12 +149,3 @@ $state = $this->state;
 		<!-- <input type="hidden" name="step" value="0" /> -->
 		</form>
 	</fieldset>
-	<pre>		
-		<?php
-		var_dump($this->data);
-		echo '<hr />';
-		var_dump($this->app->input->get("final",null,null));
-		echo '<hr />';
-		var_dump($this->arrangement); 
-		?>
-	</pre>

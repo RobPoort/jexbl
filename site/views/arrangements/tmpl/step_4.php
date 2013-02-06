@@ -162,16 +162,6 @@ $naw = $form['naw'];
 		</form>
 		</fieldset>
 	</div>
-	<pre>		
-		<?php
-		var_dump($this->data);
-		echo '<hr />';
-		//var_dump($state);
-		var_dump($this->app->input->get('final',null,null));
-		echo '<hr />';
-		//var_dump($this->app->input->get('step'),$this->arrangement); 
-		?>
-	</pre>
 	<fieldset class="jbl_form"><legend>Uw gegevens:</legend>
 		<table class="jbl_form_table">
 			<tr>
@@ -203,6 +193,7 @@ $naw = $form['naw'];
 			<input type="hidden" name="step" value="2" />
 			<input type="hidden" name="task" value="arrangements.setStep" />			
 			<input type="hidden" name="jbl_form[state_check]" value="1" />
+			<input type="hidden" name="noCalc" value="1" />
 	</form>
 	</fieldset>
 	<?php
@@ -245,6 +236,7 @@ $naw = $form['naw'];
 			<input type="hidden" name="step" value="2" />
 			<input type="hidden" name="task" value="arrangements.setStep" />			
 			<input type="hidden" name="jbl_form[state_check]" value="1" />
+			<input type="hidden" name="noCalc" value="1" />
 	</form>
 	</fieldset>
 	<?php
@@ -258,6 +250,7 @@ $naw = $form['naw'];
 			<input type="hidden" name="step" value="2" />
 			<input type="hidden" name="task" value="arrangements.setStep" />			
 			<input type="hidden" name="jbl_form[state_check]" value="1" />
+			<input type="hidden" name="noCalc" value="1" />
 		</form>
 	</fieldset>
 	<fieldset class="jbl_form"><legend>Heeft u alles gecontroleerd?</legend>

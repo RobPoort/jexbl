@@ -42,11 +42,13 @@ class JexBookingControllerArrangements extends JController
 								
 				break;
 			case 2:
-				$this->calculatePrice();
+				if(!$app->input->get('noCalc')){
+					$this->calculatePrice();
+				}
 				$app->input->set('layout','step_3');
 				break;
 			case 3:								
-				$this->calculatePrice();
+				//$this->calculatePrice();
 				$app->input->set('layout', 'step_4');
 				break;
 			default :
@@ -91,9 +93,7 @@ class JexBookingControllerArrangements extends JController
 			} else{
 				$arr_id = $app->getUserState("option_jbl.arr_id");
 			}
-			if($app->input->get('step') == 3){
-				//$data = $app->getUserState("option_jbl");
-			}
+			
 			if($data['special'] ){
 				$app->setUserState("option_jbl.special", $data['special']);
 			}

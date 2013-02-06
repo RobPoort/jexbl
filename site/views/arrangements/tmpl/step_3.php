@@ -347,15 +347,6 @@ window.addEvent('domready' function(){
 			<?php
 		} 
 		?>
-		<pre>		
-		<?php
-		var_dump($this->data);
-		echo '<hr />';
-		var_dump($this->app->input->get("final",null,null));
-		echo '<hr />';
-		//var_dump($this->arrangement); 
-		?>
-	</pre>
 		<fieldset class="jbl_form"><legend>Uw NAW-gegevens:</legend>
 			<?php
 				$naw = $app->getUserState("option_jbl.naw"); 
