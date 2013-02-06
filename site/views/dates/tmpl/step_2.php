@@ -22,6 +22,7 @@ window.addEvent('domready' function(){
 <h2>step_2</h2>
 <pre>
 	<?php
-		var_dump($this->items); 
+	
+	var_dump($this->items); 
 	?>
 </pre>

@@ -14,6 +14,8 @@ class JexBookingModelDates extends JModel
 		
 		//eerst de locatie_id ophalen uit de params
 		$this->location_id = $app->input->get('location_id');
+		$loc_id = $app->getUserState("option_jbl.location_id");
+		//$this->location_id = $location_id->location_id;
 		$this->type_id = $app->input->get('type_id');
 		$this->choose = $app->input->get('choose');
 		

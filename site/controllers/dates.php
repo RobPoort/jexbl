@@ -42,4 +42,13 @@ class JexBookingControllerDates extends JController
 		return parent::getModel($name, $prefix, array('ignore_request' => false));
 	}
 	
+	/**
+	 * method om te bepalen of aankomst- of vertrekdatum binnen een arrangement vallen
+	 * aan de hand van $locatie_id, $start_date en $end_date
+	 * @return	object
+	 */
+	public function checkArr($location_id, $start_date, $end_date){
+		//TODO: moet misschien in zijn geheel in de model
+	}
+	
 }
