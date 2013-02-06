@@ -1,5 +1,6 @@
 <?php
 defined('_JEXEC') or die('Restricted Access');
+jimport('joomla.application.components.model');
 
 class JexBookingModelArrangements extends JModel
 {

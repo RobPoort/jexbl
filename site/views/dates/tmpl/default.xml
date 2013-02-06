@@ -1,1 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_JEXBOOKING_VIEW_DATES_TITLE">
+		<message>COM_JEXBOOKING_VIEW_ARRANGEMENTS_DESC</message>
+	</layout>
+	<fields name="request">
+		<fieldset 
+			name="request"
+			addfieldpath="/administrator/components/com_jexbooking/models/fields"
+		>
+			
+			<field
+				name="location_id"
+				type="locations"
+				label="COM_JEXBOOKING_FIELD_ARRANGEMENT_LOCATION_LABEL"
+				description="COM_JEXBOOKING_FIELD_ARRANGEMENT_LOCATION_DESC"
+				
+			/>
+			<field
+				name="type_id"
+				type="types"
+				label="COM_JEXBOOKING_FIELD_ARRANGEMENT_TYPE_LABEL"
+				description="COM_JEXBOOKING_FIELD_ARRANGEMENT_TYPE_DESC"
+			/>
+			<field
+				name="choose"
+				type="radio"
+				label="COM_JEXBOOKING_CHOOSE_LABEL"
+				description="COM_JEXBOOKING_CHOOSE_DESC"
+				default=""
+				required="true"
+			>
+				<option value="0">COM_JEXBOOKING_CHOOSE_TYPE</option>
+				<option value="1">COM_JEXBOOKING_CHOOSE_LOCATION</option>
+			</field>
+		</fieldset>
+	</fields>
+</metadata>
