@@ -17,7 +17,8 @@ class JexBookingControllerArrangements extends JController
 	function setStep(){
 		
 		$app = JFactory::getApplication();
-		
+		//model ophalen
+		$model = $this->getModel('arrangements');
 		//eerst bepalen uit welke stap we komen: (hidden) field 'step'
 		$step = (int)$app->input->get('step');
 		
@@ -49,6 +50,14 @@ class JexBookingControllerArrangements extends JController
 				break;
 			case 3:								
 				//$this->calculatePrice();
+				if($app->input->get("naw", null,null)){
+					$form = $this->app->input->get("jbl_form",null,null);
+					$naw = $form['naw'];
+					
+					$app->setUserState("option_jbl.naw", $naw);
+					
+					
+				}
 				$app->input->set('layout', 'step_4');
 				break;
 			default :
@@ -151,7 +160,7 @@ class JexBookingControllerArrangements extends JController
 				}
 			}
 			if(array_key_exists('naw', $data)){
-				$this->naw = $data['naw'];
+				//$this->naw = $data['naw'];
 			}
 			if(array_key_exists('comment', $data)){
 				$this->comment = htmlentities($data['comment']);
@@ -173,13 +182,13 @@ class JexBookingControllerArrangements extends JController
 			}
 			//de extras in de userState zetten
 			if($this->attrib_extras_checked){
-				$app->setUserState("option_jbl.attrib_extras_checked", $this->attrib_extras_checked);
+				//$app->setUserState("option_jbl.attrib_extras_checked", $this->attrib_extras_checked);
 			}
 			if($this->attrib_extras_number){
 				$app->setUserState("option_jbl.attrib_extras_number", $this->attrib_extras_number);
 			}
 			if($this->naw){
-				$app->setUserState("option_jbl.naw", $this->naw);
+				//$app->setUserState("option_jbl.naw", $this->naw);
 			}
 			if($this->comment){
 				$app->setUserState("option_jbl.comment", $this->comment);

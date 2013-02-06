@@ -8,6 +8,29 @@ class JexBookingModelArrangements extends JModel
 	 * @return array $items
 	 */
 	
+	function getSelectedExtras(){
+		
+		$app = JFactory::getApplication();
+		$form = $app->input->get('jbl_form',null,null);
+		$extras = $form['extras'];
+		$items = array();
+		if($extras){
+			if(array_key_exists('checked', $extras)){
+				foreach($extras['checked'] as $key=>$value){
+					$db = JFactory::getDbo();
+					$query = $db->getQuery(true);
+					$query->from('#__jexbooking_attributes');
+					$query->select('*');
+					$query->where('id='.$key.' AND published=1');
+					$db->setQuery($query);
+					$row = $db->loadObject();
+					
+					$items[] = $row;
+				}
+			}
+		}
+		return $items;
+	}
 	function getItems(){
 		
 		//eerst de locatie_id ophalen uit de params
@@ -372,8 +395,9 @@ class JexBookingModelArrangements extends JModel
 			}
 		}	elseif($attribs_type == 6){
 			//extras checked
-			
-			foreach($data['extras']['checked'] as $key=>$number){
+			$form = $this->app->input->get('jbl_form',null,null);
+			$state = $this->app->getUserState("option_jbl.attribs_extras_checked");
+			foreach($state->attribs_extras_checked as $key=>$number){
 				if($number > 0){
 					$attrib_id = (int)$key;
 					$db = JFactory::getDbo();

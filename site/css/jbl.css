@@ -59,13 +59,72 @@
 	min-width:110px;
 	min-height:12px;
 	color:white;
-	background-color:#0F4A84;
+	background-color:#096D45;
 	text-align:center;
 	font-weight:bold;
 	PADDING:3px;
-	border:solid 1px #000;
+	border: 0;
+float:right;
+	}
+
+.buttonprev {
+	min-width:110px;
+	min-height:12px;
+	color:white;
+	background-color:#096D45;
+	text-align:center;
+	font-weight:bold;
+	PADDING:3px;
+	border: 0;
+	float:left;
 }
+
+.buttonedit {
+	min-width:110px;
+	min-height:12px;
+	color:white;
+	background-color:#096D45;
+	text-align:center;
+	font-weight:bold;
+	PADDING:3px;
+	border: 0;
+	float:left;
+	clear:both;
+}
+
 .naw_left{
 	width:150px;
 	padding:3px;
+}
+
+.steps {
+background-color: #086C44;
+width: 100%;
+font-size: 15px;
+-moz-border-radius: 15px;
+border-radius: 15px;
+color: white;
+padding:5px;
+}
+
+.active {
+font-weight: bold;
+color: #FED96B; 
+font-size: 17px;
+}
+
+.step1, .step2, .step3, .step4 {
+display:inline-block;
+width:25%;
+text-align:center;
+}
+
+.step1 {
+}
+
+.step2 {
+}
+.step3{
+}
+.step4 {
 }

@@ -14,6 +14,7 @@ $attribs_special_required = $this->attrib_prices_special_required;
 $attribs_special_checked = $this->attrib_prices_special_checked;
 $extras = $this->extras;
 $state = $this->state;
+$naw = $state->naw;
 ?>
 <script>
 window.addEvent('domready' function(){
@@ -347,9 +348,6 @@ window.addEvent('domready' function(){
 		} 
 		?>
 		<fieldset class="jbl_form"><legend>Uw NAW-gegevens:</legend>
-			<?php
-				$naw = $app->getUserState("option_jbl.naw"); 
-			?>
 			<table class="jbl_form_table" id="">
 				<tr>
 					<td class="jbl_label_naw">Voornaam:</td>
@@ -401,7 +399,7 @@ window.addEvent('domready' function(){
 	</form>
 	<div class="clear">&nbsp;</div>
 		<form method="post" action="">
-		<button class="buttonNext" onClick="this.form.submit()" >VORIGE</button>
+		<button class="buttonprev" onClick="this.form.submit()" >VORIGE</button>
 		<input type="hidden" name="task" value="arrangements.setStep" />
 		<input type="hidden" name="step" value="1" />
 		<input type="hidden" name="arrangementSelect" value="<?php echo $arrangement->id; ?>" />

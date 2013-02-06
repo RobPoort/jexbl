@@ -20,6 +20,10 @@ $mailfrom	= $this->app->getCfg('sitename');
 $state = $this->state;
 $form = $this->app->input->get("jbl_form",null,null);
 $naw = $form['naw'];
+//$attribs_extras_checked = $form['extras']['checked'];
+$this->app->setUserState('option_jbl.naw', $naw);
+$this->app->setUserState("option_jbl.attrib_extras_checked", $attribs_extras_checked);
+
 //TODO bovenstaande filteren, zitten nog overbodige dingen van oude bedankt pagina in
 ?>
 
@@ -153,7 +157,7 @@ $naw = $form['naw'];
 				?>
 			</table>
 		<form method="post" action="">
-			<input type="submit" name="sendButton" value="WIJZIG" class="buttonNext" />			
+			<input type="submit" name="buttonedit" value="WIJZIG" class="buttonNext" />			
 			<input type="hidden" name="step" value="1" />
 			<input type="hidden" name="task" value="arrangements.setStep" />
 			
@@ -187,7 +191,7 @@ $naw = $form['naw'];
 			</tr>
 		</table>
 	<form method="post" action="">
-			<input type="submit" name="sendButton" value="WIJZIG" class="buttonNext" />			
+			<input type="submit" name="buttonedit" value="WIJZIG" class="buttonNext" />			
 			<input type="hidden" name="step" value="2" />
 			<input type="hidden" name="task" value="arrangements.setStep" />			
 			<input type="hidden" name="jbl_form[state_check]" value="1" />
@@ -230,7 +234,7 @@ $naw = $form['naw'];
 			<tr><td colspan="2">&nbsp;</td></tr>
 		</table>
 		<form method="post" action="">
-			<input type="submit" name="sendButton" value="WIJZIG" class="buttonNext" />			
+			<input type="submit" name="buttonedit" value="WIJZIG" class="buttonNext" />			
 			<input type="hidden" name="step" value="2" />
 			<input type="hidden" name="task" value="arrangements.setStep" />			
 			<input type="hidden" name="jbl_form[state_check]" value="1" />
@@ -244,7 +248,7 @@ $naw = $form['naw'];
 		<p><?php echo $form['comment']; ?></p>
 		<p>&nbsp;</p>
 		<form method="post" action="">
-			<input type="submit" name="sendButton" value="WIJZIG" class="buttonNext" />			
+			<input type="submit" name="buttonedit" value="WIJZIG" class="buttonNext" />			
 			<input type="hidden" name="step" value="2" />
 			<input type="hidden" name="task" value="arrangements.setStep" />			
 			<input type="hidden" name="jbl_form[state_check]" value="1" />
