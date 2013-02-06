@@ -19,12 +19,9 @@ window.addEvent('domready' function(){
 	});
 });
 </script>
-<?php
-	$form = $this->app->input->get('date',null,null);
-?>
 <h2>step_2</h2>
 <pre>
 	<?php
-		var_dump($form); 
+		var_dump($this->items); 
 	?>
 </pre>

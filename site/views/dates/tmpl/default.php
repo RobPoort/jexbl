@@ -37,9 +37,3 @@ window.addEvent('domready' function(){
 	<input type="hidden" name="task" value="dates.setStep" />
 	<input type="hidden" name="step" value="1" />
 </form>
-
-<br /><br />
-<hr />
-<pre>
-	<?php var_dump($this->items); ?>
-</pre>
