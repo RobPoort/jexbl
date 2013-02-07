@@ -34,6 +34,7 @@ window.addEvent('domready' function(){
 		</table>
 
 	</fieldset>
-	<input type="hidden" name="task" value="dates.setStep" />
+	
+	<input type="hidden" name="task" value="dates.setStep" />	
 	<input type="hidden" name="step" value="1" />
 </form>

@@ -4,6 +4,11 @@ defined('_JEXEC') or die('Restricted Access');
 jimport('joomla.html.html');
 JHtml::_('behavior.tooltip');
 JHtml::stylesheet('jbl.css','components/com_jexbooking/css/');
+
+//waardes ophalen
+$item = $this->item['locatie'];
+$attribs = $this->item['attribs'];
+$overlap = $this->overlap;
 ?>
 <script>
 window.addEvent('domready' function(){
@@ -19,10 +24,99 @@ window.addEvent('domready' function(){
 	});
 });
 </script>
-<h2>step_2</h2>
-<pre>
+<form action="" method="post">
+	<fieldset class="jbl_form" id="jbl_has_number"><legend <?php if($item->desc) : ?>class="hasTip" title="<?php echo $item->desc; ?>" <?php endif; ?>><?php echo ucfirst($item->name);?></legend>
+		<table class="jbl_form_table">
+			<?php
+				if($overlap){
+				?>
+					<tr><td colspan="2"><p><?php echo ucfirst($overlap['overlap_message']); ?></p></td></tr>
+					<tr><td colspan="2"><hr /></td></tr>
+					<tr><td class="tdleft">Gekozen periode:</td><td></td></tr>
+					<tr><td class="tdleft">Van:&nbsp;<?php echo $this->item['aankomst']; ?>&nbsp;&nbsp;Tot:&nbsp;<?php echo $this->item['vertrek']; ?></td><td></td></tr>
+					<tr><td class="tdleft">Arrangement:&nbsp;<?php echo ucwords($overlap['arrangement']->name); ?></td><td>Van:&nbsp;<?php echo $overlap['arrangement']->start_date; ?><br />Tot:&nbsp;<?php echo $overlap['arrangement']->end_date; ?></td></tr>
+					<tr>
+					<?php
+						if($overlap['arrangement']->is_pp){
+							?>
+							<td class="tdLeft">
+								Kosten van dit arrangement per persoon:<br />
+								&euro;&nbsp;<?php echo number_format($overlap['arrangement']->price, 2, ',','.'); ?>&nbsp;pp.
+							</td>
+							<td></td>
+							<?php
+						} else{
+							?>
+							<td class="tdLeft">
+								Kosten van dit arrangement:<br />
+								&euro;&nbsp;<?php echo number_format($overlap['arrangement']->price, 2, ',','.'); ?>
+							</td>
+							<td></td>
+							<?php
+						}
+					?>
+					</tr>
+					<tr><td colspan="2"></td></tr>
+					<tr><td class="tdleft">Dagen buiten het arrangement:&nbsp;<?php echo $overlap['buiten_arr']; ?>&nbsp;dag(en)</td><td></td></tr>
+				<?php
+				} else{
+					?>
+						<tr><td class="jbl_form_left">Gekozen periode:</td><td></td></tr>
+						<tr><td class="jbl_form_left">Van:&nbsp;<?php echo $this->item['aankomst']; ?></td><td>Tot:&nbsp;<?php echo $this->item['vertrek']; ?></td></tr>
+						<tr><td class="jbl_form_left">Dit is <?php echo $this->item['nights']; ?>&nbsp;dag(en)</td><td></td></tr>
+					<?php
+				}
+			?>
+		</table>
+	</fieldset>
+	<fieldset class="jbl_form" id="jbl_has_number">
+		<table class="jbl_form_table">
+			<?php
+				$number_pp = 0; 
+			?>
+			<tr><td class="jbl_form_left"><label>Aantal personen:&nbsp;</label></td><td class="jbl_form_right"><input type="text" name="jbl_form[number_pp]" value="<?php echo $number_pp; ?>" class="jbl_input_number" /></td></tr>
+		</table>
+	</fieldset>
 	<?php
-	
-	var_dump($this->items); 
+		if($attribs){
+		?>
+		<fieldset class="jbl_form" id="jbl_form">
+			<table class="jbl_form_table">
+				<?php
+				if($attribs['checked']){
+					$checked = '';
+					foreach($attribs['checked'] as $item){
+					?>
+						<tr>
+						<td class="jbl_form_checkbox"><input type="checkbox" class="jbl_input_checkbox" name="jbl_form[checked][<?php echo $item->id; ?>]" value="1" <?php echo $checked; ?> /></td><td class="jbl_form_left"><label <?php if($item->desc) : ?>class="hasTip" title="<?php echo $item->desc; ?>" <?php endif; ?>><?php echo $item->name; ?>&nbsp;</label></td><td class="jbl_form_right">&nbsp;</td>
+						</tr>
+					<?php 
+					}
+				}
+				if($attribs['number']){
+					$value= '0';
+					foreach($attribs['number'] as $item){
+					?>
+						<tr>
+							<td class="jbl_form_checkbox">&nbsp;</td><td class="jbl_form_left"><label <?php if($item->desc) : ?>class="hasTip" title="<?php echo $item->desc; ?>" <?php endif; ?>><?php echo $item->name; ?></label></td><td class="jbl_form_right">&nbsp;x&nbsp;<input type="text" name="jbl_form[number][<?php echo $item->id; ?>]" value="<?php echo $value; ?>" class="jbl_input_number" /></td>
+						</tr>
+					<?php
+						
+					}
+				}
+				?>
+			</table>
+		</fieldset>
+		<?php
+		} 
 	?>
-</pre>
+	<input type="hidden" name="task" value="dates.setStep" />	
+	<input type="hidden" name="step" value="2" />
+	<input type="submit" name="buttonNext" class="buttonNext" value="VOLGENDE" />
+</form>
+<form method="get" action="">
+	<input type="hidden" name="task" value="dates.setStep" />	
+	<input type="hidden" name="step" value="0" />
+	<input type="submit" name="buttonprev" class="buttonNext" value="VORIGE" />
+</form>
+<div class="clear"></div>

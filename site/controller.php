@@ -7,6 +7,7 @@ class JexBookingController extends JController
 {
 	function display($cachable = false){
 		
+		
 		$app = JFactory::getApplication();
 		
 		//bedoeling is om userState te legen, iedere keer als 'vers' op het boekings menuItem komt.		
@@ -16,11 +17,7 @@ class JexBookingController extends JController
 			$app->setUserState("option_jbl", null);
 			
 		}
-		//location_id en type_id vast in de userState zetten
-		$this->location_id = $app->input->get('location_id');
-		$this->type_id = $app->input->get('type_id');
-		$app->setUserState("option_jbl.location_id", $this->location_id);
-		$app->setUserState("option_jbl.type_id", $this->type_id);
+		
 		parent::display($cachable);
 	}
 }
