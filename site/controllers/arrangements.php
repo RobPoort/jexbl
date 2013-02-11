@@ -266,6 +266,7 @@ class JexBookingControllerArrangements extends JController
 	public function process(){
 		$app = JFactory::getApplication();
 		$app->input->set('layout', 'bedankt');
+		$app->setUserState('option_jbl', null);
 		$this->display();
 	}
 }

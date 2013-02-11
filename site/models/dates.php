@@ -123,91 +123,97 @@ class JexBookingModelDates extends JModel
 	
 	/**
 	 * method om de arrangements op te halen met dezelfde location_id en overeenkomstige periode
-	 * @param int $location_id
-	 * @param string $start_date
-	 * @param string $end_date
+	 * @param int $locationId
+	 * @param object $startDate
+	 * @param object $endDate
 	 * @return Object
 	 */
-	public function getArrangements($location_id,$start_date,$end_date){
+	public function getArrangements($locationId,$startDate,$endDate){	
 		
-		//unixtijden maken
-		list($day,$month,$year) = explode('-', $start_date);
-		$start = mktime(0,1,0,$month,$day,$year);
-		list($day,$month,$year) = explode('-', $end_date);
-		$end = mktime(0,1,0,$month,$day,$year);
+		//$startDate en $endDate DateTime objecten
+		$start = $startDate;
+		$end = $endDate;
 		
 		//eerst alle arrs ophalen, daarna datumcheck
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query->from('#__jexbooking_arrangements');
 		$query->select('*');
-		$query->where('location_id='.(int)$location_id.' AND published=1 AND required=1');
+		$query->where('location_id='.(int)$locationId.' AND published=1 AND required=1');
 		$db->setQuery($query);
 		$rows = $db->loadObjectList();
 		
 		$result = array();
 		
 		if($rows){
-			foreach($rows as $row){
-				list($day,$month,$year) = explode('-', $row->start_date);
-				$start_arr = mktime(0,1,0,$month,$day,$year);
-				list($day,$month,$year) = explode('-', $row->end_date);
-				$end_arr = mktime(0,1,0,$month,$day,$year);
+			foreach($rows as $row){				
+				//start_date en end_date van arrangementen in DateTime-objecten omzetten
+				$arrStart = new DateTime($row->start_date);
+				$arrEnd = new DateTime($row->end_date);
 				
-				// overlap_unix is de unix-tijd van ofwel de vertrekdatum, ofwel de aankomstdatum, welke binnen arrangement valt
-				// indien overlap_unix = 0, dan valt een geheel arrangement binnen de periode aankomstdatum - vertrekdatum
-				if($end > $start_arr && $end < $end_arr){
-					$result['overlap_message'] = 'uw vertrekdatum valt binnen het "'.ucwords($row->name).'" arrangement. Uw prijs wordt berekend door de kosten van het arrangement op te tellen bij de dagen die vooraf gaan aan het arrangement. '; 
-					
-					$result['dagen_voor'] = ($start_arr - $start) / 86400;
-					
-					$result['start_unix'] = $start;
-					$result['end_unix'] = $end;
-					
-					$result['start_unix_arr'] = $start_arr;
-					$result['end_unix_arr'] = $end_arr;
-					
-					$result['buiten_arr'] = ($start_arr - $start) / 86400;
-					
-					$result['arrangement'] = $row;
-					
-				} elseif($start > $start_arr && $start < $end_arr){
-					$result['overlap_message'] = 'uw aankomstdatum valt binnen het '.$row->name.' arrangement. Uw prijs wordt berekend door de kosten van het arrangement op te tellen bij de dagen die na de arrangementsperiode vallen. ';
-					
-					$result['dagen_na'] = ($end - $end_arr) / 86400;					
-					
-					$result['start_unix'] = $start;
-					$result['end_unix'] = $end;
+				//mogelijkheden:
+				
+				
+				// start en end voor arrangement: $end < $arrEnd => default
+				// start en end na arrangement: $start > $arrEnd => default
+				
+				// start voor arrStart en end na arrEnd: $start < $arrStart && $end > $arrEnd
+				// start en end beiden tussen arrStart en arrEnd in: $start > $arrStart && $start < $arrEnd && $end > $arrStart && $end < $arrEnd 
+				// start voor arrStart, maar end tussen arrStart en arrEnd in: $start < $arrStart && $end > $arrStart && $end < $arrEnd
+				
+				// start na arrStart en end na arrEnd: $start > $arrStart && $start < $arrEnd && $end > $arrEnd
+				$date = new stdClass();
+				$date->start = $start;
+				$date->end = $end;
+				$date->arrStart = $arrStart;
+				$date->arrEnd = $arrEnd;
+				
+				switch ($date){
+					case ($date->start <= $date->arrStart && $date->end >= $date->arrEnd):
+						//arrangement valt geheel binnen periode
+						$result['overlap_message'] = 'Binnen de door u gekozen periode valt het '.ucwords($row->name).' arrangement. Uw prijs wordt berekend door de kosten van het arrangement op te tellen bij de dagen die vooraf gaan aan het arrangement en de dagen erna.';						
+						$result['buiten_arr'] = ($date->start->diff($date->arrStart)->days) + ($date->arrEnd->diff($date->end)->days);
+						$result['arrangement'] = $row;
+						if($result['buiten_arr'] == 0){
+							$result['overlap_message'] = 'De door u gekozen periode valt samen met het '.ucwords($row->name).' arrangement. De kosten van uw verblijf worden berekend aan de hand van het arrangement.';
+						}
+						break 2;
 						
-					$result['start_unix_arr'] = $start_arr;
-					$result['end_unix_arr'] = $end_arr;
-					
-					$result['buiten_arr'] ($end - $end_arr) / 86400;
-					
-					$result['arrangement'] = $row;
-					
-				} elseif($start < $start_arr && $end > $end_arr){
-					$result['overlap_message'] = 'Binnen de door u gekozen periode valt het arrangement '.$row->name.'. Uw prijs wordt berekend door de kosten van het arrangement op te tellen bij de dagen die vooraf gaan aan het arrangement en die na de arrangementsperiode vallen. ';
-					
-					$result['dagen_minus'] = ((($start_arr - $start) / 86400) + (($end - $end_arr) / 86400) - (($end_arr - $start_arr) / 86400));
-					
-					$result['start_unix'] = $start;
-					$result['end_unix'] = $end;
+					case ($date->start >= $date->arrStart && $date->start <= $date->arrEnd && $date->end <= $date->arrEnd && $date->end >= $date->arrStart):
+						//periode valt geheel binnen arrangement
+						$result['overlap_message'] = 'De door u gekozen periode valt geheel binnen het '.ucwords($row->name).' arrangement. De kosten van de door u gekozen periode is gelijk aan die van het arrangement.';
+						$result['buiten_arr'] = 0;
+						$result['arrangement'] = $row;
 						
-					$result['start_unix_arr'] = $start_arr;
-					$result['end_unix_arr'] = $end_arr;
-					
-					$result['buiten_arr'] = ((($end - $start) / 86400) - ((($start_arr - $start) / 86400) + (($end - $end_arr) / 86400) - (($end_arr - $start_arr) / 86400)));
-					
-					$result['arrangement'] = $row;
+						break 2;
+					case ($date->start <= $date->arrStart && $date->end > $date->arrStart && $date->end <= $date->arrEnd):
+						//aankomst is voor arrangement en vertrek is binnen arrangement
+						$result['overlap_message'] = 'De door u gekozen vertrekdatum valt binnen het '.ucwords($row->name).' arrangement. Uw prijs wordt berekend door de kosten van het arrangement op te tellen bij de dagen voorafgaand aan het arrangement.';
+						$result['buiten_arr'] = $date->start->diff($date->arrStart)->days;
+						$result['arrangement'] = $row;
+						
+						break 2;
+					case ($date->start >= $date->arrStart && $date->start < $date->arrEnd && $date->end >= $date->arrEnd):
+						//aankomst is binnen arrangement en vertrek is na arrangement
+						$result['overlap_message'] = 'De door u gekozen aankomstdatum valt binnen het '.ucwords($row->name).' arrangement. Uw prijs zal berekend worden door de kosten van het arrangement op te tellen bij de dagen erna.';
+						$result['buiten_arr'] = $date->arrEnd->diff($date->end)->days;
+						$result['arrangement'] = $row;
+						
+						break 2;
+					default:
+						$result['overlap_message'] = 'testkip';
+						
+						break 2;
 				}
+				
 			}
 		} else{
-			$result = 0;
+			$result = null;
 		}
 		
 		
 		return $result;
 		
 	}
+	
 }

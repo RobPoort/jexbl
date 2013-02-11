@@ -57,7 +57,15 @@ window.addEvent('domready' function(){
 					?>
 					</tr>
 					<tr><td colspan="2"></td></tr>
-					<tr><td class="tdleft">Dagen buiten het arrangement:&nbsp;<?php echo $overlap['buiten_arr']; ?>&nbsp;dag(en)</td><td></td></tr>
+					<tr><td class="tdleft">Dagen buiten het arrangement:&nbsp;<?php echo $overlap['buiten_arr']; ?>&nbsp;
+					<?php
+						if($overlap['buiten_arr'] == 1){
+							echo 'dag';
+						} else{
+							echo 'dagen';
+						}
+					?>
+					</td><td></td></tr>
 				<?php
 				} else{
 					?>

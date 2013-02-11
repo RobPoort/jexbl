@@ -51,7 +51,7 @@ class JexBookingControllerDates extends JController
 	 * aan de hand van $locatie_id, $start_date en $end_date
 	 * @return	object
 	 */
-	public function checkForArr(){
+	public function checkForArr_oud(){
 		
 		$this->app = JFactory::getApplication();
 		
@@ -70,5 +70,23 @@ class JexBookingControllerDates extends JController
 			$this->app->setUserState("option_jbl_overlap", $arrangements);
 		}
 	}
+	public function checkForArr(){
 	
+		$this->app = JFactory::getApplication();
+	
+		//eerst start en enddate uit form halen + $location_id
+		$date = $this->app->input->get("date",null,null);
+	
+		$startDate = new DateTime($date['start_date']);
+		$endDate = new DateTime($date['end_date']);
+		$locationId = $this->app->input->get('location_id');
+	
+		$model = $this->getModel('dates');
+		$arrangements = $model->getArrangements($locationId,$startDate,$endDate);
+	
+		$this->app->setUserState("option_jbl_overlap", null);
+		if($arrangements){
+			$this->app->setUserState("option_jbl_overlap", $arrangements);
+		}
+	}
 }
