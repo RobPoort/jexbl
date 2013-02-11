@@ -201,7 +201,7 @@ class JexBookingModelDates extends JModel
 						
 						break 2;
 					default:
-						$result['overlap_message'] = 'testkip';
+						$result = null;
 						
 						break 2;
 				}
