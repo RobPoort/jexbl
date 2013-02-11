@@ -54,8 +54,7 @@
 			<!-- Admin Main File Copy Section -->
 			<filename>index.html</filename>
 			<filename>jexbooking.php</filename>
-			<filename>controller.php</filename>
-			<filename>config.xml</filename>
+			<filename>controller.php</filename>			
 			<filename>access.xml</filename>
 			<!-- SQL files section -->
 			<folder>sql</folder>
