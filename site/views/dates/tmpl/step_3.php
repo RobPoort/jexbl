@@ -24,9 +24,10 @@ window.addEvent('domready' function(){
 	});
 });
 </script>
-<h2>step_3</h2>
+
 <form method="post" action="">
-	
+	<fieldset class="jbl_form" id="jbl_has_number"><legend>Uw prijsberekening:</legend>
+	</fieldset>
 	<?php
 		if($this->data){
 			

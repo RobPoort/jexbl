@@ -25,6 +25,13 @@ window.addEvent('domready' function(){
 	});
 });
 </script>
+<pre>
+<?php
+//TODO: var_dump verwijderen
+
+//var_dump($attribs = $this->item['attribs']['special']['not_required']); 
+?>
+</pre>
 <form action="" method="post">
 	<fieldset class="jbl_form" id="jbl_has_number"><legend <?php if($item->desc) : ?>class="hasTip" title="<?php echo $item->desc; ?>" <?php endif; ?>><?php echo ucfirst($item->name);?></legend>
 		<table class="jbl_form_table">
@@ -87,16 +94,7 @@ window.addEvent('domready' function(){
 		</table>
 	</fieldset>
 	<fieldset class="jbl_form" id="jbl_has_number">
-		<table class="jbl_form_table">
-			<?php
-			//TODO: $number_pp moet uit formulier of sessie komen, anders 0
-				$number_pp = 0;
-				if($number_pp > 1){
-					$number_pp = $number_pp;
-				} else {
-					$number_pp = 2;
-				}
-			?>
+		<table class="jbl_form_table">			
 			<tr><td class="jbl_form_left"><label>Aantal personen:&nbsp;</label></td><td class="jbl_form_right"><input type="text" name="jbl_form[number_pp]" value="<?php echo (int)$this->default['number_pp'] > 1 ? $this->default['number_pp'] : 2;	?>" class="jbl_input_number" />
 			</td></tr>
 		</table>
@@ -111,8 +109,7 @@ window.addEvent('domready' function(){
 					
 					$checked = '';
 					foreach($attribs['checked'] as $item){
-						if($this->default['checked']){
-							//var_dump($item->id,$this->default['checked']);
+						if($this->default['checked']){							
 						}
 						
 					?>
@@ -133,10 +130,27 @@ window.addEvent('domready' function(){
 						
 					}
 				}
-				?>
-			</table>
-		</fieldset>
-		<?php
+				
+			if($attribs['special']['not_required']){
+							if($attribs['special']['not_required']['percent']){
+								foreach($attribs['special']['not_required']['percent'] as $item){
+									?>
+									<tr>
+										<td class="jbl_form_checkbox"><input type="checkbox" class="jbl_input_checkbox" name="jbl_form[special][not_required][percent][<?php echo $item->id; ?>]" value="1" <?php if($this->default['special']['not_required']['percent']){
+											if(array_key_exists($item->id, $this->default['special']['not_required']['percent']))
+										{ echo 'checked="checked"'; }} ?> /></td><td class="jbl_form_left"><label <?php if($item->desc) : ?>class="hasTip" title="<?php echo $item->desc; ?>" <?php endif; ?>><?php echo $item->name; ?>&nbsp;</label></td><td class="jbl_form_right">&nbsp;</td>
+									</tr>
+									<?php
+								}
+							} 
+						?>
+					
+				<?php
+			}
+			?>
+				</table>
+			</fieldset>
+			<?php
 		} 
 	?>
 	<input type="hidden" name="jbl_form[start_date]" value="<?php echo $this->data['start_date']; ?>" />

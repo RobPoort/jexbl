@@ -102,15 +102,15 @@ class JexBookingModelDates extends JModel
 						} else{
 							if($attrib->is_required){
 								if($attrib->use_percent){
-									$result['attribs']['special']['required']['percent'] = $attrib;
+									$result['attribs']['special']['required']['percent'][] = $attrib;
 								} else{
-									$result['attribs']['special']['required']['not_percent'] = $attrib;
+									$result['attribs']['special']['required']['not_percent'][] = $attrib;
 								}
 							} else{
 								if($attrib->use_percent){
-									$result['attribs']['special']['not_required']['percent'] = $attrib;
+									$result['attribs']['special']['not_required']['percent'][] = $attrib;
 								} else{
-									$result['attribs']['special']['not_required']['not_percent'] = $attrib;
+									$result['attribs']['special']['not_required']['not_percent'][] = $attrib;
 								}
 							}
 						}
