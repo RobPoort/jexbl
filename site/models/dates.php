@@ -13,7 +13,7 @@ class JexBookingModelDates extends JModel
 		$app = JFactory::getApplication();
 		
 		//aankomst- en vertrekdatum
-		$date = $app->input->get("date",null,null);
+		$date = $app->input->get("jbl_form",null,null);
 		if($date){
 			$start_date = $date['start_date'];
 			$end_date = $date['end_date'];

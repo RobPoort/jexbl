@@ -48,34 +48,15 @@ class JexBookingControllerDates extends JController
 	
 	/**
 	 * method om te bepalen of aankomst- of vertrekdatum binnen een arrangement vallen
-	 * aan de hand van $locatie_id, $start_date en $end_date
+	 * aan de hand van $locatieId, $startDate en $endDate
 	 * @return	object
-	 */
-	public function checkForArr_oud(){
-		
-		$this->app = JFactory::getApplication();
-		
-		//eerst start en enddate uit form halen + $location_id
-		$date = $this->app->input->get("date",null,null);
-		
-		$start_date = $date['start_date'];
-		$end_date = $date['end_date'];
-		$location_id = $this->app->input->get('location_id');
-		
-		$model = $this->getModel('dates');
-		$arrangements = $model->getArrangements($location_id,$start_date,$end_date);
-		
-		$this->app->setUserState("option_jbl_overlap", null);
-		if($arrangements){		
-			$this->app->setUserState("option_jbl_overlap", $arrangements);
-		}
-	}
+	 */	
 	public function checkForArr(){
 	
 		$this->app = JFactory::getApplication();
 	
 		//eerst start en enddate uit form halen + $location_id
-		$date = $this->app->input->get("date",null,null);
+		$date = $this->app->input->get("jbl_form",null,null);
 	
 		$startDate = new DateTime($date['start_date']);
 		$endDate = new DateTime($date['end_date']);

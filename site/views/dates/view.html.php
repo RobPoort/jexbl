@@ -15,6 +15,8 @@ class JexBookingViewDates extends JView
 		
 		$this->overlap = $this->app->getUserState("option_jbl_overlap");
 		
+		$this->data = $this->app->input->get("jbl_form", null,null);
+		
 		parent::display($tpl);
 	}
 }

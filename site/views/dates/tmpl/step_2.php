@@ -9,6 +9,7 @@ JHtml::stylesheet('jbl.css','components/com_jexbooking/css/');
 $item = $this->item['locatie'];
 $attribs = $this->item['attribs'];
 $overlap = $this->overlap;
+
 ?>
 <script>
 window.addEvent('domready' function(){
@@ -71,7 +72,15 @@ window.addEvent('domready' function(){
 					?>
 						<tr><td class="jbl_form_left">Gekozen periode:</td><td></td></tr>
 						<tr><td class="jbl_form_left">Van:&nbsp;<?php echo $this->item['aankomst']; ?></td><td>Tot:&nbsp;<?php echo $this->item['vertrek']; ?></td></tr>
-						<tr><td class="jbl_form_left">Dit is <?php echo $this->item['nights']; ?>&nbsp;dag(en)</td><td></td></tr>
+						<tr><td class="jbl_form_left">Dit is <?php echo $this->item['nights']; ?>&nbsp;
+						<?php
+							if($this->item['nights'] == 1){
+								echo 'dag';
+							} else {
+								echo 'dagen';
+							}
+						?>
+						</td><td></td></tr>
 					<?php
 				}
 			?>
@@ -80,9 +89,16 @@ window.addEvent('domready' function(){
 	<fieldset class="jbl_form" id="jbl_has_number">
 		<table class="jbl_form_table">
 			<?php
-				$number_pp = 0; 
+			//TODO: $number_pp moet uit formulier of sessie komen, anders 0
+				$number_pp = 0;
+				if($number_pp > 1){
+					$number_pp = $number_pp;
+				} else {
+					$number_pp = 2;
+				}
 			?>
-			<tr><td class="jbl_form_left"><label>Aantal personen:&nbsp;</label></td><td class="jbl_form_right"><input type="text" name="jbl_form[number_pp]" value="<?php echo $number_pp; ?>" class="jbl_input_number" /></td></tr>
+			<tr><td class="jbl_form_left"><label>Aantal personen:&nbsp;</label></td><td class="jbl_form_right"><input type="text" name="jbl_form[number_pp]" value="<?php echo $number_pp;	?>" class="jbl_input_number" />
+			</td></tr>
 		</table>
 	</fieldset>
 	<?php
@@ -118,6 +134,8 @@ window.addEvent('domready' function(){
 		<?php
 		} 
 	?>
+	<input type="hidden" name="jbl_form[start_date]" value="<?php echo $this->data['start_date']; ?>" />
+	<input type="hidden" name="jbl_form[end_date]" value="<?php echo $this->data['end_date']; ?>" />
 	<input type="hidden" name="task" value="dates.setStep" />	
 	<input type="hidden" name="step" value="2" />
 	<input type="submit" name="buttonNext" class="buttonNext" value="VOLGENDE" />
@@ -128,3 +146,8 @@ window.addEvent('domready' function(){
 	<input type="submit" name="buttonprev" class="buttonNext" value="VORIGE" />
 </form>
 <div class="clear"></div>
+<pre>
+	<?php
+		var_dump($this->data); 
+	?>
+</pre>
