@@ -39,6 +39,8 @@ window.addEvent('domready' function(){
 				} else {
 					$i = 0;
 					foreach($value as $index=>$val){
+						//TODO: eerst onderzoeken of er zoiets is als een functie om de diepte van een array vast te stellen, anders als in regel 35
+						//wellicht met callbackfunctie, zie hierhttps://www.google.nl/webhp?source=search_app#hl=nl&tbo=d&output=search&sclient=psy-ab&q=php+map+multidimensional+array&oq=php+map+mult&gs_l=hp.1.0.0i30j0i8i30l3.4629.9412.0.17624.12.12.0.0.0.0.81.567.12.12.0...0.0...1c.1.2.hp.vyfXB5MmrjA&pbx=1&bav=on.2,or.r_gc.r_pw.r_cp.r_qf.&bvm=bv.42261806,d.d2k&fp=f85bd9def51c9e80&biw=1920&bih=979
 						?>
 							<input type="hidden" name="jbl_form[<?php echo $key; ?>][<?php echo $index; ?>]" value="<?php echo $val; ?>" />
 						<?php
