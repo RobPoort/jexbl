@@ -25,15 +25,41 @@ window.addEvent('domready' function(){
 });
 </script>
 <h2>step_3</h2>
-<form method="get" action="">
-	<input type="hidden" name="jbl_form[start_date]" value="<?php echo $this->data['start_date']; ?>" />
-	<input type="hidden" name="jbl_form[end_date]" value="<?php echo $this->data['end_date']; ?>" />
+<form method="post" action="">
+	
+	<?php
+		if($this->data){
+			
+			foreach ($this->data as $key=>$value){
+				if(!is_array($value)){
+					?>
+					<input type="hidden" name="jbl_form[<?php echo $key; ?>]" value="<?php echo $value; ?>" />
+					<?php
+				} else {
+					$i = 0;
+					foreach($value as $index=>$val){
+						?>
+							<input type="hidden" name="jbl_form[<?php echo $key; ?>][<?php echo $index; ?>]" value="<?php echo $val; ?>" />
+						<?php
+						$i++;
+					}
+				}
+				
+			}
+		}
+	?>
 	<input type="hidden" name="task" value="dates.setStep" />	
 	<input type="hidden" name="step" value="1" />
 	<input type="submit" name="buttonprev" class="buttonNext" value="VORIGE" />
 </form>
+<div class="clear"></div>
 <pre>
 	<?php
-		var_dump($this->data); 
+		//TODO: var_dump verwijderen
+	
+		echo '<h2>$this->data:</h2>';
+		var_dump($this->data);
+		echo '<h2>$this->default:</h2>';
+		var_dump($this->default);
 	?>
 </pre>

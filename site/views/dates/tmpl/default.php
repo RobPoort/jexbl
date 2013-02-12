@@ -27,8 +27,8 @@ window.addEvent('domready' function(){
 <form method="post" action="">
 	<fieldset class="jexDatesSelect"><legend>Kies uw aankomst- en vertrekdatum:</legend>
 		<table class="jbl_form_table">
-			<tr><td><label>*Aankomst:&nbsp;</label></td><td><?php echo JHtml::calendar($row->start, 'jbl_form[start_date]', 'start_date', '%d-%m-%Y', 'required="required"');?></td></tr>
-			<tr><td><label>*Vertrek:&nbsp;</label></td><td><?php echo JHtml::calendar($row->date, 'jbl_form[end_date]', 'end_date', '%d-%m-%Y', 'required="required"');?></td></tr>
+			<tr><td><label>*Aankomst:&nbsp;</label></td><td><?php echo JHtml::calendar($this->default['start_date'], 'jbl_form[start_date]', 'start_date', '%d-%m-%Y', 'required="required"');?></td></tr>
+			<tr><td><label>*Vertrek:&nbsp;</label></td><td><?php echo JHtml::calendar($this->default['end_date'], 'jbl_form[end_date]', 'end_date', '%d-%m-%Y', 'required="required"');?></td></tr>
 			<tr><td>&nbsp;</td></tr>
 			<tr><td></td><td><input type="submit" name="sendButton" class="buttonNext" value="VOLGENDE" /></td></tr>
 		</table>
@@ -38,8 +38,14 @@ window.addEvent('domready' function(){
 	<input type="hidden" name="task" value="dates.setStep" />	
 	<input type="hidden" name="step" value="1" />
 </form>
+<div class="clear"></div>
 <pre>
 	<?php
-		var_dump($this->data); 
+		//TODO: var_dump verwijderen
+	
+		echo '<h2>$this->data:</h2>';
+		var_dump($this->data);
+		echo '<h2>$this->default:</h2>';
+		var_dump($this->default);
 	?>
 </pre>

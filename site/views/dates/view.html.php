@@ -17,6 +17,41 @@ class JexBookingViewDates extends JView
 		
 		$this->data = $this->app->input->get("jbl_form", null,null);
 		
+		$this->default = $this->setDefault();
+		
 		parent::display($tpl);
+	}
+	
+	/**
+	 * methode om default waardes in array $this->default te zetten
+	 * @return Array
+	 */
+	private function setDefault(){
+		
+		$app = JFactory::getApplication();
+		$this->data = null;
+		$this->data = $app->input->get("jbl_form", null, null);
+		
+		if($this->data){
+			$default = null;
+			$i = 0;
+			foreach($this->data as $key=>$value){
+				
+				if($key == 'checked'){
+					
+						$default[$key] = $value;
+					
+				} elseif ($key == 'number'){
+					
+						$default[$key] = $value;
+					
+				} else {				
+				$default[$key] = $value;
+				}
+				$i++;
+			}
+		}
+		
+		return $default;
 	}
 }

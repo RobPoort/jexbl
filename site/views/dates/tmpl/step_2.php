@@ -97,7 +97,7 @@ window.addEvent('domready' function(){
 					$number_pp = 2;
 				}
 			?>
-			<tr><td class="jbl_form_left"><label>Aantal personen:&nbsp;</label></td><td class="jbl_form_right"><input type="text" name="jbl_form[number_pp]" value="<?php echo $number_pp;	?>" class="jbl_input_number" />
+			<tr><td class="jbl_form_left"><label>Aantal personen:&nbsp;</label></td><td class="jbl_form_right"><input type="text" name="jbl_form[number_pp]" value="<?php echo (int)$this->default['number_pp'] > 1 ? $this->default['number_pp'] : 2;	?>" class="jbl_input_number" />
 			</td></tr>
 		</table>
 	</fieldset>
@@ -108,11 +108,16 @@ window.addEvent('domready' function(){
 			<table class="jbl_form_table">
 				<?php
 				if($attribs['checked']){
+					
 					$checked = '';
 					foreach($attribs['checked'] as $item){
+						if($this->default['checked']){
+							//var_dump($item->id,$this->default['checked']);
+						}
+						
 					?>
 						<tr>
-						<td class="jbl_form_checkbox"><input type="checkbox" class="jbl_input_checkbox" name="jbl_form[checked][<?php echo $item->id; ?>]" value="1" <?php echo $checked; ?> /></td><td class="jbl_form_left"><label <?php if($item->desc) : ?>class="hasTip" title="<?php echo $item->desc; ?>" <?php endif; ?>><?php echo $item->name; ?>&nbsp;</label></td><td class="jbl_form_right">&nbsp;</td>
+						<td class="jbl_form_checkbox"><input type="checkbox" class="jbl_input_checkbox" name="jbl_form[checked][<?php echo $item->id; ?>]" value="1" <?php if($this->default['checked']){if(array_key_exists($item->id, $this->default['checked'])){ echo 'checked="checked"'; }} ?> /></td><td class="jbl_form_left"><label <?php if($item->desc) : ?>class="hasTip" title="<?php echo $item->desc; ?>" <?php endif; ?>><?php echo $item->name; ?>&nbsp;</label></td><td class="jbl_form_right">&nbsp;</td>
 						</tr>
 					<?php 
 					}
@@ -122,7 +127,7 @@ window.addEvent('domready' function(){
 					foreach($attribs['number'] as $item){
 					?>
 						<tr>
-							<td class="jbl_form_checkbox">&nbsp;</td><td class="jbl_form_left"><label <?php if($item->desc) : ?>class="hasTip" title="<?php echo $item->desc; ?>" <?php endif; ?>><?php echo $item->name; ?></label></td><td class="jbl_form_right">&nbsp;x&nbsp;<input type="text" name="jbl_form[number][<?php echo $item->id; ?>]" value="<?php echo $value; ?>" class="jbl_input_number" /></td>
+							<td class="jbl_form_checkbox">&nbsp;</td><td class="jbl_form_left"><label <?php if($item->desc) : ?>class="hasTip" title="<?php echo $item->desc; ?>" <?php endif; ?>><?php echo $item->name; ?></label></td><td class="jbl_form_right">&nbsp;x&nbsp;<input type="text" name="jbl_form[number][<?php echo $item->id; ?>]" value="<?php if($this->default['number']){if(array_key_exists($item->id, $this->default['number'])){echo $this->default['number'][$item->id];}} ?>" class="jbl_input_number" /></td>
 						</tr>
 					<?php
 						
@@ -140,7 +145,9 @@ window.addEvent('domready' function(){
 	<input type="hidden" name="step" value="2" />
 	<input type="submit" name="buttonNext" class="buttonNext" value="VOLGENDE" />
 </form>
-<form method="get" action="">
+<form method="post" action="">
+	<input type="hidden" name="jbl_form[start_date]" value="<?php echo $this->data['start_date']; ?>" />
+	<input type="hidden" name="jbl_form[end_date]" value="<?php echo $this->data['end_date']; ?>" />
 	<input type="hidden" name="task" value="dates.setStep" />	
 	<input type="hidden" name="step" value="0" />
 	<input type="submit" name="buttonprev" class="buttonNext" value="VORIGE" />
@@ -148,6 +155,11 @@ window.addEvent('domready' function(){
 <div class="clear"></div>
 <pre>
 	<?php
-		var_dump($this->data); 
+		//TODO: var_dump verwijderen
+	
+		echo '<h2>$this->data:</h2>';
+		var_dump($this->data);
+		echo '<h2>$this->default:</h2>';
+		var_dump($this->default);
 	?>
 </pre>
