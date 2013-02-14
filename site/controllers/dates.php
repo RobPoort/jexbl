@@ -72,8 +72,8 @@ class JexBookingControllerDates extends JController
 		}
 	}
 	/**
-	 * method om de prijsberekening te maken
-	 * @return Object
+	 * method om de prijsberekening te maken en in userState te zetten
+	 * @return Void
 	 */
 	//TODO: de percentageprijzen in aparte functie?
 	private function calculatePrice(){
@@ -82,29 +82,50 @@ class JexBookingControllerDates extends JController
 		
 		$this->data = $app->input->get("jbl_form", null, null);
 		
+		$this->locationId = (int)$app->input->get("location_id");
+		
 		//indien $this->overlap == null, dan geen arrangement van toepassing, anders arrangement prijs ophalen in function calcArr(), want andere gegevens
 		//TODO: moet opgevraagd worden vóór percentage berekend gaat worden, indien van toepassing
 		$this->overlap = $app->getUserState("option_jbl_overlap");
 		
 		if($this->overlap){
-			$this->arrPrice = $this->calcArr($this->data);
+			$this->arrPrice = $this->calcArr($this->locationId,$this->data,$this->overlap);
+		}
+		
+		
+		$this->calculatePrice->locationId = $this->locationId;
+		$this->calculatePrice->form_data = $this->data;
+		
+		if($this->arrPrice){
+			$this->calculatePrice->arrPrice = $this->arrPrice;
 		}
 		
 		$app->setUserState("option_jbl.calcPrice", null);
 		
-		$app->setUserState("option_jbl.calcPrice", $this->overlap);
+		$app->setUserState("option_jbl.calcPrice", $this->calculatePrice);
 		
 		$this->calcPrice = $app->getUserState("option_jbl.calcPrice");
 		
 		
-		return $this->calcPrice;
+		
 	}
 	/**
 	 * method om arrangementskosten op te vragen, indien er overlap is($this->overlap != null)
+	 * @param int $locationId
 	 * @param Object $data
+	 * @param Object $overlap
+	 * 
+	 * @return Object $this->arrPrice
 	 */
-	private function calcArr($data){
+	private function calcArr($locationId,$data,$overlap){
 		
+		$arrPrice->locationId = $location_id;
+		$arrPrice->start = $data['start_date'];
+		$arrPrice->end = $data['end_date'];
+		$arrPrice->form_data = $data;
+		$arrPrice->arrangement = $overlap['arrangement'];
+		
+		$this->arrPrice = $arrPrice;
 		
 		return $this->arrPrice;
 	}
