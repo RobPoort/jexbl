@@ -25,13 +25,7 @@ window.addEvent('domready' function(){
 	});
 });
 </script>
-<pre>
-<?php
-//TODO: var_dump verwijderen
 
-//var_dump($attribs = $this->item['attribs']['special']['not_required']); 
-?>
-</pre>
 <form action="" method="post">
 	<fieldset class="jbl_form" id="jbl_has_number"><legend <?php if($item->desc) : ?>class="hasTip" title="<?php echo $item->desc; ?>" <?php endif; ?>><?php echo ucfirst($item->name);?></legend>
 		<table class="jbl_form_table">

@@ -27,6 +27,11 @@ window.addEvent('domready' function(){
 
 <form method="post" action="">
 	<fieldset class="jbl_form" id="jbl_has_number"><legend>Uw prijsberekening:</legend>
+		<pre>
+			<?php
+				var_dump($this->calcPrice); 
+			?>
+		</pre>
 	</fieldset>
 	<?php
 		if($this->data){

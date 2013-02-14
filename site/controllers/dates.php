@@ -24,6 +24,7 @@ class JexBookingControllerDates extends JController
 				$this->checkForArr();
 				break;
 			case 2:
+				$this->calcPrice = $this->calculatePrice();
 				$this->app->input->set('layout', 'step_3');
 				break;
 			case 3:
@@ -69,5 +70,42 @@ class JexBookingControllerDates extends JController
 		if($arrangements){
 			$this->app->setUserState("option_jbl_overlap", $arrangements);
 		}
+	}
+	/**
+	 * method om de prijsberekening te maken
+	 * @return Object
+	 */
+	//TODO: de percentageprijzen in aparte functie?
+	private function calculatePrice(){
+		
+		$app = JFactory::getApplication();
+		
+		$this->data = $app->input->get("jbl_form", null, null);
+		
+		//indien $this->overlap == null, dan geen arrangement van toepassing, anders arrangement prijs ophalen in function calcArr(), want andere gegevens
+		//TODO: moet opgevraagd worden vóór percentage berekend gaat worden, indien van toepassing
+		$this->overlap = $app->getUserState("option_jbl_overlap");
+		
+		if($this->overlap){
+			$this->arrPrice = $this->calcArr($this->data);
+		}
+		
+		$app->setUserState("option_jbl.calcPrice", null);
+		
+		$app->setUserState("option_jbl.calcPrice", $this->overlap);
+		
+		$this->calcPrice = $app->getUserState("option_jbl.calcPrice");
+		
+		
+		return $this->calcPrice;
+	}
+	/**
+	 * method om arrangementskosten op te vragen, indien er overlap is($this->overlap != null)
+	 * @param Object $data
+	 */
+	private function calcArr($data){
+		
+		
+		return $this->arrPrice;
 	}
 }
