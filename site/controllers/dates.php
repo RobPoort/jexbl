@@ -119,12 +119,26 @@ class JexBookingControllerDates extends JController
 	 */
 	private function calcArr($locationId,$data,$overlap){
 		
-		$arrPrice->locationId = $location_id;
-		$arrPrice->start = $data['start_date'];
-		$arrPrice->end = $data['end_date'];
-		$arrPrice->form_data = $data;
-		$arrPrice->arrangement = $overlap['arrangement'];
-		//TODO: prijs en attrib prijs: moeten iets hebben als $price_message[], zodat bv voor elk attrib price mess. komt als '3 x linnen' of ' prijs x v personen'
+		
+		//$arrPrice['start'] = $data['start_date'];
+		//$arrPrice['end'] = $data['end_date'];
+				
+		$number_pp = (int)$data['number_pp'];
+		
+		$arr = $overlap['arrangement'];
+		
+		$arrPrice['calc'] = array();
+		$arrPrice['calc']['price_message'] = array();
+		
+		if($arr->is_pp){
+			if($arr->use_extra_pp){
+				$arrPrice['calc']['arr_price'] = number_format($arr->price + (($number_pp - 1) * $arr->extra_pp));
+				$arrPrice['calc']['price_message'][] = '1 persoon &euro;&nbsp;'.number_format($arr->price,2, ',', '.').',';
+				$arrPrice['calc']['price_message'][] = 'de volgende '.($number_pp - 1).' personen &euro;&nbsp;'.number_format($arr->extra_pp, 2, ',', '.').' per persson.';
+			}
+		}
+		
+		
 		$this->arrPrice = $arrPrice;
 		
 		return $this->arrPrice;
