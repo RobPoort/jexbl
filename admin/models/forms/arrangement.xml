@@ -70,11 +70,30 @@
 			required="true"
 		/>
 		<field
+			name="extra_pp"
+			type="text"
+			label="COM_JEXBOOKING_ARRANGEMENT_EXTRA__PP_LABEL"
+			description="COM_JEXBOOKING_ARRANGEMENT_EXTRA_PP_DESC"
+			default="0.00"
+			required="false"
+		/>
+		<field
 			name="is_pp"
 			type="list"
 			label="COM_JEXBOOKING_ARRANGEMENT_IS_PP_LABEL"
 			description="COM_JEXBOOKING_ARRANGEMENT_IS_PP_DESC"
 			default="1"
+			required="false"
+		>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field
+			name="use_extra_pp"
+			type="list"
+			label="COM_JEXBOOKING_ARRANGEMENT_USE_EXTRA_PP_LABEL"
+			description="COM_JEXBOOKING_ARRANGEMENT_USE_EXTRA_PP_DESC"
+			default="0"
 			required="false"
 		>
 			<option value="1">JYES</option>

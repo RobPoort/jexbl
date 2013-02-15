@@ -65,7 +65,7 @@ class JexBookingControllerDates extends JController
 	
 		$model = $this->getModel('dates');
 		$arrangements = $model->getArrangements($locationId,$startDate,$endDate);
-	
+	//TODO: 'arrangement' in $arrangements heeft nog geen prijsberekening. Moet ook via calcArr: $arrangements['arrangement'] = calcArr();
 		$this->app->setUserState("option_jbl_overlap", null);
 		if($arrangements){
 			$this->app->setUserState("option_jbl_overlap", $arrangements);
@@ -124,7 +124,7 @@ class JexBookingControllerDates extends JController
 		$arrPrice->end = $data['end_date'];
 		$arrPrice->form_data = $data;
 		$arrPrice->arrangement = $overlap['arrangement'];
-		
+		//TODO: prijs en attrib prijs: moeten iets hebben als $price_message[], zodat bv voor elk attrib price mess. komt als '3 x linnen' of ' prijs x v personen'
 		$this->arrPrice = $arrPrice;
 		
 		return $this->arrPrice;
