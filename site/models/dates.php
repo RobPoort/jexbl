@@ -181,7 +181,7 @@ class JexBookingModelDates extends JModel
 						
 					case ($date->start >= $date->arrStart && $date->start <= $date->arrEnd && $date->end <= $date->arrEnd && $date->end >= $date->arrStart):
 						//periode valt geheel binnen arrangement
-						$result['overlap_message'] = 'De door u gekozen periode valt geheel binnen het '.ucwords($row->name).' arrangement. De kosten van de door u gekozen periode is gelijk aan die van het arrangement.';
+						$result['overlap_message'] = 'De door u gekozen periode valt geheel binnen het '.ucwords($row->name).' arrangement. De prijs van de door u gekozen periode is gelijk aan die van het arrangement.';
 						$result['buiten_arr'] = 0;
 						$result['arrangement'] = $row;
 						
