@@ -24,7 +24,6 @@ window.addEvent('domready' function(){
 	});
 });
 </script>
-
 <form method="post" action="">
 	<fieldset class="jbl_form" id="jbl_has_number"><legend>Uw prijsberekening:</legend>
 		<?php if($this->calcPrice->arrPrice) : ?>
@@ -37,11 +36,6 @@ window.addEvent('domready' function(){
 				<?php endforeach; ?>
 			</table>
 		<?php endif; ?>
-		<pre>
-			<?php
-				//var_dump($this->calcPrice->arrPrice); 
-			?>
-		</pre>
 	</fieldset>
 	<?php
 		if($this->data){

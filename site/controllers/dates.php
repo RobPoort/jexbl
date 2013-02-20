@@ -133,7 +133,7 @@ class JexBookingControllerDates extends JController
 		if($arr->is_pp){
 			if($arr->use_extra_pp){
 				$arrPrice['calc']['arr_price'] = number_format($arr->price + (($number_pp - 1) * $arr->extra_pp));
-				$arrPrice['calc']['price_message'][] = '1 persoon &euro;&nbsp;'.number_format($arr->price,2, ',', '.').',';
+				$arrPrice['calc']['price_message'][] = '1ste persoon &euro;&nbsp;'.number_format($arr->price,2, ',', '.').',';
 				$arrPrice['calc']['price_message'][] = 'de volgende '.($number_pp - 1).' personen &euro;&nbsp;'.number_format($arr->extra_pp, 2, ',', '.').' per persoon.';
 			}
 		}

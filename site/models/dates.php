@@ -216,4 +216,17 @@ class JexBookingModelDates extends JModel
 		
 	}
 	
+	/**
+	 * method om de default prices op te halen aan de hand van locatie en periode
+	 * @param $locationId
+	 * @param $startDate
+	 * @param $endDate
+	 * @return Object
+	 */
+	public function getPrices($locationId,$startDate,$endDate){
+		
+		//het gaat om de periode, of de periode minus de dagen die eventueel in een arrangement vallen
+		
+	}
+	
 }
