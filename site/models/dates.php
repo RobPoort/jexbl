@@ -243,7 +243,13 @@ class JexBookingModelDates extends JModel
 		
 		$prices = $db->loadObjectList();
 		if($prices){
-			$this->prices->prices = $prices;
+			//$this->prices->prices = $prices;
+			$dateTimes = array();
+			foreach($prices as $price){
+				$dateTimes[$price->id]['start'] = new DateTime($price->start_date);
+				$dateTimes[$price->id]['end'] = new DateTime($price->end_date);
+			}
+			$this->prices->price_periods = $dateTimes;
 		}
 		
 		return $this->prices;
