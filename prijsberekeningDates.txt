@@ -1,0 +1,27 @@
+Prijsberekening Dates
+
+SCENARIOS:
+
+1. Geen overlap:
+
+	1.1	Haal prijsperiodes op en converteer tot DateTime objects
+
+	1.2	bereken in welke prijsperiodes de verblijfsperiode valt
+
+	1.3	Per periode:
+		
+		aantal dagen * prijs ( * aantal personen (indien pp.) ) + attributenberekening
+
+2. Wel overlap:
+
+	2.1	haal prijsperiodes op en converteer tot DateTime objects
+
+	2.2	bepaal dagen die buiten overlap vallen
+
+		indien 0:
+
+		arrangementsprijs ( * aantal personen )
+
+		indien > 0:
+
+		Maak van alle aaneengesloten dagen buiten overlap een nieuwe verblijsperiode en doorloop stap 1.3
