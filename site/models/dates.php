@@ -221,12 +221,32 @@ class JexBookingModelDates extends JModel
 	 * @param $locationId
 	 * @param $startDate
 	 * @param $endDate
+	 * $param $overlap
 	 * @return Object
 	 */
-	public function getPrices($locationId,$startDate,$endDate){
+	public function getPrices($locationId,$startDate,$endDate,$overlap){
 		
 		//het gaat om de periode, of de periode minus de dagen die eventueel in een arrangement vallen
 		
+		$start = $startDate;
+		$end = $endDate;
+		
+		$this->prices->startDate = $start;
+		//$this->prices->end = $end;
+		
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$query->from('#__jexbooking_default_prices');
+		$query->where('location_id='.$locationId);
+		$query->select('start_date,end_date,id');
+		$db->setQuery($query);
+		
+		$prices = $db->loadObjectList();
+		if($prices){
+			$this->prices->prices = $prices;
+		}
+		
+		return $this->prices;
 	}
 	
 }

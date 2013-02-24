@@ -22,6 +22,7 @@ class JexBookingControllerDates extends JController
 			case 1:
 				$this->app->input->set('layout', 'step_2');
 				$this->checkForArr();
+				$this->getPrices();
 				break;
 			case 2:
 				$this->calcPrice = $this->calculatePrice();
@@ -92,7 +93,6 @@ class JexBookingControllerDates extends JController
 			$this->arrPrice = $this->calcArr($this->locationId,$this->data,$this->overlap);
 		}
 		
-		
 		$this->calculatePrice->locationId = $this->locationId;
 		$this->calculatePrice->form_data = $this->data;
 		
@@ -142,5 +142,24 @@ class JexBookingControllerDates extends JController
 		$this->arrPrice = $arrPrice;
 		
 		return $this->arrPrice;
+	}
+	
+	private function getPrices(){
+		
+		$this->app = JFactory::getApplication();
+		
+		//eerst start en enddate uit form halen + $location_id en eventuele overlap
+		$date = $this->app->input->get("jbl_form",null,null);
+		$this->locationId = (int)$this->app->input->get("location_id");
+		$this->overlap = $this->app->getUserState("option_jbl_overlap");
+		
+		$startDate = new DateTime($date['start_date']);
+		$endDate = new DateTime($date['end_date']);
+		$locationId = $this->locationId;
+		
+		$model = $this->getModel('dates');
+		$this->prices = $model->getPrices($locationId,$startDate,$endDate,$this->overlap);
+		
+		$this->app->setUserState("option_jbl.prices", $this->prices);
 	}
 }

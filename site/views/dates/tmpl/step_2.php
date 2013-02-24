@@ -164,7 +164,11 @@ window.addEvent('domready' function(){
 <pre>
 	<?php
 		//TODO: var_dump verwijderen
-	
+		
+		$this->prices = $this->app->getUserState("option_jbl.prices");
+		
+		echo '<h2>$this->prices</h2>';
+		var_dump($this->prices);
 		echo '<h2>$this->data:</h2>';
 		var_dump($this->data);
 		echo '<h2>$this->default:</h2>';
