@@ -73,7 +73,7 @@ window.addEvent('domready' function(){
 					?>
 						<tr><td class="jbl_form_left">Gekozen periode:</td><td></td></tr>
 						<tr><td class="jbl_form_left">Van:&nbsp;<?php echo $this->item['aankomst']; ?></td><td>Tot:&nbsp;<?php echo $this->item['vertrek']; ?></td></tr>
-						<tr><td class="jbl_form_left">Dit is <?php echo $this->item['nights']; ?>&nbsp;
+						<tr><td class="jbl_form_left">Dit is <?php echo floor($this->item['nights'];) ?>&nbsp;
 						<?php
 							if($this->item['nights'] == 1){
 								echo 'dag';

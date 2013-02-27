@@ -51,7 +51,7 @@ window.addEvent('domready' function(){
             minDate: "+1",
 			defaultDate: "+1",
 			dateFormat: "dd-mm-yy",
-			beforeShowDay: onlyDays,
+			
 			changeMonth: true,
             onSelect: function(dateText, inst){
                 var day =
