@@ -73,7 +73,7 @@ window.addEvent('domready' function(){
 					?>
 						<tr><td class="jbl_form_left">Gekozen periode:</td><td></td></tr>
 						<tr><td class="jbl_form_left">Van:&nbsp;<?php echo $this->item['aankomst']; ?></td><td>Tot:&nbsp;<?php echo $this->item['vertrek']; ?></td></tr>
-						<tr><td class="jbl_form_left">Dit is <?php echo floor($this->item['nights'];) ?>&nbsp;
+						<tr><td class="jbl_form_left">Dit is <?php echo floor($this->item['nights']); ?>&nbsp;
 						<?php
 							if($this->item['nights'] == 1){
 								echo 'dag';
@@ -163,10 +163,10 @@ window.addEvent('domready' function(){
 <div class="clear"></div>
 <pre>
 	<?php
-		//TODO: var_dump verwijderen
-		
+		//TODO: var_dump verwijderen		
 		$this->prices = $this->app->getUserState("option_jbl.prices");
-		
+		echo '<h2>$this->overlap</h2>';
+		var_dump($this->overlap);	
 		echo '<h2>$this->prices</h2>';
 		var_dump($this->prices);
 		echo '<h2>$this->data:</h2>';

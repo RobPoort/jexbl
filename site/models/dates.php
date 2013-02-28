@@ -231,9 +231,14 @@ class JexBookingModelDates extends JModel
 		$start = $startDate;
 		$end = $endDate;
 		
-		$this->prices->startDate = $start;
-		//$this->prices->end = $end;
+		$this->app = JFactory::getApplication();
 		
+		$overlap = $this->app->getUserState('option_jbl_overlap');
+		
+		$this->prices->startDate = $start;
+		$this->prices->endDate = $end;
+		
+		//eerst de start_date en end_dates ophalen van de prijsperiodes voor deze locatie
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query->from('#__jexbooking_default_prices');
@@ -242,14 +247,36 @@ class JexBookingModelDates extends JModel
 		$db->setQuery($query);
 		
 		$prices = $db->loadObjectList();
-		if($prices){
-			//$this->prices->prices = $prices;
+		
+		//van de start_dates en end_dates van de prijsperiodes DateTime objects maken en in array $dateTimes zetten
+		if($prices){			
 			$dateTimes = array();
 			foreach($prices as $price){
 				$dateTimes[$price->id]['start'] = new DateTime($price->start_date);
 				$dateTimes[$price->id]['end'] = new DateTime($price->end_date);
 			}
 			$this->prices->price_periods = $dateTimes;
+			$this->prices->overlap = $overlap;
+		}
+		
+		//nu de verblijfsperiode checken tegen overlap en prijsperiodes. Indien geen overlap en maar 1 prijsperiode, verder. Anders verblijfsperiode opknippen in losse verblijsperiodes
+		
+		//TODO: er is geen check of er overlap is van verschillende prijsperiodes, moet uiteindelijk wel. Nu opletten op datum bij invoeren prijsperiodes in backend
+		
+		//eerst zonder overlap
+		
+		$this->prices->pricePeriods = array();
+		
+		if($overlap == null){
+			//beginnen met de startDate
+			foreach($dateTimes as $key=>$value){
+				if($start >= $value['start'] && $start < $value['end']){
+					$this->prices->startPeriod = $key;
+				}
+				if($end >= $value['start'] && $end < $value['end']){
+					$this->prices->endPeriode = $key;
+				}
+			}
 		}
 		
 		return $this->prices;

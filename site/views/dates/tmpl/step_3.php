@@ -83,7 +83,9 @@ window.addEvent('domready' function(){
 		//TODO: var_dump verwijderen
 		
 		$this->prices = $this->app->getUserState("option_jbl.prices");
-		
+
+		echo '<h2>$this->overlap</h2>';
+		var_dump($this->overlap);
 		echo '<h2>$this->prices</h2>';
 		var_dump($this->prices);
 		echo '<h2>$this->data:</h2>';
