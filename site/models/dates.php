@@ -242,8 +242,8 @@ class JexBookingModelDates extends JModel
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query->from('#__jexbooking_default_prices');
-		$query->where('location_id='.$locationId.' AND is_default=0');
-		$query->select('start_date,end_date,id');
+		$query->where('location_id='.$locationId);
+		$query->select('*');
 		$db->setQuery($query);
 		
 		$prices = $db->loadObjectList();
@@ -254,6 +254,7 @@ class JexBookingModelDates extends JModel
 			foreach($prices as $price){
 				$dateTimes[$price->id]['start'] = new DateTime($price->start_date);
 				$dateTimes[$price->id]['end'] = new DateTime($price->end_date);
+				$dateTimes[$price->id]['priceObject'] = $price;
 			}
 			$this->prices->price_periods = $dateTimes;
 			$this->prices->overlap = $overlap;
@@ -270,13 +271,27 @@ class JexBookingModelDates extends JModel
 		if($overlap == null){
 			//beginnen met de startDate
 			foreach($dateTimes as $key=>$value){
-				if($start >= $value['start'] && $start < $value['end']){
+				if($start >= $value['start'] && $start < $value['end'] && $value['priceObject']->is_default == 0){
 					$this->prices->startPeriod = $key;
 				}
-				if($end >= $value['start'] && $end < $value['end']){
+				if($end >= $value['start'] && $end < $value['end'] && $value['priceObject']->is_default == 0){
 					$this->prices->endPeriod = $key;
 					//TODO: als er geen prijsperiode voor een bepaalde datum is, dan is result null. Moet dus een default komen of nadruk op zo volledig mogelijk jaar invullen.
 					// default is beter, omdat dan ook gereserveerd kan worden in periode waarvoor nog geen nieuwe prijs is (bv. jaar later)
+				}
+			}
+			if($this->prices->startPeriod == null){
+				foreach($dateTimes as $key=>$value){
+					if($start >= $value['start'] && $start < $value['end'] && $value['priceObject']->is_default == 1){
+						$this->prices->startPeriod = $key;
+					}
+				}
+			}
+			if($this->prices->endPeriod == null){
+			foreach($dateTimes as $key=>$value){
+					if($end >= $value['start'] && $end < $value['end'] && $value['priceObject']->is_default == 1){
+						$this->prices->endPeriod = $key;
+					}
 				}
 			}
 			//checken of het één of meer prijsperiodes betreft
@@ -294,11 +309,14 @@ class JexBookingModelDates extends JModel
 				foreach($dateTimes as $key=>$value){
 					//alle prijsperiodes uit $dateTimes langsgaan, uitzondering maken voor $startPricePeriod en$endPricePeriod
 					
-					if($value['start'] > $start && $value['end'] < $end && $key != $startPricePeriod && $key != $endPricePeriod){
+					if($value['start'] > $start && $value['end'] < $end && $key != $startPricePeriod && $key != $endPricePeriod && $value['priceObject']->is_default == 0){
 						$this->prices->pricePeriods[] = $key;
 					}
 				}
 			}
+		} else { // als $overlap != null
+			//eerst aantal dagen buiten arrangement bepalen, daarna opdelen in 1 of meer verblijsperiodes
+			//die gewoon door bovenstaande molen halen, bv. door if()statement op regel 271 uit te breiden met een OR statement
 		}
 		
 		return $this->prices;
