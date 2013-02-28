@@ -274,7 +274,27 @@ class JexBookingModelDates extends JModel
 					$this->prices->startPeriod = $key;
 				}
 				if($end >= $value['start'] && $end < $value['end']){
-					$this->prices->endPeriode = $key;
+					$this->prices->endPeriod = $key;
+				}
+			}
+			//checken of het één of meer prijsperiodes betreft
+			if($this->prices->startPeriod == $this->prices->endPeriod){
+				//1 prijsperiode
+				$this->prices->pricePeriods[] = $this->prices->startPeriod;
+			} else {
+				//meer prijsperiodes, eerst begin-prijsperiode en eind-prijsperiode, daarna checken of er nog prijsperiodes tussenvallen
+				$startPricePeriod = $this->prices->startPeriod;
+				$endPricePeriod = $this->prices->endPeriod;
+				
+				$this->prices->pricePeriods[] = $startPricePeriod;
+				$this->prices->pricePeriods[] = $endPricePeriod;
+				
+				foreach($dateTimes as $key=>$value){
+					//alle prijsperiodes uit $dateTimes langsgaan, uitzondering maken voor $startPricePeriod en$endPricePeriod
+					
+					if($value['start'] > $start && $value['end'] < $end && $key != $startPricePeriod && $key != $endPricePeriod){
+						$this->prices->pricePeriods[] = $key;
+					}
 				}
 			}
 		}
