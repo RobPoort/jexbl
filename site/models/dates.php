@@ -242,7 +242,7 @@ class JexBookingModelDates extends JModel
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query->from('#__jexbooking_default_prices');
-		$query->where('location_id='.$locationId);
+		$query->where('location_id='.$locationId.' AND is_default=0');
 		$query->select('start_date,end_date,id');
 		$db->setQuery($query);
 		
@@ -275,6 +275,8 @@ class JexBookingModelDates extends JModel
 				}
 				if($end >= $value['start'] && $end < $value['end']){
 					$this->prices->endPeriod = $key;
+					//TODO: als er geen prijsperiode voor een bepaalde datum is, dan is result null. Moet dus een default komen of nadruk op zo volledig mogelijk jaar invullen.
+					// default is beter, omdat dan ook gereserveerd kan worden in periode waarvoor nog geen nieuwe prijs is (bv. jaar later)
 				}
 			}
 			//checken of het één of meer prijsperiodes betreft

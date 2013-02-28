@@ -73,7 +73,7 @@
 			name="extra_pp"
 			type="text"
 			label="COM_JEXBOOKING_ARRANGEMENT_EXTRA__PP_LABEL"
-			description="COM_JEXBOOKING_ARRANGEMENT_EXTRA_PP_DESC"
+			description="COM_JEXBOOKING_ARRANGEMENT_EXTRA__PP_DESC"
 			default="0.00"
 			required="false"
 		/>

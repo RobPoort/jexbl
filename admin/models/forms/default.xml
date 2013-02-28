@@ -69,7 +69,17 @@
 			description="COM_JEXBOOKING_DEFAULT_PRICES_LOCATION_DESC"
 			default=""
 			required="true"
-		/>		
+		/>
+		<field
+			name="is_default"
+			type="list"
+			label="COM_JEXBOOKING_DEFAULT_PRICES_IS_DEFAULT_LABEL"
+			description="COM_JEXBOOKING_DEFAULT_PRICES_IS_DEFAULT_DESC"
+			default="0"
+		>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>		
 		<field
 			name="published"
 			type="list"
