@@ -260,14 +260,16 @@ class JexBookingModelDates extends JModel
 			$this->prices->overlap = $overlap;
 		}
 		
+		//verblijfsperiode - overlap opdelen in verblijfsperiode(s)
+		
+		if($overlap){
+			
+		}
+		
 		//nu de verblijfsperiode checken tegen overlap en prijsperiodes. Indien geen overlap en maar 1 prijsperiode, verder. Anders verblijfsperiode opknippen in losse verblijsperiodes
 		
-		//TODO: er is geen check of er overlap is van verschillende prijsperiodes, moet uiteindelijk wel. Nu opletten op datum bij invoeren prijsperiodes in backend
-		
-		//eerst zonder overlap
-		
 		$this->prices->pricePeriods = array();
-		
+		//TODO: NB!! Onderstaande moet anders: niet if() statement over $overlap, maar hierboven eerst verblijfsperiodes maken van/rond overlap, en DAN pas onderstaande
 		if($overlap == null){
 			//beginnen met de startDate
 			foreach($dateTimes as $key=>$value){
