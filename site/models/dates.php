@@ -290,7 +290,56 @@ class JexBookingModelDates extends JModel
 			$this->prices->buitenArrPeriods = $buitenArrPeriods;
 			
 		}
-		
+		if(!empty($buitenArrPeriods)){
+			foreach($buitenArrPeriods as $stayPeriod){
+				//TODO begin test buitenArrPeriods
+				//beginnen met de startDate
+				foreach($dateTimes as $key=>$value){
+					if($stayPeriod['start'] >= $value['start'] && $stayPeriod['start'] < $value['end'] && $value['priceObject']->is_default == 0){
+						$this->prices->startPeriod = $key;
+					}
+					if($stayPeriod['end'] >= $value['start'] && $stayPeriod['end'] < $value['end'] && $value['priceObject']->is_default == 0){
+						$this->prices->endPeriod = $key;
+						//TODO: als er geen prijsperiode voor een bepaalde datum is, dan is result null. Moet dus een default komen of nadruk op zo volledig mogelijk jaar invullen.
+						// default is beter, omdat dan ook gereserveerd kan worden in periode waarvoor nog geen nieuwe prijs is (bv. jaar later)
+					}
+				}
+				if($this->prices->startPeriod == null){
+					foreach($dateTimes as $key=>$value){
+						if($stayPeriod['start'] >= $value['start'] && $stayPeriod['start'] < $value['end'] && $value['priceObject']->is_default == 1){
+							$this->prices->startPeriod = $key;
+						}
+					}
+				}
+				if($this->prices->endPeriod == null){
+					foreach($dateTimes as $key=>$value){
+						if($stayPeriod['en'] >= $value['start'] && $stayPeriod['end'] < $value['end'] && $value['priceObject']->is_default == 1){
+							$this->prices->endPeriod = $key;
+						}
+					}
+				}
+				//checken of het één of meer prijsperiodes betreft
+				if($this->prices->startPeriod == $this->prices->endPeriod){
+					//1 prijsperiode
+					$this->prices->pricePeriods[]['priceId'] = $this->prices->startPeriod;
+				} else {
+					//meer prijsperiodes, eerst begin-prijsperiode en eind-prijsperiode, daarna checken of er nog prijsperiodes tussenvallen
+					$startPricePeriod = $this->prices->startPeriod;
+					$endPricePeriod = $this->prices->endPeriod;
+				
+					$this->prices->pricePeriods[]['priceId'] = $startPricePeriod;
+					$this->prices->pricePeriods[]['priceId'] = $endPricePeriod;
+				
+					foreach($dateTimes as $key=>$value){
+						//alle prijsperiodes uit $dateTimes langsgaan, uitzondering maken voor $startPricePeriod en$endPricePeriod
+							
+						if($value['start'] > $stayPeriod['start'] && $value['end'] < $stayPeriod['end'] && $key != $startPricePeriod && $key != $endPricePeriod && $value['priceObject']->is_default == 0){
+							$this->prices->pricePeriods[]['priceId'] = $key;
+						}
+					}
+				}//TODO eind test buitenArrPeriods
+			}
+		}
 		//nu de verblijfsperiode checken tegen overlap en prijsperiodes. Indien geen overlap en maar 1 prijsperiode, verder. Anders verblijfsperiode opknippen in losse verblijsperiodes
 		
 		
@@ -324,7 +373,7 @@ class JexBookingModelDates extends JModel
 			//checken of het één of meer prijsperiodes betreft
 			if($this->prices->startPeriod == $this->prices->endPeriod){
 				//1 prijsperiode
-				$this->prices->pricePeriods[] = $this->prices->startPeriod;
+				$this->prices->pricePeriods[]['priceId'] = $this->prices->startPeriod;
 			} else {
 				//meer prijsperiodes, eerst begin-prijsperiode en eind-prijsperiode, daarna checken of er nog prijsperiodes tussenvallen
 				$startPricePeriod = $this->prices->startPeriod;
