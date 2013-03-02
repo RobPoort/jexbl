@@ -256,19 +256,44 @@ class JexBookingModelDates extends JModel
 				$dateTimes[$price->id]['end'] = new DateTime($price->end_date);
 				$dateTimes[$price->id]['priceObject'] = $price;
 			}
-			$this->prices->price_periods = $dateTimes;
-			$this->prices->overlap = $overlap;
+			//$this->prices->price_periods = $dateTimes;
+			//$this->prices->overlap = $overlap;
 		}
 		
 		//verblijfsperiode - overlap opdelen in verblijfsperiode(s)
+		$this->prices->pricePeriods = array();
+		
+		$buitenArrPeriods = array();
 		
 		if($overlap){
+			$startArr = new DateTime($overlap['arrangement']->start_date);
+			$endArr = new DateTime($overlap['arrangement']->end_date);			
+			
+			if($start < $startArr && $end <= $endArr){
+				
+				$buitenArrPeriods[0]['start'] = $start;
+				$buitenArrPeriods[0]['end'] = $startArr;
+				
+			} elseif($start > $startArr && $end > $endArr){
+							
+				$buitenArrPeriods[0]['start'] = $endArr;
+				$buitenArrPeriods[0]['end'] = $end;
+				
+			} elseif($start < $startArr && $end > $endArr){
+				
+				$buitenArrPeriods[0]['start'] = $start;
+				$buitenArrPeriods[0]['end'] = $startArr;
+				
+				$buitenArrPeriods[1]['start'] = $endArr;
+				$buitenArrPeriods[1]['end'] = $end;
+			}
+			$this->prices->buitenArrPeriods = $buitenArrPeriods;
 			
 		}
 		
 		//nu de verblijfsperiode checken tegen overlap en prijsperiodes. Indien geen overlap en maar 1 prijsperiode, verder. Anders verblijfsperiode opknippen in losse verblijsperiodes
 		
-		$this->prices->pricePeriods = array();
+		
 		//TODO: NB!! Onderstaande moet anders: niet if() statement over $overlap, maar hierboven eerst verblijfsperiodes maken van/rond overlap, en DAN pas onderstaande
 		if($overlap == null){
 			//beginnen met de startDate
@@ -305,14 +330,14 @@ class JexBookingModelDates extends JModel
 				$startPricePeriod = $this->prices->startPeriod;
 				$endPricePeriod = $this->prices->endPeriod;
 				
-				$this->prices->pricePeriods[] = $startPricePeriod;
-				$this->prices->pricePeriods[] = $endPricePeriod;
+				$this->prices->pricePeriods[]['priceId'] = $startPricePeriod;
+				$this->prices->pricePeriods[]['priceId'] = $endPricePeriod;
 				
 				foreach($dateTimes as $key=>$value){
 					//alle prijsperiodes uit $dateTimes langsgaan, uitzondering maken voor $startPricePeriod en$endPricePeriod
 					
 					if($value['start'] > $start && $value['end'] < $end && $key != $startPricePeriod && $key != $endPricePeriod && $value['priceObject']->is_default == 0){
-						$this->prices->pricePeriods[] = $key;
+						$this->prices->pricePeriods[]['priceId'] = $key;
 					}
 				}
 			}
