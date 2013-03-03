@@ -25,7 +25,9 @@ window.addEvent('domready' function(){
 	});
 });
 </script>
-
+<?php 
+$this->prices = $this->app->getUserState("option_jbl.prices");
+?>
 <form action="" method="post">
 	<fieldset class="jbl_form" id="jbl_has_number"><legend <?php if($item->desc) : ?>class="hasTip" title="<?php echo $item->desc; ?>" <?php endif; ?>><?php echo ucfirst($item->name);?></legend>
 		<table class="jbl_form_table">
@@ -67,13 +69,37 @@ window.addEvent('domready' function(){
 							echo 'dagen';
 						}
 					?>
-					</td><td></td></tr>
+					</td><td></td>
+					</tr>
+					<?php if(!empty($this->prices->pricePeriods)) : ?>
+						<?php foreach($this->prices->pricePeriods as $key=>$value) : ?>
+							<tr>
+								<td>
+								<?php echo $value['nachten']; ?>&nbsp;dagen in de periode&nbsp;<?php echo $value['priceObject']->name; ?>
+								</td>
+								<td>
+									<?php if($key == 0 && $value['priceObject']->is_pn_extra) : ?>
+										<?php if($value['nachten'] == 1) : ?>
+											1 nacht &aacute;&nbsp;&euro;&nbsp;<?php echo number_format($value['priceObject']->min_price, 2, ',', '.'); ?>&nbsp;pp.
+										<?php elseif($value['nachten'] > 1) : ?>
+											Eerste dag:&nbsp;&euro;&nbsp;<?php echo number_format($value['priceObject']->min_price); ?>&nbsp;pp.<br />
+											Daarop volgende <?php echo ($value['nachten'] - 1); ?> dag(en):&nbsp;&euro;&nbsp;<?php echo number_format($value['priceObject']->extra, 2, ',', '.'); ?>&nbsp;pp.
+										<?php endif; ?>
+										<?php elseif($value['priceObject']->is_pn_extra) : ?>
+										<?php echo $value['nachten']; ?>&nbsp;nacht(en)&nbsp;&aacute;&nbsp;&euro;&nbsp;<?php echo number_format($value['priceObject']->extra, 2, ',', '.'); ?>&nbsp;pp.
+									<?php endif; ?>
+								</td>
+							</tr>
+						<?php endforeach; ?>
+					<?php endif; ?>
+					
+					
 				<?php
 				} else{
 					?>
-						<tr><td class="jbl_form_left">Gekozen periode:</td><td></td></tr>
-						<tr><td class="jbl_form_left">Van:&nbsp;<?php echo $this->item['aankomst']; ?></td><td>Tot:&nbsp;<?php echo $this->item['vertrek']; ?></td></tr>
-						<tr><td class="jbl_form_left">Dit is <?php echo floor($this->item['nights']); ?>&nbsp;
+						<tr><td class="tdleft">Gekozen periode:</td><td></td></tr>
+						<tr><td class="tdleft">Van:&nbsp;<?php echo $this->item['aankomst']; ?></td><td>Tot:&nbsp;<?php echo $this->item['vertrek']; ?></td></tr>
+						<tr><td class="tdleft">Dit is <?php echo floor($this->item['nights']); ?>&nbsp;
 						<?php
 							if($this->item['nights'] == 1){
 								echo 'dag';
@@ -82,6 +108,30 @@ window.addEvent('domready' function(){
 							}
 						?>
 						</td><td></td></tr>
+						
+					<?php if(!empty($this->prices->pricePeriods)) : ?>
+						<?php foreach($this->prices->pricePeriods as $key=>$value) : ?>
+							<tr>
+								<td>
+								<?php echo $value['nachten']; ?>&nbsp;dagen in de periode&nbsp;<?php echo $value['priceObject']->name; ?>
+								</td>
+								<td>
+									<?php if($key == 0 && $value['priceObject']->is_pn_extra) : ?>
+										<?php if($value['nachten'] == 1) : ?>
+											1 nacht &aacute;&nbsp;&euro;&nbsp;<?php echo number_format($value['priceObject']->min_price, 2, ',', '.'); ?>&nbsp;pp.
+										<?php elseif($value['nachten'] > 1) : ?>
+											Eerste dag:&nbsp;&euro;&nbsp;<?php echo number_format($value['priceObject']->min_price); ?>&nbsp;pp.<br />
+											Daarop volgende <?php echo ($value['nachten'] - 1); ?> dag(en):&nbsp;&euro;&nbsp;<?php echo number_format($value['priceObject']->extra, 2, ',', '.'); ?>&nbsp;pp.
+										<?php endif; ?>
+										<?php elseif($value['priceObject']->is_pn_extra) : ?>
+										<?php echo $value['nachten']; ?>&nbsp;nacht(en)&nbsp;&aacute;&nbsp;&euro;&nbsp;<?php echo number_format($value['priceObject']->extra, 2, ',', '.'); ?>&nbsp;pp.
+									<?php endif; ?>
+								</td>
+							</tr>
+						<?php endforeach; ?>
+					<?php endif; ?>
+					
+					
 					<?php
 				}
 			?>
@@ -164,7 +214,7 @@ window.addEvent('domready' function(){
 <pre>
 	<?php
 		//TODO: var_dump verwijderen		
-		$this->prices = $this->app->getUserState("option_jbl.prices");
+		
 		echo '<h2>$this->overlap</h2>';
 		var_dump($this->overlap);	
 		echo '<h2>$this->prices</h2>';
