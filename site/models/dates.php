@@ -291,12 +291,23 @@ class JexBookingModelDates extends JModel
 			
 		}
 		if(!empty($buitenArrPeriods)){
+			$i = 0;
 			foreach($buitenArrPeriods as $stayPeriod){
 				//TODO begin test buitenArrPeriods
 				//beginnen met de startDate
 				foreach($dateTimes as $key=>$value){
 					if($stayPeriod['start'] >= $value['start'] && $stayPeriod['start'] < $value['end'] && $value['priceObject']->is_default == 0){
+						
 						$this->prices->startPeriod = $key;
+						
+						if($stayPeriod['end'] < $value['end']){
+							$diff	= $stayPeriod['start']->diff($stayPeriod['end']);
+						} else{
+							$diff	= $stayPeriod['start']->diff($value['end']);
+						}
+						$this->prices->pricePeriods[$i]['priceId'] = $key;
+						$this->prices->pricePeriods[$i]['nachten'] = $diff->days;
+						
 					}
 					if($stayPeriod['end'] >= $value['start'] && $stayPeriod['end'] < $value['end'] && $value['priceObject']->is_default == 0){
 						$this->prices->endPeriod = $key;
@@ -313,7 +324,7 @@ class JexBookingModelDates extends JModel
 				}
 				if($this->prices->endPeriod == null){
 					foreach($dateTimes as $key=>$value){
-						if($stayPeriod['en'] >= $value['start'] && $stayPeriod['end'] < $value['end'] && $value['priceObject']->is_default == 1){
+						if($stayPeriod['end'] >= $value['start'] && $stayPeriod['end'] < $value['end'] && $value['priceObject']->is_default == 1){
 							$this->prices->endPeriod = $key;
 						}
 					}
@@ -322,6 +333,7 @@ class JexBookingModelDates extends JModel
 				if($this->prices->startPeriod == $this->prices->endPeriod){
 					//1 prijsperiode
 					$this->prices->pricePeriods[]['priceId'] = $this->prices->startPeriod;
+					
 				} else {
 					//meer prijsperiodes, eerst begin-prijsperiode en eind-prijsperiode, daarna checken of er nog prijsperiodes tussenvallen
 					$startPricePeriod = $this->prices->startPeriod;
@@ -335,9 +347,11 @@ class JexBookingModelDates extends JModel
 							
 						if($value['start'] > $stayPeriod['start'] && $value['end'] < $stayPeriod['end'] && $key != $startPricePeriod && $key != $endPricePeriod && $value['priceObject']->is_default == 0){
 							$this->prices->pricePeriods[]['priceId'] = $key;
+							
 						}
 					}
 				}//TODO eind test buitenArrPeriods
+			$i++;
 			}
 		}
 		//nu de verblijfsperiode checken tegen overlap en prijsperiodes. Indien geen overlap en maar 1 prijsperiode, verder. Anders verblijfsperiode opknippen in losse verblijsperiodes
@@ -346,11 +360,12 @@ class JexBookingModelDates extends JModel
 		//TODO: NB!! Onderstaande moet anders: niet if() statement over $overlap, maar hierboven eerst verblijfsperiodes maken van/rond overlap, en DAN pas onderstaande
 		if($overlap == null){
 			//beginnen met de startDate
+			
 			foreach($dateTimes as $key=>$value){
 				if($start >= $value['start'] && $start < $value['end'] && $value['priceObject']->is_default == 0){
 					$this->prices->startPeriod = $key;
 				}
-				if($end >= $value['start'] && $end < $value['end'] && $value['priceObject']->is_default == 0){
+				if($end >= $value['start'] && $end <= $value['end'] && $value['priceObject']->is_default == 0){
 					$this->prices->endPeriod = $key;
 					//TODO: als er geen prijsperiode voor een bepaalde datum is, dan is result null. Moet dus een default komen of nadruk op zo volledig mogelijk jaar invullen.
 					// default is beter, omdat dan ook gereserveerd kan worden in periode waarvoor nog geen nieuwe prijs is (bv. jaar later)
@@ -372,21 +387,70 @@ class JexBookingModelDates extends JModel
 			}
 			//checken of het één of meer prijsperiodes betreft
 			if($this->prices->startPeriod == $this->prices->endPeriod){
-				//1 prijsperiode
-				$this->prices->pricePeriods[]['priceId'] = $this->prices->startPeriod;
+				//1 prijsperiode, en wel:
+				$this->prices->pricePeriods[0]['priceId'] = $this->prices->startPeriod;
+				
+				//nu aantal dagen binnen die prijsperiode
+				$diff = $start->diff($end);
+				$this->prices->pricePeriods[0]['nachten'] = $diff->days;
+				
+				
+				
 			} else {
-				//meer prijsperiodes, eerst begin-prijsperiode en eind-prijsperiode, daarna checken of er nog prijsperiodes tussenvallen
-				$startPricePeriod = $this->prices->startPeriod;
-				$endPricePeriod = $this->prices->endPeriod;
 				
-				$this->prices->pricePeriods[]['priceId'] = $startPricePeriod;
-				$this->prices->pricePeriods[]['priceId'] = $endPricePeriod;
+				//meer prijsperiodes, eerst de start-pricePeriod
+				$startPricePeriod = $dateTimes[$this->prices->startPeriod];
+				$diff	= $start->diff($startPricePeriod['end']);
 				
+				$this->prices->pricePeriods[0]['priceId']	= $startPricePeriod['priceObject']->id;				
+				//$this->prices->pricePeriods[0]['priceObject'] = $startPricePeriod['priceObject'];
+				$this->prices->pricePeriods[0]['nachten']	= $diff->days;
+				
+				$newStart = $startPricePeriod['end'];
+				
+				echo '<pre>';
+				//var_dump($newStart,$dateTimes); //TODO var_dump
+				echo '</pre>';
+				
+				$countDaysLeft = $newStart->diff($end);
+				
+				$i = 5;
 				foreach($dateTimes as $key=>$value){
-					//alle prijsperiodes uit $dateTimes langsgaan, uitzondering maken voor $startPricePeriod en$endPricePeriod
-					
-					if($value['start'] > $start && $value['end'] < $end && $key != $startPricePeriod && $key != $endPricePeriod && $value['priceObject']->is_default == 0){
-						$this->prices->pricePeriods[]['priceId'] = $key;
+					if($value['priceObject']->is_default == 0 && $newStart >= $value['start'] && $newStart < $value['end'] && $newStart < $end){
+						
+						$this->prices->pricePeriods[$i]['priceId'] = $key;
+						
+						//nieuwe $newStart en $diff bepalen
+						if($end > $value['end']){
+							$diff = $newStart->diff($value['end']);
+							$newStart = $value['end'];
+						} elseif($end <= $value['end']){
+							$diff = $newStart->diff($end);
+						}
+						//$this->prices->pricePeriods[$i]['priceObject'] = $value['priceObject'];
+						$this->prices->pricePeriods[$i]['nachten'] = $diff->days;
+						
+						$i++;
+						
+					}
+				}
+				
+				//nu controleren of er dagen in de default prijzen valt. Totaal aantal dagen - dagen van pricePeriods => als groter dan nul, dan default
+				$diff = $start->diff($end);
+				$totalDays = $diff->days;
+				//nu dagen uit pricePeriods optellen
+				$pricedDays = 0;
+				foreach($this->prices->pricePeriods as $period){
+					$pricedDays += $period['nachten'];
+				}
+				$defaultDays = $totalDays - $pricedDays;
+				if($defaultDays > 0){
+					foreach($dateTimes as $key=>$value){
+						if($value['priceObject']->is_default == 1){
+							$this->prices->pricePeriods[$i]['priceId'] = $key;
+							//$this->prices->pricePeriods[$i]['priceObject'] = $value['priceObject'];
+							$this->prices->pricePeriods[$i]['nachten'] = $defaultDays;
+						}
 					}
 				}
 			}
