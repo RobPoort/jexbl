@@ -77,7 +77,7 @@ class JexBookingControllerDates extends JController
 	 * @return Void
 	 */
 	//TODO: de percentageprijzen in aparte functie?
-	private function calculatePrice(){
+	public function calculatePrice(){
 		
 		$app = JFactory::getApplication();
 		
@@ -88,6 +88,28 @@ class JexBookingControllerDates extends JController
 		//indien $this->overlap == null, dan geen arrangement van toepassing, anders arrangement prijs ophalen in function calcArr(), want andere gegevens
 		//TODO: moet opgevraagd worden vóór percentage berekend gaat worden, indien van toepassing
 		$this->overlap = $app->getUserState("option_jbl_overlap");
+		
+		//de prijs berekenen van de opgetelde pricePeriods
+		$this->getPrices();
+		
+		$this->prices;
+		$pricePeriods = $this->prices->pricePeriods;
+		
+		//TODO moet extra validatie komen op number_pp in form, min 2/ max 6 personen. nu met onderstaande statements en message
+		$number_pp = 2;
+		
+		if($this->data['number_pp'] < 2){
+			$app->setUserState("option_jbl.calcPrice_message", "Het minimum aantal personen is 2");
+		}
+		
+		if($this->data['number_pp'] > 2){
+			$number_pp = $this->data['number_pp'];
+		}
+		if($number_pp > 6){
+			$number_pp = 6;
+			$app->setUserState("option_jbl.calcPrice_message", "Het maximum aantal personen is 6");
+		}
+		
 		
 		if($this->overlap){
 			$this->arrPrice = $this->calcArr($this->locationId,$this->data,$this->overlap);
@@ -100,9 +122,9 @@ class JexBookingControllerDates extends JController
 			$this->calculatePrice->arrPrice = $this->arrPrice;
 		}
 		
-		$app->setUserState("option_jbl.calcPrice", null);
+		//$app->setUserState("option_jbl.calcPrice", null);
 		
-		$app->setUserState("option_jbl.calcPrice", $this->calculatePrice);
+		$app->setUserState("option_jbl.calcPrice", $this->prices->pricePeriods);
 		
 		$this->calcPrice = $app->getUserState("option_jbl.calcPrice");
 		
@@ -144,7 +166,7 @@ class JexBookingControllerDates extends JController
 		return $this->arrPrice;
 	}
 	
-	private function getPrices(){
+	public function getPrices(){
 		
 		$this->app = JFactory::getApplication();
 		

@@ -36,6 +36,13 @@ window.addEvent('domready' function(){
 				<?php endforeach; ?>
 			</table>
 		<?php endif; ?>
+		<?php if($this->app->getUserState("option_jbl.calcPrice")) : ?>
+			<pre>
+			<?php 
+				var_dump($this->app->getUserState("option_jbl.calcPrice_message"), $this->app->getUserState("option_jbl.calcPrice"));
+			 ?>
+			 </pre>
+		<?php endif; ?>
 	</fieldset>
 	<?php
 		if($this->data){
@@ -83,7 +90,9 @@ window.addEvent('domready' function(){
 		//TODO: var_dump verwijderen
 		
 		$this->prices = $this->app->getUserState("option_jbl.prices");
-
+		$this->calcPrice = $this->app->getUserState("option_jbl.calcPrice");
+		echo '<h2>$this->calcPrice</h2>';
+		var_dump($this->calcPrice);
 		echo '<h2>$this->overlap</h2>';
 		var_dump($this->overlap);
 		echo '<h2>$this->prices</h2>';

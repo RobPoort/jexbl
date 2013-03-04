@@ -23,7 +23,11 @@ class JexBookingModelDates extends JModel
 			list($day,$month,$year) = explode('-', $end_date);
 			$end = mktime(0,1,0,$month,$day,$year);
 			
-			$nights = ($end - $start) / 86400;
+			//$nights = ($end - $start) / 86400;
+			$start = new DateTime($start_date);
+			$end = new DateTime($end_date);
+			$diff = $start->diff($end);
+			$nights = $diff->days;
 		}
 		//eerst de locatie_id ophalen uit de params
 		$this->location_id = $app->input->get('location_id');
@@ -417,7 +421,7 @@ class JexBookingModelDates extends JModel
 			if($this->prices->startPeriod == $this->prices->endPeriod){
 				//1 prijsperiode, en wel:
 				$this->prices->pricePeriods[0]['priceId'] = $this->prices->startPeriod;
-				
+				$this->prices->pricePeriods[0]['priceObject'] = $dateTimes[$this->prices->startPeriod]['priceObject'];
 				//nu aantal dagen binnen die prijsperiode
 				$diff = $start->diff($end);
 				$this->prices->pricePeriods[0]['nachten'] = $diff->days;
