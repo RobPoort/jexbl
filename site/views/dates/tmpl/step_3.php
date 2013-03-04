@@ -51,7 +51,7 @@ window.addEvent('domready' function(){
 			<?php 
 				//TODO var_dump
 				
-				//var_dump($arrs['calc']);
+				var_dump($arrs['calc']);
 			 ?>
 			 </pre>
 			 <table class="jbl_form_table">

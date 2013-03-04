@@ -328,8 +328,8 @@ class JexBookingModelDates extends JModel
 				//checken of het één of meer prijsperiodes betreft
 				if($this->prices->startPeriod == $this->prices->endPeriod){
 					//1 prijsperiode, en wel:
-					$this->prices->pricePeriods[0]['priceId'] = $this->prices->startPeriod;
-				
+					$this->prices->pricePeriods[0]['priceId'] 		= $this->prices->startPeriod;
+					$this->prices->pricePeriods[0]['priceObject']	= $dateTimes[$this->prices->startPeriod]['priceObject'];
 					//nu aantal dagen binnen die prijsperiode
 					$diff = $start->diff($end);
 					$this->prices->pricePeriods[0]['nachten'] = $diff->days;
