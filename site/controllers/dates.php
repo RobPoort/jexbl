@@ -146,6 +146,7 @@ class JexBookingControllerDates extends JController
 		
 		if($this->overlap){
 			$this->arrPrice = $this->calcArr($this->locationId,$this->data,$this->overlap);
+			
 		}
 		
 		$this->calculatePrice->locationId = $this->locationId;
@@ -159,7 +160,9 @@ class JexBookingControllerDates extends JController
 		
 		$app->setUserState("option_jbl.calcPrice", $totalStayPrice);
 		$app->setUserState("option_jbl.stayperiods", $stayPeriods);
-		
+		if($this->overlap){
+			$app->setUserState("option_jbl.arrPrice", $this->arrPrice);
+		}
 		$this->calcPrice = $app->getUserState("option_jbl.calcPrice");
 		
 		

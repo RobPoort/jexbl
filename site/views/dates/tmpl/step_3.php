@@ -26,13 +26,13 @@ window.addEvent('domready' function(){
 </script>
 <form method="post" action="">
 	<fieldset class="jbl_form" id="jbl_has_number"><legend>Uw prijsberekening:</legend>
-		<?php if($this->calcPrice->arrPrice) : ?>
+		<?php if($this->app->getUserState("option_jbl.arrPrice")) : ?>
+		<?php $arrs = $this->app->getUserState("option_jbl.arrPrice"); ?>
 			<table class="jbl_form_table">
-				<?php foreach($this->calcPrice->arrPrice as $item) : ?>
-					<?php if($item['arr_price']) : ?>
-						<tr><td colspan="2">Arrangementskosten:</td></tr>
-						<tr><td>&euro;&nbsp;<?php echo $item['arr_price']; ?></td><td><?php foreach ($item['price_message'] as $message) : ?><?php echo $message; ?><br /><?php endforeach; ?></td></tr>
-					<?php endif; ?>
+				<?php foreach($arrs as $arr) : ?>
+					<tr>
+						
+					</tr>
 				<?php endforeach; ?>
 			</table>
 		<?php endif; ?>
@@ -40,7 +40,8 @@ window.addEvent('domready' function(){
 			<pre>
 			<?php 
 				//TODO var_dump
-				//var_dump($this->app->getUserState("option_jbl.calcPrice"), $this->app->getUserState("option_jbl.stayperiods"));
+				
+				var_dump($arrs['calc']);
 			 ?>
 			 </pre>
 			 <table class="jbl_form_table">
