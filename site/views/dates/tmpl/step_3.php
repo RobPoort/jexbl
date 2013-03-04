@@ -39,9 +39,43 @@ window.addEvent('domready' function(){
 		<?php if($this->app->getUserState("option_jbl.calcPrice")) : ?>
 			<pre>
 			<?php 
-				var_dump($this->app->getUserState("option_jbl.calcPrice_message"), $this->app->getUserState("option_jbl.calcPrice"));
+				//TODO var_dump
+				//var_dump($this->app->getUserState("option_jbl.calcPrice"), $this->app->getUserState("option_jbl.stayperiods"));
 			 ?>
 			 </pre>
+			 <table class="jbl_form_table">
+			 <?php foreach($this->app->getUserState("option_jbl.stayperiods") as $stayPeriod) : ?>
+			 	<tr>
+			 		<td>
+			 			<?php echo $stayPeriod['nachten']; ?>
+			 			&nbsp;nacht(en)&nbsp;
+			 			<?php echo $stayPeriod['priceObject']->name; ?>
+			 			&nbsp;met&nbsp;
+			 			<?php echo $stayPeriod['number_pp']; ?>
+			 			&nbsp;personen:
+			 			<?php if($stayPeriod['message'] != '') : ?>
+			 			<br />(<?php echo $stayPeriod['message'] ?>)
+			 			<?php endif; ?>
+			 		</td>
+			 		
+			 		<td>
+			 			&euro;&nbsp;
+			 			<?php echo number_format($stayPeriod['stayPeriodPrice'], 2, ',', '.'); ?>
+			 		</td>
+			 	</tr>
+			 <?php endforeach; ?>
+			 	<tr>
+			 		<td>&nbsp;</td>
+			 		<td>+</td>
+			 	</tr>
+			 	<tr>
+			 		<td style="text-align:right;">Totaalprijs overnachtingen:</td>
+			 		<td>
+			 		&euro;&nbsp;
+			 		<?php echo number_format($this->app->getUserState("option_jbl.calcPrice"), 2, ',', '.'); ?>
+			 		</td>
+			 	</tr>
+			 </table>
 		<?php endif; ?>
 	</fieldset>
 	<?php

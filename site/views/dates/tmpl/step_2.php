@@ -80,13 +80,13 @@ $this->prices = $this->app->getUserState("option_jbl.prices");
 								<td>
 									<?php if($key == 0 && $value['priceObject']->is_pn_extra) : ?>
 										<?php if($value['nachten'] == 1) : ?>
-											1 nacht &aacute;&nbsp;&euro;&nbsp;<?php echo number_format($value['priceObject']->min_price, 2, ',', '.'); ?>&nbsp;pp.
+											1 nacht &aacute;&nbsp;&euro;&nbsp;<?php echo number_format($value['priceObject']->min_price, 2, ',', '.'); ?>&nbsp;pp/pn.
 										<?php elseif($value['nachten'] > 1) : ?>
-											Eerste dag:&nbsp;&euro;&nbsp;<?php echo number_format($value['priceObject']->min_price); ?>&nbsp;pp.<br />
-											Daarop volgende <?php echo ($value['nachten'] - 1); ?> dag(en):&nbsp;&euro;&nbsp;<?php echo number_format($value['priceObject']->extra, 2, ',', '.'); ?>&nbsp;pp.
+											Eerste dag:&nbsp;&euro;&nbsp;<?php echo number_format($value['priceObject']->min_price); ?>&nbsp;pp/pn<br />
+											Daarop volgende <?php echo ($value['nachten'] - 1); ?> dag(en):&nbsp;&euro;&nbsp;<?php echo number_format($value['priceObject']->extra, 2, ',', '.'); ?>&nbsp;pp/pn
 										<?php endif; ?>
 										<?php elseif($value['priceObject']->is_pn_extra) : ?>
-										<?php echo $value['nachten']; ?>&nbsp;nacht(en)&nbsp;&aacute;&nbsp;&euro;&nbsp;<?php echo number_format($value['priceObject']->extra, 2, ',', '.'); ?>&nbsp;pp.
+										<?php echo $value['nachten']; ?>&nbsp;nacht(en)&nbsp;&aacute;&nbsp;&euro;&nbsp;<?php echo number_format($value['priceObject']->extra, 2, ',', '.'); ?>&nbsp;pp/pn
 									<?php endif; ?>
 								</td>
 							</tr>
@@ -118,13 +118,13 @@ $this->prices = $this->app->getUserState("option_jbl.prices");
 								<td>
 									<?php if($key == 0 && $value['priceObject']->is_pn_extra) : ?>
 										<?php if($value['nachten'] == 1) : ?>
-											1 nacht &aacute;&nbsp;&euro;&nbsp;<?php echo number_format($value['priceObject']->min_price, 2, ',', '.'); ?>&nbsp;pp.
+											1 nacht &aacute;&nbsp;&euro;&nbsp;<?php echo number_format($value['priceObject']->min_price, 2, ',', '.'); ?>&nbsp;pp/pn
 										<?php elseif($value['nachten'] > 1) : ?>
-											Eerste dag:&nbsp;&euro;&nbsp;<?php echo number_format($value['priceObject']->min_price); ?>&nbsp;pp.<br />
-											Daarop volgende <?php echo ($value['nachten'] - 1); ?> dag(en):&nbsp;&euro;&nbsp;<?php echo number_format($value['priceObject']->extra, 2, ',', '.'); ?>&nbsp;pp.
+											Eerste dag:&nbsp;&euro;&nbsp;<?php echo number_format($value['priceObject']->min_price, 2, ',', '.'); ?>&nbsp;pp/pn<br />
+											Daarop volgende <?php echo ($value['nachten'] - 1); ?> dag(en):&nbsp;&euro;&nbsp;<?php echo number_format($value['priceObject']->extra, 2, ',', '.'); ?>&nbsp;pp/pn
 										<?php endif; ?>
 										<?php elseif($value['priceObject']->is_pn_extra) : ?>
-										<?php echo $value['nachten']; ?>&nbsp;nacht(en)&nbsp;&aacute;&nbsp;&euro;&nbsp;<?php echo number_format($value['priceObject']->extra, 2, ',', '.'); ?>&nbsp;pp.
+										<?php echo $value['nachten']; ?>&nbsp;nacht(en)&nbsp;&aacute;&nbsp;&euro;&nbsp;<?php echo number_format($value['priceObject']->extra, 2, ',', '.'); ?>&nbsp;pp/pn
 									<?php endif; ?>
 								</td>
 							</tr>

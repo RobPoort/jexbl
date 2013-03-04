@@ -97,9 +97,10 @@ class JexBookingControllerDates extends JController
 		
 		//TODO moet extra validatie komen op number_pp in form, min 2/ max 6 personen. nu met onderstaande statements en message
 		$number_pp = 2;
-		
+		$message = '';
 		if($this->data['number_pp'] < 2){
-			$app->setUserState("option_jbl.calcPrice_message", "Het minimum aantal personen is 2");
+			$message	= "Het minimum aantal personen is 2";
+			$app->setUserState("option_jbl.calcPrice_message", $message);
 		}
 		
 		if($this->data['number_pp'] > 2){
@@ -107,9 +108,41 @@ class JexBookingControllerDates extends JController
 		}
 		if($number_pp > 6){
 			$number_pp = 6;
-			$app->setUserState("option_jbl.calcPrice_message", "Het maximum aantal personen is 6");
+			$message	= "Het maximum aantal personen is 6";
+			$app->setUserState("option_jbl.calcPrice_message", $message);
 		}
 		
+		$totalStayPrice		= 0;
+		$stayPeriods	= array();
+		if($pricePeriods){
+			$i = 0;
+			foreach($pricePeriods as $key=>$value){
+				if($key == 0 && $value['priceObject']->is_pn_extra){
+					$totalStayPrice += $value['priceObject']->min_price * $number_pp;
+					$totalStayPrice += ($value['nachten'] - 1) * $value['priceObject']->extra * $number_pp;
+					$stayPeriods[$i]['nachten']			= $value['nachten'];
+					$stayPeriods[$i]['priceObject']		= $value['priceObject'];
+					$stayPeriods[$i]['number_pp']		= $number_pp;
+					$stayPeriods[$i]['stayPeriodPrice']	= ($value['priceObject']->min_price * $number_pp) + (($value['nachten'] - 1) * $value['priceObject']->extra * $number_pp);
+					$stayPeriods[$i]['message']			= $message;
+				} elseif($value['priceObject']->is_pn_extra){
+					$totalStayPrice += $value['priceObject']->extra * $value['nachten'] * $number_pp;
+					$stayPeriods[$i]['nachten']			= $value['nachten'];
+					$stayPeriods[$i]['priceObject']		= $value['priceObject'];
+					$stayPeriods[$i]['number_pp']		= $number_pp;
+					$stayPeriods[$i]['stayPeriodPrice']	= $value['priceObject']->extra * $value['nachten'] * $number_pp;
+					$stayPeriods[$i]['message']			= $message;
+				} else {
+					$totalStayPrice += $value['priceObject']->min_price * $value['nachten'] * $number_pp;
+					$stayPeriods[$i]['nachten']			= $value['nachten'];
+					$stayPeriods[$i]['priceObject']		= $value['priceObject'];
+					$stayPeriods[$i]['number_pp']		= $number_pp;
+					$stayPeriods[$i]['stayPeriodPrice']	= $value['priceObject']->min_price * $value['nachten'] * $number_pp;
+					$stayPeriods[$i]['message']			= $message;
+				}
+				$i++;
+			}
+		}
 		
 		if($this->overlap){
 			$this->arrPrice = $this->calcArr($this->locationId,$this->data,$this->overlap);
@@ -124,7 +157,8 @@ class JexBookingControllerDates extends JController
 		
 		//$app->setUserState("option_jbl.calcPrice", null);
 		
-		$app->setUserState("option_jbl.calcPrice", $this->prices->pricePeriods);
+		$app->setUserState("option_jbl.calcPrice", $totalStayPrice);
+		$app->setUserState("option_jbl.stayperiods", $stayPeriods);
 		
 		$this->calcPrice = $app->getUserState("option_jbl.calcPrice");
 		
