@@ -31,7 +31,17 @@ window.addEvent('domready' function(){
 			<table class="jbl_form_table">
 				<?php foreach($arrs as $arr) : ?>
 					<tr>
-						
+						<td>
+							<?php
+								foreach($arr['price_message'] as $key=>$value){
+									echo $value.'<br />';
+								} 
+							?>
+						</td>
+						<td>
+							&euro;&nbsp;
+							<?php echo number_format($arr['arr_price'], 2, ',', '.'); ?>
+						</td>
 					</tr>
 				<?php endforeach; ?>
 			</table>
@@ -41,7 +51,7 @@ window.addEvent('domready' function(){
 			<?php 
 				//TODO var_dump
 				
-				var_dump($arrs['calc']);
+				//var_dump($arrs['calc']);
 			 ?>
 			 </pre>
 			 <table class="jbl_form_table">
