@@ -191,10 +191,27 @@ class JexBookingControllerDates extends JController
 		
 		if($arr->is_pp){
 			if($arr->use_extra_pp){
-				$arrPrice['calc']['arr_price'] = number_format($arr->price + (($number_pp - 1) * $arr->extra_pp));
+				$arrPriceTotal = $arr->price + (($number_pp - 1) * $arr->extra_pp);
+				$arrPrice['calc']['arr_price'] = $arrPriceTotal;				
+				$arrPrice['calc']['price_message'][] = '1ste persoon &euro;&nbsp;'.number_format($arr->price, 2, ',', '.').',';				
+				if($number_pp < 3){
+					$arrPrice['calc']['price_message'][] = 'de volgende persoon &euro;&nbsp;'.number_format($arr->extra_pp, 2, ',', '.').'.';
+				} else {
+					$arrPrice['calc']['price_message'][] = 'de volgende '.($number_pp - 1).' personen &euro;&nbsp;'.number_format($arr->extra_pp, 2, ',', '.').' per persoon.';
+				}
+			} else{
+				$arrPriceTotal = $arr->price + (($number_pp - 1) * $arr->price);
+				$arrPrice['calc']['arr_price'] = $arrPriceTotal;
 				$arrPrice['calc']['price_message'][] = '1ste persoon &euro;&nbsp;'.number_format($arr->price, 2, ',', '.').',';
-				$arrPrice['calc']['price_message'][] = 'de volgende '.($number_pp - 1).' personen &euro;&nbsp;'.number_format($arr->extra_pp, 2, ',', '.').' per persoon.';
+				if($number_pp < 3){
+					$arrPrice['calc']['price_message'][] = 'de volgende persoon &euro;&nbsp;'.number_format($arr->price, 2, ',', '.').'.';
+				} else {
+					$arrPrice['calc']['price_message'][] = 'de volgende '.($number_pp - 1).' personen &euro;&nbsp;'.number_format($arr->price, 2, ',', '.').' per persoon.';
+				}
 			}
+		} else {
+			$arrPrice['calc']['arr_price'] = $arr->price;
+			$arrPrice['calc']['price_message'][] = $arr->name;
 		}
 		
 		

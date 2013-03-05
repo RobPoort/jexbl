@@ -26,9 +26,10 @@ window.addEvent('domready' function(){
 </script>
 <form method="post" action="">
 	<fieldset class="jbl_form" id="jbl_has_number"><legend>Uw prijsberekening:</legend>
+		<table class="jbl_form_table">
 		<?php if($this->app->getUserState("option_jbl.arrPrice")) : ?>
 		<?php $arrs = $this->app->getUserState("option_jbl.arrPrice"); ?>
-			<table class="jbl_form_table">
+			
 				<?php foreach($arrs as $arr) : ?>
 					<tr>
 						<td>
@@ -44,17 +45,10 @@ window.addEvent('domready' function(){
 						</td>
 					</tr>
 				<?php endforeach; ?>
-			</table>
+			
 		<?php endif; ?>
 		<?php if($this->app->getUserState("option_jbl.calcPrice")) : ?>
-			<pre>
-			<?php 
-				//TODO var_dump
-				
-				var_dump($arrs['calc']);
-			 ?>
-			 </pre>
-			 <table class="jbl_form_table">
+			 
 			 <?php foreach($this->app->getUserState("option_jbl.stayperiods") as $stayPeriod) : ?>
 			 	<tr>
 			 		<td>

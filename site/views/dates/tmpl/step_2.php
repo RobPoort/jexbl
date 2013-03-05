@@ -45,7 +45,14 @@ $this->prices = $this->app->getUserState("option_jbl.prices");
 							?>
 							<td class="tdLeft">
 								Kosten van dit arrangement per persoon:<br />
+								<?php if($overlap['arrangement']->use_extra_pp == 0) : ?>
 								&euro;&nbsp;<?php echo number_format($overlap['arrangement']->price, 2, ',','.'); ?>&nbsp;pp.
+								<?php elseif($overlap['arrangement']->use_extra_pp == 1) : ?>
+								Eerste persoon:
+								&nbsp;&euro;&nbsp;<?php echo number_format($overlap['arrangement']->price, 2, ',','.'); ?><br />
+								Daarop volgende personen:
+								&nbsp;&euro;&nbsp;<?php echo number_format($overlap['arrangement']->price, 2, ',','.'); ?>&nbsp;pp.
+								<?php endif; ?>
 							</td>
 							<td></td>
 							<?php
