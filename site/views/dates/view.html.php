@@ -52,8 +52,21 @@ class JexBookingViewDates extends JView
 				}
 				$i++;
 			}
+			if(isset($this->data['naw'])){
+				$app->setUserState("option_jbl.naw", null);
+				$app->setUserState("option_jbl.naw", $this->data['naw']);
+			}
 		}
 		
+		//TODO check op number_pp
+		//number_pp aanpassen aan min- en maxwaarde voor de papillon
+		if($default['number_pp']){
+			if($default['number_pp'] < 2){
+				$default['number_pp'] = 2;
+			} elseif($default['number_pp'] > 6){
+				$default['number_pp'] = 6;
+			}
+		}
 		return $default;
 	}
 }
