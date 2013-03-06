@@ -25,29 +25,33 @@ window.addEvent('domready' function(){
 	});
 });
 </script>
-<pre><?php var_dump($this->app->getUserState("option_jbl.arrPrice")); ?></pre>
+
 <form method="post" action="">
 	<fieldset class="jbl_form" id="jbl_has_number"><legend>Uw prijsberekening:</legend>
 		<table class="jbl_form_table">
-		<?php if($this->app->getUserState("option_jbl.arrPrice")) : ?>
-		<?php $arrs = $this->app->getUserState("option_jbl.arrPrice"); ?>
-			
-				<?php foreach($arrs as $arr) : ?>
-					<tr>
-						<td>
-							<?php
-								foreach($arr['price_message'] as $key=>$value){
-									echo $value.'<br />';
-								} 
-							?>
-						</td>
-						<td>
-							&euro;&nbsp;
-							<?php echo number_format($arr['arr_price'], 2, ',', '.'); ?>
-						</td>
-					</tr>
-				<?php endforeach; ?>
-			
+		<?php if($overlap) :?>
+			<?php if($this->app->getUserState("option_jbl.arrPrice")) : ?>
+			<?php $arrs = $this->app->getUserState("option_jbl.arrPrice"); ?>
+				
+					<?php foreach($arrs as $arr) : ?>
+						<tr>
+							<td>
+								<?php
+									foreach($arr['price_message'] as $key=>$value){
+										echo $value.'<br />';
+									} 
+								?>
+							</td>
+							<td>
+								&euro;&nbsp;
+								<?php echo number_format($arr['arr_price'], 2, ',', '.'); ?>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+				<tr>
+					<td colspan="2">&nbsp;</td>
+				</tr>
+			<?php endif; ?>
 		<?php endif; ?>
 		<?php if($this->app->getUserState("option_jbl.calcPrice")) : ?>
 			 
@@ -271,6 +275,8 @@ window.addEvent('domready' function(){
 		$this->prices = $this->app->getUserState("option_jbl.prices");
 		$this->calcPrice = $this->app->getUserState("option_jbl.calcPrice");
 		$this->calcAttribs = $this->app->getUserState("option_jbl.calcattribs");
+		echo '<h2>$this->overlap</h2>';
+		var_dump($this->overlap);
 		echo '<h2>$this->calcAttribs</h2>';
 		var_dump($this->calcAttribs);
 		echo '<h2>$this->data:</h2>';
@@ -281,7 +287,7 @@ window.addEvent('domready' function(){
 		var_dump($attribs);
 		echo '<h2>$this->calcPrice</h2>';
 		var_dump($this->calcPrice);
-		//echo '<h2>$this->overlap</h2>';
+		echo '<h2>$this->overlap</h2>';
 		var_dump($this->overlap);
 		echo '<h2>$this->prices</h2>';
 		var_dump($this->prices);

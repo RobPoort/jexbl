@@ -153,7 +153,7 @@ $this->prices = $this->app->getUserState("option_jbl.prices");
 	<?php
 		if($attribs){
 		?>
-		<fieldset class="jbl_form" id="jbl_form">
+		<fieldset class="jbl_form" id="jbl_form"><legend class="hasTip" title="Extra faciliteiten tegen een meerprijs">Toevoegingen:</legend>
 			<table class="jbl_form_table">
 				<?php
 				if($attribs['checked']){
@@ -220,12 +220,13 @@ $this->prices = $this->app->getUserState("option_jbl.prices");
 <div class="clear"></div>
 <pre>
 	<?php
-		//TODO: var_dump verwijderen		
-	$this->calcAttribs = $this->app->getUserState("option_jbl.calcattribs");
-	echo '<h2>$this->calcAttribs</h2>';
-	var_dump($this->calcAttribs);
+		//TODO: var_dump verwijderen
 		echo '<h2>$this->overlap</h2>';
-		var_dump($this->overlap);	
+		var_dump($this->overlap);
+		$this->calcAttribs = $this->app->getUserState("option_jbl.calcattribs");
+		echo '<h2>$this->calcAttribs</h2>';
+		var_dump($this->calcAttribs);
+			
 		echo '<h2>$this->prices</h2>';
 		var_dump($this->prices);
 		echo '<h2>$this->data:</h2>';

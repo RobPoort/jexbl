@@ -97,8 +97,10 @@ class JexBookingControllerDates extends JController
 		$attribs = $this->attribs;
 		
 		//eerst alle attribs in array zetten met id als $key
-		$checks  = array();
-		$numbers = array();
+		$checks			= array();
+		$numbers		= array();
+		$not_percents	= array();
+		
 		if(isset($attribs['checked'])){
 			foreach($attribs['checked'] as $item){
 				$checks[$item->id] = $item;
@@ -108,6 +110,19 @@ class JexBookingControllerDates extends JController
 			foreach($attribs['number'] as $item){
 				$numbers[$item->id] = $item;
 			}
+		}
+		if(isset($attribs['special']['required']['not_percent'])){
+			
+			foreach($attribs['special']['required']['not_percent'] as $item){
+				
+				$nights = $nachten;
+				$personen = $number_pp;
+				$messageNumberPp = '';
+				$messageNumberNights = '';
+				
+				$not_percents[$item->id]['attribObject'] = $item;
+			}
+			
 		}
 		
 		//nu de form data over attribs leggen
@@ -186,6 +201,133 @@ class JexBookingControllerDates extends JController
 				}
 			}
 				
+		}
+		
+		if($checkedAttribs){
+			$attribsSubTotaal = 0;
+			foreach($checkedAttribs as $item){
+				$attribsSubTotaal += $item['calculated'];
+			}
+		}
+		
+		$this->app->setUserState("option_jbl.attribsSubTotaal", null);
+		$this->app->setUserState("option_jbl.attribsSubTotaal", $attribsSubTotaal);
+		
+		return $checkedAttribs;
+	}
+	
+	/**
+	 * method om de prijzen van de pre-subtotaal  'special' attribs te berekenen
+	 * @param Object attribs
+	 * @return void
+	 */
+	public function calcAttribsSpecial(){
+		$this->app = JFactory::getApplication();
+		$this->data = $this->app->input->get("jbl_form", null, null);
+		$this->attribs = $this->app->getUserState("option_jbl.itemAttribs");
+		
+		//number_pp  en nights bepalen voor als een attrib is_pn en/of is_pp
+		$number_pp = $this->data['number_pp'];
+		//TODO var_dump
+		
+		$start = new DateTime($this->data['start_date']);
+		$end = new DateTime($this->data['end_date']);
+		$diff = $start->diff($end);
+		$nachten = $diff->days;
+		
+		$data = $this->data;
+		$attribs = $this->attribs;
+		
+		//eerst alle attribs in array zetten met id als $key
+		$checks  = array();
+		$numbers = array();
+		if(isset($attribs['checked'])){
+			foreach($attribs['checked'] as $item){
+				$checks[$item->id] = $item;
+			}
+		}
+		if(isset($attribs['number'])){
+			foreach($attribs['number'] as $item){
+				$numbers[$item->id] = $item;
+			}
+		}
+		
+		//nu de form data over attribs leggen
+		$checkedAttribs = array();
+		if(isset($data['checked'])){
+				
+			foreach($data['checked'] as $key=>$value){
+				$personen = $number_pp;
+				$messageNumberPp		= '';
+				$messageNumberNights	= '';
+				if($checks[$key]->is_pp == 0){
+					$personen = 1;
+				} else {
+					$mess = '';
+					if($number_pp < 2){
+						$personen = 2;
+						$mess = '(minimaal 2 personen)';
+					} elseif($number_pp > 6) {
+						$personen = 6;
+						$mess = 'maximaal 6 personen';
+					}
+					$messageNumberPp = ' x '.$personen.' personen '.$mess;
+				}
+		
+				$nights = $nachten;
+				if($checks[$key]->is_pn == 0){
+					$nights = 1;
+				} elseif($nights == 1){
+					$messageNumberNights = ' x '.$nights.' nacht ';
+				} else {
+					$messageNumberNights = ' x '.$nights.' nachten ';
+				}
+		
+				$checkedAttribs[$key]['attribObject'] = $checks[$key];
+				$checkedAttribs[$key]['calculated'] = $checks[$key]->price * $personen * $nights;
+				$checkedAttribs[$key]['message'] = '&euro;&nbsp;'.number_format($checks[$key]->price, 2, ',' , '.').$messageNumberPp.$messageNumberNights;
+			}
+				
+		}
+		if(isset($data['number'])){
+		
+			foreach($data['number'] as $key=>$value){
+		
+				$persons				= $number_pp;
+				$messageNumberPp		= '';
+				$messageNumberNights	= '';
+				if($numbers[$key]->is_pp == 0){
+					$persons = 1;
+						
+				} elseif($numbers[$key] == 1) {
+						
+					$mess = '';
+					if($number_pp < 2){
+						$persons = 2;
+						$mess = '(minimaal 2 personen)';
+					} elseif($number_pp > 6) {
+						$persons = 6;
+						$mess = 'maximaal 6 personen';
+					}
+					$messageNumberPp = ' x '.$persons.' personen '.$mess;
+				}
+		
+				$nights = $nachten;
+				if($numbers[$key]->is_pn == 0){
+					$nights = 1;
+				} elseif($nights == 1){
+					$messageNumberNights = ' x '.$nights.' nacht ';
+				} else {
+					$messageNumberNights = ' x '.$nights.' nachten ';
+				}
+		
+				if($value != ''){
+					$checkedAttribs[$key]['attribObject'] = $numbers[$key];
+					$checkedAttribs[$key]['calculated'] = $numbers[$key]->price * $persons * $nights * $value;
+					$checkedAttribs[$key]['message'] = $value.' x &euro;&nbsp;'.number_format($numbers[$key]->price, 2, ', ', '.').$messageNumberPp.$messageNumberNights;
+				}
+			}
+		
 		}
 		
 		if($checkedAttribs){
@@ -291,11 +433,16 @@ class JexBookingControllerDates extends JController
 		if($this->overlap){
 			$app->setUserState("option_jbl.arrPrice", $this->arrPrice);
 		}
-		$this->calcPrice = $app->getUserState("option_jbl.calcPrice");
+		$this->calcPrice	= $app->getUserState("option_jbl.calcPrice");
 		
 		
-		$this->calcAttribs = $this->calcAttribs();
+		$this->calcAttribs	= $this->calcAttribs();
 		$this->app->setUserState("option_jbl.calcattribs", $this->calcAttribs);
+		
+		$this->calcAttribsSpecial = $this->calcAttribsSpecial();
+		//TODO: wel of niet userstate eerst legen? Geldt ook voor $this->calcAttribs
+		$this->app->setUserState("option_jbl.calcattribsSpecial", null);
+		$this->app->setUserState("option_jbl.calcattribsSpecial", $this->calcAttribsSpecial);
 		
 		
 		
@@ -324,7 +471,8 @@ class JexBookingControllerDates extends JController
 		if($arr->is_pp){
 			if($arr->use_extra_pp){
 				$arrPriceTotal = $arr->price + (($number_pp - 1) * $arr->extra_pp);
-				$arrPrice['calc']['arr_price'] = $arrPriceTotal;				
+				$arrPrice['calc']['arr_price'] = $arrPriceTotal;
+				$arrPrice['calc']['price_message'][] = 'Arrangement:&nbsp;'.$arr->name;		
 				$arrPrice['calc']['price_message'][] = '1ste persoon &euro;&nbsp;'.number_format($arr->price, 2, ',', '.').',';				
 				if($number_pp < 3){
 					$arrPrice['calc']['price_message'][] = 'de volgende persoon &euro;&nbsp;'.number_format($arr->extra_pp, 2, ',', '.').'.';
@@ -334,6 +482,7 @@ class JexBookingControllerDates extends JController
 			} else{
 				$arrPriceTotal = $arr->price + (($number_pp - 1) * $arr->price);
 				$arrPrice['calc']['arr_price'] = $arrPriceTotal;
+				$arrPrice['calc']['price_message'][] = 'Arrangement:&nbsp;'.$arr->name;
 				$arrPrice['calc']['price_message'][] = '1ste persoon &euro;&nbsp;'.number_format($arr->price, 2, ',', '.').',';
 				if($number_pp < 3){
 					$arrPrice['calc']['price_message'][] = 'de volgende persoon &euro;&nbsp;'.number_format($arr->price, 2, ',', '.').'.';
@@ -343,7 +492,7 @@ class JexBookingControllerDates extends JController
 			}
 		} else {
 			$arrPrice['calc']['arr_price'] = $arr->price;
-			$arrPrice['calc']['price_message'][] = $arr->name;
+			$arrPrice['calc']['price_message'][] = 'Arrangement:&nbsp;'.$arr->name;
 		}
 		
 		
