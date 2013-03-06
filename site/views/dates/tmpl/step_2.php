@@ -51,7 +51,7 @@ $this->prices = $this->app->getUserState("option_jbl.prices");
 								Eerste persoon:
 								&nbsp;&euro;&nbsp;<?php echo number_format($overlap['arrangement']->price, 2, ',','.'); ?><br />
 								Daarop volgende personen:
-								&nbsp;&euro;&nbsp;<?php echo number_format($overlap['arrangement']->price, 2, ',','.'); ?>&nbsp;pp.
+								&nbsp;&euro;&nbsp;<?php echo number_format($overlap['arrangement']->extra_pp, 2, ',','.'); ?>&nbsp;pp.
 								<?php endif; ?>
 							</td>
 							<td></td>
