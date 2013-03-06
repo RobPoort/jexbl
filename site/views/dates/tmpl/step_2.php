@@ -221,7 +221,9 @@ $this->prices = $this->app->getUserState("option_jbl.prices");
 <pre>
 	<?php
 		//TODO: var_dump verwijderen		
-		
+	$this->calcAttribs = $this->app->getUserState("option_jbl.calcattribs");
+	echo '<h2>$this->calcAttribs</h2>';
+	var_dump($this->calcAttribs);
 		echo '<h2>$this->overlap</h2>';
 		var_dump($this->overlap);	
 		echo '<h2>$this->prices</h2>';

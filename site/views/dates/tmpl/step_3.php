@@ -11,7 +11,6 @@ $attribs = $this->item['attribs'];
 $overlap = $this->overlap;
 $naw = $this->app->getUserState("option_jbl.naw");
 ?>
-
 <script>
 window.addEvent('domready' function(){
 	$('form.form-validate').addEvent('submit', function(evt){
@@ -26,6 +25,7 @@ window.addEvent('domready' function(){
 	});
 });
 </script>
+<pre><?php var_dump($this->app->getUserState("option_jbl.arrPrice")); ?></pre>
 <form method="post" action="">
 	<fieldset class="jbl_form" id="jbl_has_number"><legend>Uw prijsberekening:</legend>
 		<table class="jbl_form_table">
@@ -82,8 +82,36 @@ window.addEvent('domready' function(){
 			 		<?php echo number_format($this->app->getUserState("option_jbl.calcPrice"), 2, ',', '.'); ?>
 			 		</td>
 			 	</tr>
+			 <?php endif; ?>
+			 <?php if($this->app->getUserState("option_jbl.calcattribs")) :?>
+			 	<tr>
+			 		<td colspan="2">&nbsp;</td>
+			 	</tr>
+			 <?php $calcAttribs = $this->app->getUserState("option_jbl.calcattribs"); ?>
+			 	<?php foreach($calcAttribs as $item) : ?>			 	
+			 	<tr>
+			 		<td>
+			 			<?php echo $item['attribObject']->name; ?>&nbsp;<?php echo $item['message']; ?>
+			 		</td>
+			 		<td>
+			 			&euro;&nbsp;<?php echo number_format($item['calculated'], 2, ',', '.'); ?>
+			 		</td>
+			 	</tr>
+			 	<?php endforeach; ?>
+			 	<tr>
+			 		<td>&nbsp;</td>
+			 		<td>+</td>
+			 	</tr>
+			 	<tr>
+			 		<td style="text-align:right;">Subtotaalprijs toevoegingen:</td>
+			 		<td>
+			 		&euro;&nbsp;
+			 		<?php echo number_format($this->app->getUserState("option_jbl.attribsSubTotaal"), 2, ',', '.'); ?>
+			 		</td>
+			 	</tr>
+			 <?php endif; ?>
 			 </table>
-		<?php endif; ?>
+		
 	</fieldset>
 	<?php
 		if($this->data){
@@ -242,17 +270,21 @@ window.addEvent('domready' function(){
 		
 		$this->prices = $this->app->getUserState("option_jbl.prices");
 		$this->calcPrice = $this->app->getUserState("option_jbl.calcPrice");
-		echo '<h2>$attribs</h2>';
-		var_dump($attribs);
-		echo '<h2>$this->calcPrice</h2>';
-		var_dump($this->calcPrice);
-		echo '<h2>$this->overlap</h2>';
-		var_dump($this->overlap);
-		echo '<h2>$this->prices</h2>';
-		var_dump($this->prices);
+		$this->calcAttribs = $this->app->getUserState("option_jbl.calcattribs");
+		echo '<h2>$this->calcAttribs</h2>';
+		var_dump($this->calcAttribs);
 		echo '<h2>$this->data:</h2>';
 		var_dump($this->data);
 		echo '<h2>$this->default:</h2>';
 		var_dump($this->default);
+		echo '<h2>$attribs</h2>';
+		var_dump($attribs);
+		echo '<h2>$this->calcPrice</h2>';
+		var_dump($this->calcPrice);
+		//echo '<h2>$this->overlap</h2>';
+		var_dump($this->overlap);
+		echo '<h2>$this->prices</h2>';
+		var_dump($this->prices);
+		
 	?>
 </pre>

@@ -11,13 +11,16 @@ class JexBookingViewDates extends JView
 		
 		$this->step = $this->app->input->get('step');
 		
-		$this->item = $this->get('Item');
+		$this->item = $this->get('Item');		
+		
+		$this->app->setUserState("option_jbl.itemAttribs", null);
+		$this->app->setUserState("option_jbl.itemAttribs", $this->item['attribs']);
 		
 		$this->overlap = $this->app->getUserState("option_jbl_overlap");
 		
 		$this->data = $this->app->input->get("jbl_form", null,null);
 		
-		$this->default = $this->setDefault();
+		$this->default = $this->setDefault();		
 		
 		$this->calcPrice = $this->app->getUserState("option_jbl.calcPrice");
 		
@@ -56,6 +59,9 @@ class JexBookingViewDates extends JView
 				$app->setUserState("option_jbl.naw", null);
 				$app->setUserState("option_jbl.naw", $this->data['naw']);
 			}
+			if(isset($this->data)){
+				$app->setUserState("option_jbl.data", $this->data);
+			}			
 		}
 		
 		//TODO check op number_pp
