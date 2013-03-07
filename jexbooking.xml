@@ -41,6 +41,7 @@
 		<folder>language</folder>
 		<folder>controllers</folder>
 		<folder>css</folder>
+		<folder>js</folder>
 	</files>
 	
 	<media destination="com_jexbooking" folder="media">
