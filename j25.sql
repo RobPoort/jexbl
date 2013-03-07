@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Machine: localhost
--- Genereertijd: 06 mrt 2013 om 10:44
+-- Genereertijd: 07 mrt 2013 om 13:36
 -- Serverversie: 5.5.16
 -- PHP-Versie: 5.3.8
 
@@ -81,6 +81,7 @@ CREATE TABLE IF NOT EXISTS `localtest_jexbooking_attributes` (
   `use_special_price` int(1) NOT NULL DEFAULT '0',
   `is_pp_special` int(1) NOT NULL DEFAULT '0',
   `is_pn_special` int(1) NOT NULL DEFAULT '0',
+  `is_discount` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
@@ -88,18 +89,18 @@ CREATE TABLE IF NOT EXISTS `localtest_jexbooking_attributes` (
 -- Gegevens worden uitgevoerd voor tabel `localtest_jexbooking_attributes`
 --
 
-INSERT INTO `localtest_jexbooking_attributes` (`id`, `name`, `desc`, `price`, `is_pn`, `is_pp`, `has_price`, `has_number`, `published`, `is_special`, `is_required`, `percent`, `percent_desc`, `use_percent`, `special_price`, `special_price_desc`, `use_special_price`, `is_pp_special`, `is_pn_special`) VALUES
-(1, 'hond', '1 hond is bij ons toegestaan', 3.00, 1, 0, 1, 1, 1, 0, 0, 0.00, '', 0, 0.00, '', 0, 0, 0),
-(2, 'bijzettent', 'een bijzettent voor bijvoorbeeld uw kinderen', 4.00, 1, 0, 1, 1, 1, 0, 0, 0.00, '', 0, 0.00, '', 0, 0, 0),
-(3, 'avondzon', 'een kampeerplaats met volop zon ''s avonds', 0.00, 1, 0, 0, 0, 1, 0, 0, 0.00, '', 0, 0.00, '', 0, 0, 0),
-(4, 'visplek', 'een kampeerplaats aan de visvijver', 0.00, 1, 0, 0, 0, 1, 0, 0, 0.00, '', 0, 0.00, '', 0, 0, 0),
-(5, 'WiFi', 'Draadloos internet', 2.75, 0, 1, 1, 0, 1, 0, 0, 0.00, '', 0, 0.00, '', 0, 0, 0),
-(6, 'Koelie', 'Een slaafje voor bij de tent, handig!', 34.00, 0, 0, 1, 0, 1, 0, 0, 0.00, '', 0, 0.00, '', 0, 0, 0),
-(8, 'annuleringsverzekering', 'U kunt, tegen redelijk tarief, een annuleringsverzekering afsluiten', 0.00, 0, 0, 1, 0, 1, 1, 1, 15.20, '5,5 % annuleringskosten en 9,7% assurantie kosten', 1, 3.50, '3,50 administratiekosten', 1, 0, 0),
-(10, 'afvalbijdrage', 'Kosten die gerekend worden voor het ophalen van vuilnis', 0.00, 0, 0, 1, 1, 1, 1, 1, 5.00, '', 0, 2.00, '', 1, 0, 1),
-(9, 'schoonmaakkosten', 'Na uw verblijf worden de bedden opgemaakt', 0.00, 0, 0, 1, 1, 1, 1, 1, 0.00, '', 0, 4.00, '4 euro schoonmaakkosten', 1, 1, 0),
-(11, 'annuleringsverzekering plus', 'U kunt, tegen redelijk tarief, een annuleringsverzekering afsluiten', 0.00, 0, 0, 1, 0, 1, 1, 0, 25.20, '5,5 % annuleringskosten en 19,7% assurantie kosten', 1, 3.50, '3,50 administratiekosten', 1, 0, 0),
-(12, 'annuleringsverzekering plus deLuxe', 'U kunt, tegen redelijk tarief, een annuleringsverzekering afsluiten', 0.00, 0, 0, 1, 0, 1, 1, 0, 25.20, '5,5 % annuleringskosten en 19,7% assurantie kosten', 1, 3.50, '3,50 administratiekosten', 1, 0, 0);
+INSERT INTO `localtest_jexbooking_attributes` (`id`, `name`, `desc`, `price`, `is_pn`, `is_pp`, `has_price`, `has_number`, `published`, `is_special`, `is_required`, `percent`, `percent_desc`, `use_percent`, `special_price`, `special_price_desc`, `use_special_price`, `is_pp_special`, `is_pn_special`, `is_discount`) VALUES
+(1, 'hond', '1 hond is bij ons toegestaan', 3.00, 1, 0, 1, 1, 1, 0, 0, 0.00, '', 0, 0.00, '', 0, 0, 0, 0),
+(2, 'bijzettent', 'een bijzettent voor bijvoorbeeld uw kinderen', 4.00, 1, 0, 1, 1, 1, 0, 0, 0.00, '', 0, 0.00, '', 0, 0, 0, 0),
+(3, 'avondzon', 'een kampeerplaats met volop zon ''s avonds', 0.00, 1, 0, 0, 0, 1, 0, 0, 0.00, '', 0, 0.00, '', 0, 0, 0, 0),
+(4, 'visplek', 'een kampeerplaats aan de visvijver', 0.00, 1, 0, 0, 0, 1, 0, 0, 0.00, '', 0, 0.00, '', 0, 0, 0, 0),
+(5, 'WiFi', 'Draadloos internet', 2.75, 0, 1, 1, 0, 1, 0, 0, 0.00, '', 0, 0.00, '', 0, 0, 0, 0),
+(6, 'Koelie', 'Een slaafje voor bij de tent, handig!', 34.00, 0, 0, 1, 0, 1, 0, 0, 0.00, '', 0, 0.00, '', 0, 0, 0, 0),
+(8, 'annuleringsverzekering', 'U kunt, tegen redelijk tarief, een annuleringsverzekering afsluiten', 0.00, 0, 0, 1, 0, 1, 1, 1, 15.20, '5,5 % annuleringskosten en 9,7% assurantie kosten', 1, 3.50, '3,50 administratiekosten', 1, 0, 0, 0),
+(10, 'afvalbijdrage', 'Kosten die gerekend worden voor het ophalen van vuilnis', 0.00, 0, 0, 1, 1, 1, 1, 1, 5.00, '', 0, 2.00, '', 1, 0, 1, 0),
+(9, 'schoonmaakkosten', 'Na uw verblijf worden de bedden opgemaakt', 0.00, 0, 0, 1, 1, 1, 1, 1, 0.00, '', 0, 4.00, '4 euro schoonmaakkosten', 1, 1, 0, 0),
+(11, 'annuleringsverzekering plus', 'U kunt, tegen redelijk tarief, een annuleringsverzekering afsluiten', 0.00, 0, 0, 1, 0, 1, 1, 0, 25.20, '5,5 % annuleringskosten en 19,7% assurantie kosten', 1, 3.50, '3,50 administratiekosten', 1, 0, 0, 0),
+(12, 'annuleringsverzekering plus deLuxe', 'U kunt, tegen redelijk tarief, een annuleringsverzekering afsluiten', 0.00, 0, 0, 1, 0, 1, 1, 0, 25.20, '5,5 % annuleringskosten en 19,7% assurantie kosten', 1, 3.50, '3,50 administratiekosten', 1, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -216,7 +217,7 @@ CREATE TABLE IF NOT EXISTS `localtest_jexbooking_xref_attributes` (
   `default_id` int(11) NOT NULL,
   `arr_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=444 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=454 ;
 
 --
 -- Gegevens worden uitgevoerd voor tabel `localtest_jexbooking_xref_attributes`
@@ -234,10 +235,9 @@ INSERT INTO `localtest_jexbooking_xref_attributes` (`id`, `attribute_id`, `type_
 (372, 4, 0, 0, 0, 3),
 (62, 5, 0, 6, 0, 0),
 (61, 3, 0, 6, 0, 0),
-(329, 11, 0, 4, 0, 0),
-(328, 9, 0, 4, 0, 0),
-(327, 10, 0, 4, 0, 0),
-(326, 8, 0, 4, 0, 0),
+(453, 12, 0, 4, 0, 0),
+(452, 11, 0, 4, 0, 0),
+(451, 10, 0, 4, 0, 0),
 (41, 4, 0, 7, 0, 0),
 (72, 1, 0, 5, 0, 0),
 (60, 1, 0, 6, 0, 0),
@@ -264,13 +264,13 @@ INSERT INTO `localtest_jexbooking_xref_attributes` (`id`, `attribute_id`, `type_
 (436, 3, 0, 0, 0, 2),
 (435, 2, 0, 0, 0, 2),
 (434, 1, 0, 0, 0, 2),
-(325, 6, 0, 4, 0, 0),
-(324, 5, 0, 4, 0, 0),
-(323, 4, 0, 4, 0, 0),
-(322, 3, 0, 4, 0, 0),
-(321, 2, 0, 4, 0, 0),
-(320, 1, 0, 4, 0, 0),
-(330, 12, 0, 4, 0, 0);
+(450, 8, 0, 4, 0, 0),
+(449, 6, 0, 4, 0, 0),
+(448, 5, 0, 4, 0, 0),
+(447, 4, 0, 4, 0, 0),
+(446, 3, 0, 4, 0, 0),
+(445, 2, 0, 4, 0, 0),
+(444, 1, 0, 4, 0, 0);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
