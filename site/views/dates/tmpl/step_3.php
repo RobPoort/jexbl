@@ -129,9 +129,9 @@ window.addEvent('domready' function(){
 			 			</tr>
 			 		<?php endforeach; ?>
 			 		<tr>
-			 		<td>&nbsp;</td>
-			 		<td>+</td>
-			 	</tr>
+				 		<td>&nbsp;</td>
+				 		<td>+</td>
+			 		</tr>
 			 	<tr>
 			 		<td style="text-align:right;">Subtotaalprijs extra kosten:</td>
 			 		<td>
@@ -139,6 +139,20 @@ window.addEvent('domready' function(){
 			 		<?php echo number_format($this->app->getUserState("option_jbl.notPercentsSubTotaal"), 2, ',', '.'); ?>
 			 		</td>
 			 	</tr>
+			 <?php endif; ?>
+			 <?php if($this->app->getUserState("option_jbl.subtotal")) : ?>
+			 <?php $subtotal = $this->app->getUserState("option_jbl.subtotal"); ?>
+			 		<tr>
+				 		<td>&nbsp;</td>
+				 		<td>+</td>
+			 		</tr>
+			 		<tr>
+				 		<td style="text-align:right;font-weight:bold;">Subtotaalprijs:</td>
+				 		<td style="font-weight:bold;">
+				 		&euro;&nbsp;
+				 		<?php echo number_format($subtotal, 2, ',', '.'); ?>
+				 		</td>
+			 		</tr>
 			 <?php endif; ?>
 			 </table>
 		

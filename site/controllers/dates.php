@@ -350,6 +350,25 @@ class JexBookingControllerDates extends JController
 		$this->app->setUserState("option_jbl.calcattribsSpecial", null);
 		$this->app->setUserState("option_jbl.calcattribsSpecial", $this->calcAttribsSpecial['not_percents']);
 		
+		//nu totale subtotaal
+		$subtotal = 0;
+		if($this->overlap){
+			$subtotal += $this->arr_price;
+		}
+		if($totalStayPrice){
+			$subtotal += $totalStayPrice;
+		}
+		if($this->app->getUserState("option_jbl.attribsSubTotaal")){
+			$subtotal += $this->app->getUserState("option_jbl.attribsSubTotaal");
+		}
+		if($this->app->getUserState("option_jbl.notPercentsSubTotaal")){
+			$subtotal += $this->app->getUserState("option_jbl.notPercentsSubTotaal");
+		}
+		
+		
+		$this->app->setUserState("option_jbl.subtotal", null);
+		$this->app->setUserState("option_jbl.subtotal", $subtotal);
+		
 		
 		
 	}
