@@ -179,6 +179,26 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		<field
+			name="is_discount"
+			type="list"
+			label="COM_JEXBOOKING_ATTRIBUTE_IS_DISCOUNT_LABEL"
+			description="COM_JEXBOOKING_ATTRIBUTE_IS_DISCOUNT_DESC"
+			required="false"
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>		
+		<field
+			name="is_discount_subtotal"
+			type="list"
+			label="COM_JEXBOOKING_ATTRIBUTE_IS_DISCOUNT_SUBTOTAL_LABEL"
+			description="COM_JEXBOOKING_ATTRIBUTE_IS_DISCOUNT_SUBTOTAL_DESC"
+			required="false"
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 	</fieldset>
 	<fieldset name="publish"
 	>

@@ -347,13 +347,9 @@ class JexBookingControllerDates extends JController
 		$this->calcAttribs	= $this->calcAttribs();
 		$this->app->setUserState("option_jbl.calcattribs", $this->calcAttribs);
 		
-		$this->calcAttribsSpecial = $this->calcAttribs;
-		//TODO: wel of niet userstate eerst legen? Geldt ook voor $this->calcAttribs
-		//$this->app->setUserState("option_jbl.calcattribsSpecial", null);
-		//$this->app->setUserState("option_jbl.calcattribsSpecial", $this->calcAttribsSpecial['not_percents']);
+		$this->calcAttribsSpecial = $this->calcAttribs;	
 		
-		
-		
+		//TODO: kortingen verwerken in prijsberekeningen
 		//nu totale subtotaal
 		$subtotal = 0;
 		if($this->overlap){

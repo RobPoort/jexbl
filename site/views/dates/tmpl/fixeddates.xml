@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
 	<layout title="COM_JEXBOOKING_VIEW_FIXEDDATES_TITLE">
-		<message>COM_JEXBOOKING_VIEW_ARRANGEMENTS_DESC</message>
+		<message>COM_JEXBOOKING_VIEW_FIXEDDATES_DESC</message>
 	</layout>
 	<fields name="request">
 		<fieldset 
