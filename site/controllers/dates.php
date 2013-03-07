@@ -234,7 +234,9 @@ class JexBookingControllerDates extends JController
 			}
 		}
 		if(!empty($not_percents)){			
-			$checkedAttribs['not_percents'] = $not_percents;
+			//$checkedAttribs['not_percents'] = $not_percents;
+			$this->app->setUserState("option_jbl.calcattribsSpecial", null);
+			$this->app->setUserState("option_jbl.calcattribsSpecial", $not_percents);
 			$not_percentSubTotaal = 0;
 			foreach($not_percents as $item){
 				$not_percentSubTotaal += $item['calculated'];
@@ -347,8 +349,10 @@ class JexBookingControllerDates extends JController
 		
 		$this->calcAttribsSpecial = $this->calcAttribs;
 		//TODO: wel of niet userstate eerst legen? Geldt ook voor $this->calcAttribs
-		$this->app->setUserState("option_jbl.calcattribsSpecial", null);
-		$this->app->setUserState("option_jbl.calcattribsSpecial", $this->calcAttribsSpecial['not_percents']);
+		//$this->app->setUserState("option_jbl.calcattribsSpecial", null);
+		//$this->app->setUserState("option_jbl.calcattribsSpecial", $this->calcAttribsSpecial['not_percents']);
+		
+		
 		
 		//nu totale subtotaal
 		$subtotal = 0;
