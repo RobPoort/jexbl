@@ -120,7 +120,31 @@ class JexBookingControllerDates extends JController
 				$messageNumberPp = '';
 				$messageNumberNights = '';
 				
+				if($item->is_pp_special == 0){
+					$personen = 1;
+				} else {
+					$mess = '';
+					if($number_pp < 2){
+						$personen = 2;
+						$mess = '(minimaal 2 personen)';
+					} elseif($number_pp > 6) {
+						$personen = 6;
+						$mess = '(maximaal 6 personen)';
+					}
+					$messageNumberPp = ' x '.$personen.' personen '.$mess;
+				}
+				
+				if($item->is_pn_special == 0){
+					$nights = 1;
+				} elseif($nights == 1){
+					$messageNumberNights = ' x '.$nights.' nacht ';
+				} else {
+					$messageNumberNights = ' x '.$nights.' nachten ';
+				}
+				
 				$not_percents[$item->id]['attribObject'] = $item;
+				$not_percents[$item->id]['calculated'] = $item->special_price * $personen * $nights;
+				$not_percents[$item->id]['message'] = '&euro;&nbsp;'.number_format($item->special_price, 2, ',' , '.').$messageNumberPp.$messageNumberNights;
 			}
 			
 		}
@@ -142,7 +166,7 @@ class JexBookingControllerDates extends JController
 						$mess = '(minimaal 2 personen)';
 					} elseif($number_pp > 6) {
 						$personen = 6;
-						$mess = 'maximaal 6 personen';
+						$mess = '(maximaal 6 personen)';
 					}
 					$messageNumberPp = ' x '.$personen.' personen '.$mess;
 				}
@@ -209,136 +233,18 @@ class JexBookingControllerDates extends JController
 				$attribsSubTotaal += $item['calculated'];
 			}
 		}
-		
+		if(!empty($not_percents)){			
+			$checkedAttribs['not_percents'] = $not_percents;
+			$not_percentSubTotaal = 0;
+			foreach($not_percents as $item){
+				$not_percentSubTotaal += $item['calculated'];
+			}			
+		}
 		$this->app->setUserState("option_jbl.attribsSubTotaal", null);
 		$this->app->setUserState("option_jbl.attribsSubTotaal", $attribsSubTotaal);
 		
-		return $checkedAttribs;
-	}
-	
-	/**
-	 * method om de prijzen van de pre-subtotaal  'special' attribs te berekenen
-	 * @param Object attribs
-	 * @return void
-	 */
-	public function calcAttribsSpecial(){
-		$this->app = JFactory::getApplication();
-		$this->data = $this->app->input->get("jbl_form", null, null);
-		$this->attribs = $this->app->getUserState("option_jbl.itemAttribs");
-		
-		//number_pp  en nights bepalen voor als een attrib is_pn en/of is_pp
-		$number_pp = $this->data['number_pp'];
-		//TODO var_dump
-		
-		$start = new DateTime($this->data['start_date']);
-		$end = new DateTime($this->data['end_date']);
-		$diff = $start->diff($end);
-		$nachten = $diff->days;
-		
-		$data = $this->data;
-		$attribs = $this->attribs;
-		
-		//eerst alle attribs in array zetten met id als $key
-		$checks  = array();
-		$numbers = array();
-		if(isset($attribs['checked'])){
-			foreach($attribs['checked'] as $item){
-				$checks[$item->id] = $item;
-			}
-		}
-		if(isset($attribs['number'])){
-			foreach($attribs['number'] as $item){
-				$numbers[$item->id] = $item;
-			}
-		}
-		
-		//nu de form data over attribs leggen
-		$checkedAttribs = array();
-		if(isset($data['checked'])){
-				
-			foreach($data['checked'] as $key=>$value){
-				$personen = $number_pp;
-				$messageNumberPp		= '';
-				$messageNumberNights	= '';
-				if($checks[$key]->is_pp == 0){
-					$personen = 1;
-				} else {
-					$mess = '';
-					if($number_pp < 2){
-						$personen = 2;
-						$mess = '(minimaal 2 personen)';
-					} elseif($number_pp > 6) {
-						$personen = 6;
-						$mess = 'maximaal 6 personen';
-					}
-					$messageNumberPp = ' x '.$personen.' personen '.$mess;
-				}
-		
-				$nights = $nachten;
-				if($checks[$key]->is_pn == 0){
-					$nights = 1;
-				} elseif($nights == 1){
-					$messageNumberNights = ' x '.$nights.' nacht ';
-				} else {
-					$messageNumberNights = ' x '.$nights.' nachten ';
-				}
-		
-				$checkedAttribs[$key]['attribObject'] = $checks[$key];
-				$checkedAttribs[$key]['calculated'] = $checks[$key]->price * $personen * $nights;
-				$checkedAttribs[$key]['message'] = '&euro;&nbsp;'.number_format($checks[$key]->price, 2, ',' , '.').$messageNumberPp.$messageNumberNights;
-			}
-				
-		}
-		if(isset($data['number'])){
-		
-			foreach($data['number'] as $key=>$value){
-		
-				$persons				= $number_pp;
-				$messageNumberPp		= '';
-				$messageNumberNights	= '';
-				if($numbers[$key]->is_pp == 0){
-					$persons = 1;
-						
-				} elseif($numbers[$key] == 1) {
-						
-					$mess = '';
-					if($number_pp < 2){
-						$persons = 2;
-						$mess = '(minimaal 2 personen)';
-					} elseif($number_pp > 6) {
-						$persons = 6;
-						$mess = 'maximaal 6 personen';
-					}
-					$messageNumberPp = ' x '.$persons.' personen '.$mess;
-				}
-		
-				$nights = $nachten;
-				if($numbers[$key]->is_pn == 0){
-					$nights = 1;
-				} elseif($nights == 1){
-					$messageNumberNights = ' x '.$nights.' nacht ';
-				} else {
-					$messageNumberNights = ' x '.$nights.' nachten ';
-				}
-		
-				if($value != ''){
-					$checkedAttribs[$key]['attribObject'] = $numbers[$key];
-					$checkedAttribs[$key]['calculated'] = $numbers[$key]->price * $persons * $nights * $value;
-					$checkedAttribs[$key]['message'] = $value.' x &euro;&nbsp;'.number_format($numbers[$key]->price, 2, ', ', '.').$messageNumberPp.$messageNumberNights;
-				}
-			}
-		
-		}
-		
-		if($checkedAttribs){
-			$attribsSubTotaal = 0;
-			foreach($checkedAttribs as $item){
-				$attribsSubTotaal += $item['calculated'];
-			}
-		}
-		
-		$this->app->setUserState("option_jbl.attribsSubTotaal", null);
-		$this->app->setUserState("option_jbl.attribsSubTotaal", $attribsSubTotaal);
+		$this->app->setUserState("option_jbl.notPercentsSubTotaal", null);
+		$this->app->setUserState("option_jbl.notPercentsSubTotaal", $not_percentSubTotaal);
 		
 		return $checkedAttribs;
 	}
@@ -439,10 +345,10 @@ class JexBookingControllerDates extends JController
 		$this->calcAttribs	= $this->calcAttribs();
 		$this->app->setUserState("option_jbl.calcattribs", $this->calcAttribs);
 		
-		$this->calcAttribsSpecial = $this->calcAttribsSpecial();
+		$this->calcAttribsSpecial = $this->calcAttribs;
 		//TODO: wel of niet userstate eerst legen? Geldt ook voor $this->calcAttribs
 		$this->app->setUserState("option_jbl.calcattribsSpecial", null);
-		$this->app->setUserState("option_jbl.calcattribsSpecial", $this->calcAttribsSpecial);
+		$this->app->setUserState("option_jbl.calcattribsSpecial", $this->calcAttribsSpecial['not_percents']);
 		
 		
 		

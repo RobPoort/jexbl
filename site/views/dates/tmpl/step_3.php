@@ -25,7 +25,6 @@ window.addEvent('domready' function(){
 	});
 });
 </script>
-
 <form method="post" action="">
 	<fieldset class="jbl_form" id="jbl_has_number"><legend>Uw prijsberekening:</legend>
 		<table class="jbl_form_table">
@@ -111,6 +110,33 @@ window.addEvent('domready' function(){
 			 		<td>
 			 		&euro;&nbsp;
 			 		<?php echo number_format($this->app->getUserState("option_jbl.attribsSubTotaal"), 2, ',', '.'); ?>
+			 		</td>
+			 	</tr>
+			 <?php endif; ?>
+			 <?php if($this->app->getUserState("option_jbl.calcattribsSpecial")) : ?>
+			 	<tr>
+			 		<td colspan="2">&nbsp;</td>
+			 	</tr>
+			 	<?php $not_percents = $this->app->getUserState("option_jbl.calcattribsSpecial"); ?>
+			 		<?php foreach($not_percents as $item) : ?>
+			 			<tr>
+			 				<td>
+			 					<span class="hasTip" title="<?php echo $item['attribObject']->desc; ?>"><?php echo $item['attribObject']->name; ?></span>&nbsp;<?php echo $item['message']; ?>
+			 				</td>
+			 				<td>
+			 					&euro;&nbsp;<?php echo number_format($item['calculated'], 2, ',', '.'); ?>
+			 				</td>
+			 			</tr>
+			 		<?php endforeach; ?>
+			 		<tr>
+			 		<td>&nbsp;</td>
+			 		<td>+</td>
+			 	</tr>
+			 	<tr>
+			 		<td style="text-align:right;">Subtotaalprijs extra kosten:</td>
+			 		<td>
+			 		&euro;&nbsp;
+			 		<?php echo number_format($this->app->getUserState("option_jbl.notPercentsSubTotaal"), 2, ',', '.'); ?>
 			 		</td>
 			 	</tr>
 			 <?php endif; ?>
