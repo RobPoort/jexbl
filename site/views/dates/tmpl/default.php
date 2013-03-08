@@ -108,12 +108,6 @@ return [date.getDay() == 1 || date.getDay() == 5,""];
 	$this->choose = $this->app->input->get('choose');	
 	
 	//TODO: var_dump verwijderen
-		echo '<h2>params</h2>';
-		var_dump($this->choose);
-		echo '<h2>$this->locations</h2>';
-		var_dump($this->locations);
-		echo '<h2>$this->item</h2>';
-		var_dump($this->item);
 		echo '<h2>$this->data:</h2>';
 		var_dump($this->data);
 		echo '<h2>$this->default:</h2>';

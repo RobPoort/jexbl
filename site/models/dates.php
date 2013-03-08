@@ -136,6 +136,7 @@ class JexBookingModelDates extends JModel
 									$result['attribs']['special']['required']['not_percent'][] = $attrib;
 								}
 							} else{
+								//TODO: hier nog meer statements ivm beide: zowel percent als special_price!!!!
 								if($attrib->use_percent){
 									$result['attribs']['special']['not_required']['percent'][] = $attrib;
 								} else{

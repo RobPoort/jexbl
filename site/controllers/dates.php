@@ -127,7 +127,10 @@ class JexBookingControllerDates extends JController
 		$checks			= array();
 		$numbers		= array();
 		$not_percents	= array();
-		$not_required_not_percents = array();
+		$not_required_not_percents	= array();
+		$not_required_percents		= array();
+		
+		$not_percents_test = array();
 		
 		if(isset($attribs['checked'])){
 			foreach($attribs['checked'] as $item){
@@ -139,6 +142,12 @@ class JexBookingControllerDates extends JController
 				$numbers[$item->id] = $item;
 			}
 		}
+		if(isset($attribs['special']['not_required']['not_percent'])){
+			 foreach($attribs['special']['not_required']['not_percent'] as $item){
+			 	$not_percents_test[$item->id] = $item;
+			 }			 
+		}
+		
 		//begin special->not_required->not_percent
 		if(isset($attribs['special']['not_required']['not_percent'])){
 				
@@ -215,8 +224,64 @@ class JexBookingControllerDates extends JController
 			}
 			
 		}
+		//nu de attribs->special->not_required->percent ophalen
+		if(isset($attribs['special']['not_required']['percent'])){
+			$not_required_percents[] = $attribs['special']['not_required']['percent'];
+			$this->app->setUserState("option_jbl.calcAttribsSpecialPercent", null);	
+			$this->app->setUserState("option_jbl.calcAttribsSpecialPercent", $not_required_percents);
+		}
+		//einde
 		
 		//nu de form data over attribs leggen
+		$checkedNotPercents = array();
+		
+		if(isset($data['special'])){
+			
+			if(isset($data['special']['not_required'])){
+				
+				if(isset($data['special']['not_required']['not_percent'])){
+					
+					foreach($data['special']['not_required']['not_percent'] as $key=>$value){
+						
+						$personen = $number_pp;
+						$messageNumberPp		= '';
+						$messageNumberNights	= '';
+						if($not_percents_test[$key]->is_pp == 0){
+							$personen = 1;
+						} else {
+							$mess = '';
+							if($number_pp < 2){
+								$personen = 2;
+								$mess = '(minimaal 2 personen)';
+							} elseif($number_pp > 6) {
+								$personen = 6;
+								$mess = '(maximaal 6 personen)';
+							}
+							$messageNumberPp = ' x '.$personen.' personen '.$mess;
+						}
+						
+						$nights = $nachten;
+						if($not_percents_test[$key]->is_pn == 0){
+							$nights = 1;
+						} elseif($nights == 1){
+							$messageNumberNights = ' x '.$nights.' nacht ';
+						} else {
+							$messageNumberNights = ' x '.$nights.' nachten ';
+						}
+						
+						$checkedNotPercents[$key]['attribObject'] = $checks[$key];
+						$checkedNotPercents[$key]['calculated'] = $checks[$key]->special_price * $personen * $nights;
+						$checkedNotPercents[$key]['message'] = '&euro;&nbsp;'.number_format($checks[$key]->special_price, 2, ',' , '.').$messageNumberPp.$messageNumberNights;
+						
+					}
+					
+				}
+				
+			}
+		
+		}
+		
+		
 		$checkedAttribs = array();
 		if(isset($data['checked'])){
 			
@@ -301,6 +366,11 @@ class JexBookingControllerDates extends JController
 		
 		if($checkedAttribs){			
 			foreach($checkedAttribs as $item){
+				$attribsSubTotaal += $item['calculated'];
+			}
+		}
+		if(!empty($checkedNotPercents)){
+			foreach($checkedNotPercents as $item){
 				$attribsSubTotaal += $item['calculated'];
 			}
 		}

@@ -195,7 +195,7 @@ window.addEvent('domready' function(){
 								foreach($attribs['special']['not_required']['not_percent'] as $item){
 	?>
 									<tr>
-										<td class="jbl_form_checkbox"><input type="checkbox" class="jbl_input_checkbox" name="jbl_form[special][not_required][percent][<?php echo $item->id; ?>]" value="1" <?php if($this->default['special']['not_required']['not_percent']){
+										<td class="jbl_form_checkbox"><input type="checkbox" class="jbl_input_checkbox" name="jbl_form[special][not_required][not_percent][<?php echo $item->id; ?>]" value="1" <?php if($this->default['special']['not_required']['not_percent']){
 											if(array_key_exists($item->id, $this->default['special']['not_required']['not_percent']))
 										{ echo 'checked="checked"'; }} ?> /></td><td class="jbl_form_left"><label <?php if($item->desc) : ?>class="hasTip" title="<?php echo $item->desc; ?>" <?php endif; ?>><?php echo $item->name; ?>&nbsp;</label></td><td class="jbl_form_right">&nbsp;</td>
 									</tr>

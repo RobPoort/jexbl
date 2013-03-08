@@ -25,7 +25,10 @@ window.addEvent('domready' function(){
 	});
 });
 </script>
-
+<pre>
+	<?php //var_dump($this->app->getUserState("option_jbl.test_not_percent")); ?>
+	<?php var_dump($this->data); ?>
+</pre>
 <form method="post" action="">
 	<fieldset class="jbl_form" id="jbl_has_number"><legend>Uw prijsberekening:</legend>
 		<table class="jbl_form_table">
