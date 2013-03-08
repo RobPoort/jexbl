@@ -7,8 +7,35 @@ class JexBookingControllerDates extends JController
 {
 	function display($cachable = false){		
 		
+		$this->setLocationId();
+		
 		parent::display($cachable);
 	}
+	
+	/**
+	 * method om de location_id in de userState te zetten, afhankelijk van de menu params
+	 * @return void
+	 */
+	public function setLocationId(){
+		$app = JFactory::getApplication();
+		
+		$this->data = $app->input->get('jbl_form', null, null);
+		$this->choose = $app->input->get('choose');
+		$this->location_id = $app->input->get('location_id');
+		
+		if($this->choose == 1){
+			//location_id is gedurende hele traject, de location_id zoals aangegeven in menu params
+			$app->setUserState("jbl_option.location_id", null);
+			$app->setUserState("jbl_option.location_id", $this->location_id);
+		} elseif($this->choose == 0){
+			//location_id wordt bepaald door list op default pagina. userState alleen zetten indien in form location opgegeven wordt
+			if(isset($this->data['location'])){
+				$app->setUserState("jbl_option.location_id", null);
+				$app->setUserState("jbl_option.location_id", $this->data['location']);
+			}
+		}
+	}
+	
 	
 	/**
 	 * method om de stappen in het formulier te definiëren en de tmpl layout toe te wijzen
@@ -62,11 +89,12 @@ class JexBookingControllerDates extends JController
 	
 		$startDate = new DateTime($date['start_date']);
 		$endDate = new DateTime($date['end_date']);
-		$locationId = $this->app->input->get('location_id');
+		//$locationId = $this->app->input->get('location_id');
+		$locationId = $this->app->getUserState("jbl_option.location_id");
 	
 		$model = $this->getModel('dates');
 		$arrangements = $model->getArrangements($locationId,$startDate,$endDate);
-	//TODO: 'arrangement' in $arrangements heeft nog geen prijsberekening. Moet ook via calcArr: $arrangements['arrangement'] = calcArr();
+		//TODO: 'arrangement' in $arrangements heeft nog geen prijsberekening. Moet ook via calcArr: $arrangements['arrangement'] = calcArr();
 		$this->app->setUserState("option_jbl_overlap", null);
 		if($arrangements){
 			$this->app->setUserState("option_jbl_overlap", $arrangements);
@@ -85,8 +113,7 @@ class JexBookingControllerDates extends JController
 		$this->attribs = $this->app->getUserState("option_jbl.itemAttribs");
 		
 		//number_pp  en nights bepalen voor als een attrib is_pn en/of is_pp
-		$number_pp = $this->data['number_pp'];
-		//TODO var_dump
+		$number_pp = $this->data['number_pp'];		
 		
 		$start = new DateTime($this->data['start_date']);
 		$end = new DateTime($this->data['end_date']);
@@ -262,7 +289,8 @@ class JexBookingControllerDates extends JController
 		
 		$this->data = $app->input->get("jbl_form", null, null);
 		
-		$this->locationId = (int)$app->input->get("location_id");
+		//$this->locationId = (int)$app->input->get("location_id");
+		$this->locationId = $app->getUserState("jbl_option.location_id");
 		
 		//indien $this->overlap == null, dan geen arrangement van toepassing, anders arrangement prijs ophalen in function calcArr(), want andere gegevens
 		//TODO: moet opgevraagd worden vóór percentage berekend gaat worden, indien van toepassing
@@ -432,7 +460,8 @@ class JexBookingControllerDates extends JController
 		
 		//eerst start en enddate uit form halen + $location_id en eventuele overlap
 		$date = $this->app->input->get("jbl_form",null,null);
-		$this->locationId = (int)$this->app->input->get("location_id");
+		//$this->locationId = (int)$this->app->input->get("location_id");
+		$this->locationId = $this->app->getUserState("jbl_option.location_id");
 		$this->overlap = $this->app->getUserState("option_jbl_overlap");
 		
 		$startDate = new DateTime($date['start_date']);

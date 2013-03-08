@@ -25,9 +25,7 @@ window.addEvent('domready' function(){
 	});
 });
 </script>
-<?php 
-$this->prices = $this->app->getUserState("option_jbl.prices");
-?>
+
 <form action="" method="post">
 	<fieldset class="jbl_form" id="jbl_has_number"><legend <?php if($item->desc) : ?>class="hasTip" title="<?php echo $item->desc; ?>" <?php endif; ?>><?php echo ucfirst($item->name);?></legend>
 		<table class="jbl_form_table">

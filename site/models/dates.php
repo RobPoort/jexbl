@@ -6,6 +6,31 @@ class JexBookingModelDates extends JModel
 {
 	
 	/**
+	 * method om lijst met location_id's op te halen voor keuzelijst op defaultpagina
+	 * @return	Object
+	 */
+	public function getLocations(){
+		
+		//eerst type_id uit params halen
+		$app = JFactory::getApplication();
+		$type_id = $app->input->get('type_id');
+		
+		//nu de locations ophalen aan de hand van de type_id
+		
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$query->from('#__jexbooking_location as jl');
+		$query->select('name, id');
+		$query->where('type_id='.$type_id.' AND published=1');
+		$db->setQuery($query);
+		
+		$rows = $db->loadObjectList();
+		
+		return $rows;		
+	}
+	
+	
+	/**
 	 * method om de locatie of locatiesoort op te halen, en de daarbij behorende attributen
 	 * @return object
 	 */
@@ -29,22 +54,22 @@ class JexBookingModelDates extends JModel
 			$diff = $start->diff($end);
 			$nights = $diff->days;
 		}
-		//eerst de locatie_id ophalen uit de params
-		$this->location_id = $app->input->get('location_id');
+		//eerst bepalen of het gaat om één locatie, of om een locatiesoort
+		//$this->choose = $this->app->get('choose');
 		
-		$this->type_id = $app->input->get('type_id');
-		$this->choose = $app->input->get('choose');
+		
+		
+		//nu de locatie_id ophalen uit de params
+		$this->location_id = $app->getUserState("jbl_option.location_id");		
+		
 		
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 		
 		$query->from('#__jexbooking_location as jl');
-		$query->select('*');		
-		if(!$this->choose){
-			$query->where('type_id='.$this->type_id.' AND published=1');
-		} else{
-			$query->where('id='.$this->location_id.' AND published=1');
-		}
+		$query->select('*');
+		$query->where('id='.$this->location_id.' AND published=1');
+		
 		
 		$db->setQuery($query);
 		$row = $db->loadObject();
