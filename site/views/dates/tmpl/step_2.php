@@ -25,7 +25,6 @@ window.addEvent('domready' function(){
 	});
 });
 </script>
-
 <form action="" method="post">
 	<fieldset class="jbl_form" id="jbl_has_number"><legend <?php if($item->desc) : ?>class="hasTip" title="<?php echo $item->desc; ?>" <?php endif; ?>><?php echo ucfirst($item->name);?></legend>
 		<table class="jbl_form_table">
@@ -191,7 +190,18 @@ window.addEvent('domready' function(){
 									</tr>
 									<?php
 								}
-							} 
+							}
+							if($attribs['special']['not_required']['not_percent']){
+								foreach($attribs['special']['not_required']['not_percent'] as $item){
+	?>
+									<tr>
+										<td class="jbl_form_checkbox"><input type="checkbox" class="jbl_input_checkbox" name="jbl_form[special][not_required][percent][<?php echo $item->id; ?>]" value="1" <?php if($this->default['special']['not_required']['not_percent']){
+											if(array_key_exists($item->id, $this->default['special']['not_required']['not_percent']))
+										{ echo 'checked="checked"'; }} ?> /></td><td class="jbl_form_left"><label <?php if($item->desc) : ?>class="hasTip" title="<?php echo $item->desc; ?>" <?php endif; ?>><?php echo $item->name; ?>&nbsp;</label></td><td class="jbl_form_right">&nbsp;</td>
+									</tr>
+									<?php
+								}
+							}
 						?>
 					
 				<?php

@@ -127,6 +127,7 @@ class JexBookingControllerDates extends JController
 		$checks			= array();
 		$numbers		= array();
 		$not_percents	= array();
+		$not_required_not_percents = array();
 		
 		if(isset($attribs['checked'])){
 			foreach($attribs['checked'] as $item){
@@ -138,6 +139,45 @@ class JexBookingControllerDates extends JController
 				$numbers[$item->id] = $item;
 			}
 		}
+		//begin special->not_required->not_percent
+		if(isset($attribs['special']['not_required']['not_percent'])){
+				
+			foreach($attribs['special']['not_required']['not_percent'] as $item){
+		
+				$nights = $nachten;
+				$personen = $number_pp;
+				$messageNumberPp = '';
+				$messageNumberNights = '';
+		
+				if($item->is_pp_special == 0){
+					$personen = 1;
+				} else {
+					$mess = '';
+					if($number_pp < 2){
+						$personen = 2;
+						$mess = '(minimaal 2 personen)';
+					} elseif($number_pp > 6) {
+						$personen = 6;
+						$mess = '(maximaal 6 personen)';
+					}
+					$messageNumberPp = ' x '.$personen.' personen '.$mess;
+				}
+		
+				if($item->is_pn_special == 0){
+					$nights = 1;
+				} elseif($nights == 1){
+					$messageNumberNights = ' x '.$nights.' nacht ';
+				} else {
+					$messageNumberNights = ' x '.$nights.' nachten ';
+				}
+		
+				$not_required_not_percents[$item->id]['attribObject'] = $item;
+				$not_required_not_percents[$item->id]['calculated'] = $item->special_price * $personen * $nights;
+				$not_required_not_percents[$item->id]['message'] = '&euro;&nbsp;'.number_format($item->special_price, 2, ',' , '.').$messageNumberPp.$messageNumberNights;
+			}
+				
+		}
+		//eind special->not_required->not_percent
 		if(isset($attribs['special']['required']['not_percent'])){
 			
 			foreach($attribs['special']['required']['not_percent'] as $item){
@@ -254,26 +294,42 @@ class JexBookingControllerDates extends JController
 				
 		}
 		
-		if($checkedAttribs){
-			$attribsSubTotaal = 0;
+		//subtotalen berekenen
+		$attribsSubTotaal = 0;
+		$not_percentSubTotaal = 0;
+		$not_required_not_percentsSubtotaal = 0;
+		
+		if($checkedAttribs){			
 			foreach($checkedAttribs as $item){
 				$attribsSubTotaal += $item['calculated'];
 			}
 		}
-		if(!empty($not_percents)){			
-			//$checkedAttribs['not_percents'] = $not_percents;
-			$this->app->setUserState("option_jbl.calcattribsSpecial", null);
-			$this->app->setUserState("option_jbl.calcattribsSpecial", $not_percents);
-			$not_percentSubTotaal = 0;
+		if(!empty($not_percents)){						
 			foreach($not_percents as $item){
 				$not_percentSubTotaal += $item['calculated'];
-			}			
+			}
+					
+		}		
+		if(!empty($not_required_not_percents)){
+			foreach ($not_required_not_percents as $item){
+				$not_required_not_percentsSubtotaal += $item['calculated'];
+			}
 		}
+		
+		//userStates vullen
+		
+		$calcattribsSpecial = array_merge($not_percents,$not_required_not_percents);
+		if(!empty($calcattribsSpecial)){
+			$this->app->setUserState("option_jbl.calcattribsSpecial", null);
+			$this->app->setUserState("option_jbl.calcattribsSpecial", $calcattribsSpecial);
+		}
+		$calcAttribsSpecialSubTotaal = $not_percentSubTotaal + $not_required_not_percentsSubtotaal;
+		
 		$this->app->setUserState("option_jbl.attribsSubTotaal", null);
 		$this->app->setUserState("option_jbl.attribsSubTotaal", $attribsSubTotaal);
 		
-		$this->app->setUserState("option_jbl.notPercentsSubTotaal", null);
-		$this->app->setUserState("option_jbl.notPercentsSubTotaal", $not_percentSubTotaal);
+		$this->app->setUserState("option_jbl.calcAttribsSpecialSubTotaal", null);
+		$this->app->setUserState("option_jbl.calcAttribsSpecialSubTotaal", $calcAttribsSpecialSubTotaal);
 		
 		return $checkedAttribs;
 	}

@@ -137,7 +137,7 @@ window.addEvent('domready' function(){
 			 		<td style="text-align:right;">Subtotaalprijs extra kosten:</td>
 			 		<td>
 			 		&euro;&nbsp;
-			 		<?php echo number_format($this->app->getUserState("option_jbl.notPercentsSubTotaal"), 2, ',', '.'); ?>
+			 		<?php echo number_format($this->app->getUserState("option_jbl.calcAttribsSpecialSubTotaal"), 2, ',', '.'); ?>
 			 		</td>
 			 	</tr>
 			 <?php endif; ?>
