@@ -13,7 +13,7 @@ class JexBookingControllerDates extends JController
 	}
 	
 	/**
-	 * method om de location_id in de userState te zetten, afhankelijk van de menu params
+	 * method om de location_id in de userState te zetten, afhankelijk van de menu params. Ook attributes behorende bij locatie in userState zetten
 	 * @return void
 	 */
 	public function setLocationId(){
@@ -22,7 +22,7 @@ class JexBookingControllerDates extends JController
 		$this->data = $app->input->get('jbl_form', null, null);
 		$this->choose = $app->input->get('choose');
 		$this->location_id = $app->input->get('location_id');
-		
+		$this->setAttributes();
 		if($this->choose == 1){
 			//location_id is gedurende hele traject, de location_id zoals aangegeven in menu params
 			$app->setUserState("jbl_option.location_id", null);
@@ -35,7 +35,26 @@ class JexBookingControllerDates extends JController
 			}
 		}
 	}
-	
+	/**
+	 * method om de attributes behorende bij een locatie op te halen en in userState te zetten
+	 * @return void
+	 */
+	public function setAttributes(){
+		
+		$locationId = $this->app->getUserState("jbl_option.location_id");
+		
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$query->select('attribute_id');
+		$query->from('#__jexbooking_xref_attributes');
+		$query->where('location_id='.$locationId);
+		$db->setQuery($query);
+		$attributes = $db->loadObjectList();
+		
+		$this->app->setUserState("jbl_option.locationAttributes", null);
+		$this->app->setUserState("jbl_option.locationAttributes", $attributes);
+		
+	}
 	
 	/**
 	 * method om de stappen in het formulier te definiëren en de tmpl layout toe te wijzen
@@ -388,10 +407,11 @@ class JexBookingControllerDates extends JController
 		
 		//userStates vullen
 		
-		$calcattribsSpecial = array_merge($not_percents,$not_required_not_percents);
+		//$calcattribsSpecial = array_merge($not_percents,$not_required_not_percents);
+		$calcattribsSpecialRequired = $this->calcAttribsSpecialRequired();
 		if(!empty($calcattribsSpecial)){
-			$this->app->setUserState("option_jbl.calcattribsSpecial", null);
-			$this->app->setUserState("option_jbl.calcattribsSpecial", $calcattribsSpecial);
+			$this->app->setUserState("option_jbl.attribsSpecialRequired", null);
+			$this->app->setUserState("option_jbl.attribsSpecialRequired", $calcattribsSpecialRequired);
 		}
 		$calcAttribsSpecialSubTotaal = $not_percentSubTotaal + $not_required_not_percentsSubtotaal;
 		
@@ -402,6 +422,45 @@ class JexBookingControllerDates extends JController
 		$this->app->setUserState("option_jbl.calcAttribsSpecialSubTotaal", $calcAttribsSpecialSubTotaal);
 		
 		return $checkedAttribs;
+	}
+	
+	/**
+	 * method om de specialAttribs uit form te halen
+	 * @return Object
+	 */
+	public function calcAttribsSpecialRequired(){
+		
+		//old school: voor elk special attrib een query
+		$app = JFactory::getApplication();
+		$all_data = $app->input->get("jbl_form", null, null);
+		$data = $all_data['special'];
+		$location_id = $app->getUserState("jbl_option.location_id");
+		
+		//nu eerst de required op halen
+				
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$query->select('attribute_id');
+		$query->from('#__jexbooking_xref_attributes');		
+		$query->where("location_id=".$location_id);		
+		$db->setQuery($query);
+		$rows = $db->loadObjectList();
+		
+		$results = array();
+		foreach($rows as $row){
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true);
+			$query->select('name,use_percent,use_special_price, is_required, published, is_discount');
+			$query->from("#__jexbooking_attributes");
+			$query->where('id='.$row->attribute_id.' AND published=1 AND is_special=1 AND is_required=1');
+			$db->setQuery($query);
+			$result = $db->loadObject();
+			if($result){
+				$results[$row->attribute_id] = $result;
+			}
+		}
+		return $results;
+		
 	}
 	
 	/**
@@ -490,6 +549,10 @@ class JexBookingControllerDates extends JController
 		
 		//$app->setUserState("option_jbl.calcPrice", null);
 		
+		//checken of er over de verblijfskosten ($totalStayPrice) een korting is
+		
+		$stayDiscount = $this->stayDiscount($totalStayPrice);
+		
 		$app->setUserState("option_jbl.calcPrice", $totalStayPrice);
 		$app->setUserState("option_jbl.stayperiods", $stayPeriods);
 		if($this->overlap){
@@ -526,6 +589,53 @@ class JexBookingControllerDates extends JController
 		
 		
 	}
+	
+	/**
+	 * method om korting over verblijfskosten ($totalStayPrice) te berekenen
+	 * @param string $totalStayPrice
+	 * @return string
+	 */
+	public function stayDiscount($totalStayPrice){		
+		
+		$data = $this->app->input->get('jbl_form', null, null);
+		$attributes = $this->app->getUserState("jbl_option.locationAttributes");
+		
+		//eerst de required discounts ophalen
+				
+		$discounts = array();
+		if($attributes){ //$attributes moet sowieso resultaat geven, anders is er geen attribuut aan locatie verbonden
+			$db = JFactory::getDbo();
+			foreach($attributes as $row){
+				$query = $db->getQuery(true);
+				$query->select('*');
+				$query->from('#__jexbooking_attributes');
+				$query->where('id='.$row->attribute_id.' AND published=1 AND is_special=1 AND is_discount=1 AND is_discount_subtotal=1');
+				$db->setQuery($query);
+				$result = $db->loadObject();
+				if($result){
+					$discounts[] = $result;
+				}
+			}
+		
+			//nu de discounts uit de not_required halen, if any
+			if(isset($data['special'])){
+				$special = $data['special'];
+				if(isset($special['percent'])){
+					$percent = $special['percent'];
+					foreach($percent as $key=>$value){ //$key is de attribute_id uit de form
+						
+					}
+					
+				}
+			}
+		} // einde if($attributes) statement
+		
+		echo '<pre>';
+		var_dump($data['special']);
+		echo '</pre>';		
+		
+	}
+	
 	/**
 	 * method om arrangementskosten op te vragen, indien er overlap is($this->overlap != null)
 	 * @param int $locationId

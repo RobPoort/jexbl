@@ -31,6 +31,8 @@ class JexBookingViewDates extends JView
 		
 		$this->calcPrice = $this->app->getUserState("option_jbl.calcPrice");
 		
+		$this->prices = $this->app->getUserState("option_jbl.prices");
+		
 		parent::display($tpl);
 	}
 	

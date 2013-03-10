@@ -178,7 +178,15 @@ window.addEvent('domready' function(){
 						
 					}
 				}
-				
+			if(!empty($attribs['special'])){
+			?>
+			<tr>
+				<td colspan="2" style="text-align:left;font-weight:bold;">&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align:left;font-weight:bold;">Speciaal:</td>
+			</tr>
+			<?php 
 			if($attribs['special']['not_required']){
 							if($attribs['special']['not_required']['percent']){
 								foreach($attribs['special']['not_required']['percent'] as $item){
@@ -205,10 +213,35 @@ window.addEvent('domready' function(){
 						?>
 					
 				<?php
-			}
+			}			
 			?>
+				<?php if($attribs['special']['required']) :?>
+				<tr>
+					<td colspan="2">&nbsp;</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align:left;font-weight:bold;">Verplicht:</td>
+				</tr>
+				<?php if($attribs['special']['required']['percent']) :?>
+					<?php foreach($attribs['special']['required']['percent'] as $item) : ?>
+						<tr>
+							<td class="hasTip" title="<?php echo $item->desc; ?>" colspan="2"><?php echo $item->name; ?></td>							
+						</tr>
+					<?php endforeach; ?>
+				<?php endif; ?>
+				<?php if($attribs['special']['required']['not_percent']) : ?>
+					<?php foreach($attribs['special']['required']['not_percent'] as $item) : ?>
+						<tr>
+							<td class="hasTip" title="<?php echo $item->desc; ?>" colspan="2"><?php echo $item->name; ?></td>							
+						</tr>
+					<?php endforeach; ?>
+				<?php endif; ?>
+				<?php endif; ?>
+				<?php
+				} 
+				?>
 				</table>
-			</fieldset>
+			</fieldset>			
 			<?php
 		} 
 	?>
@@ -232,6 +265,7 @@ window.addEvent('domready' function(){
 		echo '<h2>$this->overlap</h2>';
 		var_dump($this->overlap);
 		$this->calcAttribs = $this->app->getUserState("option_jbl.calcattribs");
+		var_dump($this->prices);
 		echo '<h2>$this->calcAttribs</h2>';
 		var_dump($this->calcAttribs);
 			

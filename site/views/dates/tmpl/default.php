@@ -108,9 +108,13 @@ return [date.getDay() == 1 || date.getDay() == 5,""];
 	$this->choose = $this->app->input->get('choose');	
 	
 	//TODO: var_dump verwijderen
+	$this->calcAttribs = $this->app->getUserState("option_jbl.calcattribs");
+	var_dump($this->prices);
 		echo '<h2>$this->data:</h2>';
 		var_dump($this->data);
 		echo '<h2>$this->default:</h2>';
 		var_dump($this->default);
+		echo '<h2>$this->calcAttribs</h2>';
+		var_dump($this->calcAttribs);
 	?>
 </pre>
