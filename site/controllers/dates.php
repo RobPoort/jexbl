@@ -599,8 +599,7 @@ class JexBookingControllerDates extends JController
 		$this->app->setUserState("option_jbl.subtotal", null);
 		$this->app->setUserState("option_jbl.subtotal", $subtotal);
 		
-		//checken of er over de verblijfskosten ($totalStayPrice) een korting is
-		
+		//checken of er over de subtotaalprijs ($subtotal) een korting is		
 		$totalDiscount = $this->totalDiscount($subtotal,$this->overlap);
 		
 		if($totalDiscount && $totalDiscount->discount > 0){
@@ -615,6 +614,117 @@ class JexBookingControllerDates extends JController
 			$app->setUserState("option_jbl.TotalDiscount", $totalDiscount->discount);
 		
 		}
+		
+		//als laatste de special extra kosten over de subTotaalprijs
+		$totalAdd = $this->totalAdd($subtotal,$this->overlap);
+		
+		if($totalAdd && $totalAdd->add > 0){
+			
+			$totalPrice = $subtotal;
+			$totalPrice += $totalAdd->add;
+			$app->setUserState("option_jbl.TotalAddMessage", null);
+			if($totalAdd->message){
+				$app->setUserState("option_jbl.TotalAddMessage", $totalAdd->message);
+			}
+			$app->setUserState("option_jbl.TotalAdd", null);
+			$app->setUserState("option_jbl.TotalAdd", $totalAdd->add);
+		}
+		
+		//en dan, finally, de totaalprijs!
+		
+	}
+	
+	
+	public function totalAdd($subtotal,$overlap){
+		
+		$data = $this->app->input->get('jbl_form', null, null);
+		$attributes = $this->app->getUserState("jbl_option.locationAttributes");
+		$number_pp = $data['number_pp'];
+		if($overlap){
+			$nights = $overlap['buiten_arr'];
+		} else {
+			$nights = 1;
+		}
+		
+		//eerst de required post-attribs ophalen
+		
+		$postAttribs = array();
+		if($attributes){ //$attributes moet sowieso resultaat geven, anders is er geen attribuut aan locatie verbonden
+			$db = JFactory::getDbo();
+			foreach($attributes as $row){
+				$query = $db->getQuery(true);
+				$query->select('*');
+				$query->from('#__jexbooking_attributes');
+				$query->where('id='.$row->attribute_id.' AND published=1 AND is_special=1 AND is_discount=0 AND is_required=1');
+				$db->setQuery($query);
+				$result = $db->loadObject();
+				if($result){
+					$postAttribs[$result->id] = $result;
+				}
+			}
+		
+			//nu de postAttribs uit de not_required halen, if any
+			if(isset($data['special']['not_required'])){
+				$special = $data['special']['not_required'];
+				//eerst de key 'percent'
+				$db = JFactory::getDbo();
+				if(isset($special['percent'])){
+					$percent = $special['percent'];
+					foreach($percent as $key=>$value){ //$key is de attribute_id uit de form
+						$query = $db->getQuery(true);
+						$query->select('*');
+						$query->from('#__jexbooking_attributes');
+						$query->where('id='.$key.' AND published=1 AND is_special=1 AND is_discount=0 AND is_required=0');
+						$db->setQuery($query);
+						$result = $db->loadObject();
+						if($result){
+							$postAttribs[$key] = $result;
+						}
+					}
+		
+				}
+				if(isset($special['not_percent'])){
+					$percent = $special['not_percent'];
+					foreach($percent as $key=>$value){ //$key is de attribute_id uit de form
+						$query = $db->getQuery(true);
+						$query->select('*');
+						$query->from('#__jexbooking_attributes');
+						$query->where('id='.$key.' AND published=1 AND is_special=1 AND is_discount=0 AND is_required=0');
+						$db->setQuery($query);
+						$result = $db->loadObject();
+						if($result){
+							$postAttribs[$key] = $result;
+						}
+					}
+				}
+			}
+		} //einde postAttribs
+		$postPrice = 0;
+		if(!empty($postAttribs)){
+			foreach($postAttribs as $postAttrib){
+				$var = 0;
+				if($postAttrib->use_percent == 1){
+					$var += ($totalStayPrice / 100) * $postAttrib->percent;
+				}
+				if($postAttrib->use_special_price == 1){
+					$var += $postAttrib->special_price;
+				}
+				$multiplierPP = 1;
+				$multiplierPN = 1;
+				if($postAttrib->is_pp_special == 1){
+					$multiplierPP = $number_pp;
+				}
+				if($postAttrib->is_pn_special == 1){
+					$multiplierPN = $nights;
+				}
+				$postPrice += $var * $multiplierPN * $multiplierPP;
+			}
+		}
+		
+		$totalAdd->add = $postPrice;
+		$totalAdd->message = 'Prijs boven subtotaal';
+		
+		return $totalAdd;
 		
 	}
 	
@@ -718,7 +828,7 @@ class JexBookingControllerDates extends JController
 		} else {
 			$subTotalDiscount->message = 'Korting op totaalprijs';
 		}
-		
+		return $subTotalDiscount;
 	}
 	
 	/**

@@ -196,6 +196,22 @@ window.addEvent('domready' function(){
 			 		<td>-&nbsp;&euro;&nbsp;<?php echo number_format($totalDiscount, 2, ',', '.'); ?></td>
 			 	</tr>
 			 <?php endif; ?>
+			 <?php if($this->app->getUserState("option_jbl.TotalAdd")) : ?>
+			 <?php
+			 	$totalAdd			= $this->app->getUserState("option_jbl.TotalAdd");
+			 	$totalAddMessage	= $this->app->getUserState("option_jbl.TotalAddMessage"); 
+			 ?>
+			 	<tr>
+			 		<td><?php echo $totalAddMessage; ?></td>
+			 		<td>+&nbsp;&euro;&nbsp;<?php echo number_format($totalAdd, 2, ',', '.'); ?></td>
+			 	</tr>
+			 <?php endif; ?>
+			 	<tr>
+			 		<td style="text-align:right;font-weight:bold;">Totaalprijs:</td>
+			 		<td style="font-weight:bold;">
+			 			&euro;&nbsp;<?php echo number_format($subtotal, 2, ',', '.'); ?>
+			 		</td>
+			 	</tr>
 			 </table>
 		
 	</fieldset>
