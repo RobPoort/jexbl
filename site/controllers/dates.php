@@ -551,7 +551,20 @@ class JexBookingControllerDates extends JController
 		
 		//checken of er over de verblijfskosten ($totalStayPrice) een korting is
 		
-		$stayDiscount = $this->stayDiscount($totalStayPrice);
+		$stayDiscount = $this->stayDiscountSubTotal($totalStayPrice,$this->overlap);
+		
+		if($stayDiscount && $stayDiscount->discount > 0){			
+		
+			$totalStayPrice -= $stayDiscount->discount;
+			$app->setUserState("option_jbl.subTotalDiscountMessage", null);
+			if($stayDiscount->message){
+				$app->setUserState("option_jbl.subTotalDiscountMessage", $stayDiscount->message);
+			}
+			$app->setUserState("option_jbl.subTotalDiscount", null);
+			$app->setUserState("option_jbl.subTotalDiscount", $stayDiscount->discount);
+		
+		}
+		
 		
 		$app->setUserState("option_jbl.calcPrice", $totalStayPrice);
 		$app->setUserState("option_jbl.stayperiods", $stayPeriods);
@@ -570,7 +583,7 @@ class JexBookingControllerDates extends JController
 		//nu totale subtotaal
 		$subtotal = 0;
 		if($this->overlap){
-			$subtotal += $this->arr_price;
+			$subtotal += $this->arrPrice['calc']['arr_price'];			
 		}
 		if($totalStayPrice){
 			$subtotal += $totalStayPrice;
@@ -593,12 +606,18 @@ class JexBookingControllerDates extends JController
 	/**
 	 * method om korting over verblijfskosten ($totalStayPrice) te berekenen
 	 * @param string $totalStayPrice
-	 * @return string
+	 * @return string 
 	 */
-	public function stayDiscount($totalStayPrice){		
+	public function stayDiscountSubTotal($totalStayPrice,$overlap){		
 		
 		$data = $this->app->input->get('jbl_form', null, null);
 		$attributes = $this->app->getUserState("jbl_option.locationAttributes");
+		$number_pp = $data['number_pp'];
+		if($overlap){
+			$nights = $overlap['buiten_arr'];
+		} else {
+			$nights = 1;
+		}
 		
 		//eerst de required discounts ophalen
 				
@@ -609,31 +628,81 @@ class JexBookingControllerDates extends JController
 				$query = $db->getQuery(true);
 				$query->select('*');
 				$query->from('#__jexbooking_attributes');
-				$query->where('id='.$row->attribute_id.' AND published=1 AND is_special=1 AND is_discount=1 AND is_discount_subtotal=1');
+				$query->where('id='.$row->attribute_id.' AND published=1 AND is_special=1 AND is_discount=1 AND is_discount_subtotal=1 AND is_required=1');
 				$db->setQuery($query);
 				$result = $db->loadObject();
 				if($result){
-					$discounts[] = $result;
+					$discounts[$result->id] = $result;
 				}
 			}
 		
 			//nu de discounts uit de not_required halen, if any
-			if(isset($data['special'])){
-				$special = $data['special'];
+			if(isset($data['special']['not_required'])){				
+				$special = $data['special']['not_required'];
+				//eerst de key 'percent'
+				$db = JFactory::getDbo();
 				if(isset($special['percent'])){
 					$percent = $special['percent'];
 					foreach($percent as $key=>$value){ //$key is de attribute_id uit de form
-						
+						$query = $db->getQuery(true);
+						$query->select('*');
+						$query->from('#__jexbooking_attributes');
+						$query->where('id='.$key.' AND published=1 AND is_special=1 AND is_discount=1 AND is_discount_subtotal=1 AND is_required=0');
+						$db->setQuery($query);
+						$result = $db->loadObject();
+						if($result){
+							$discounts[$key] = $result;
+						}
 					}
 					
+				}
+				if(isset($special['not_percent'])){
+					$percent = $special['not_percent'];
+					foreach($percent as $key=>$value){ //$key is de attribute_id uit de form
+						$query = $db->getQuery(true);
+						$query->select('*');
+						$query->from('#__jexbooking_attributes');
+						$query->where('id='.$key.' AND published=1 AND is_special=1 AND is_discount=1 AND is_discount_subtotal=1 AND is_required=0');
+						$db->setQuery($query);
+						$result = $db->loadObject();
+						if($result){
+							$discounts[$key] = $result;
+						}
+					}
 				}
 			}
 		} // einde if($attributes) statement
 		
-		echo '<pre>';
-		var_dump($data['special']);
-		echo '</pre>';		
+		$subDiscount = 0;
+		if(!empty($discounts)){
+			foreach($discounts as $discount){
+				$var = 0;
+				if($discount->use_percent == 1){
+					$var += ($totalStayPrice / 100) * $discount->percent;
+				}
+				if($discount->use_special_price == 1){
+					$var += $discount->special_price;
+				}				
+				$multiplierPP = 1;
+				$multiplierPN = 1;
+				if($discount->is_pp_special == 1){
+					$multiplierPP = $number_pp;
+				}
+				if($discount->is_pn_special == 1){
+					$multiplierPN = $nights;
+				}
+				$subDiscount += $var * $multiplierPN * $multiplierPP;
+			}
+		}
 		
+		$subTotalDiscount->discount = $subDiscount;
+		if($overlap){
+			$subTotalDiscount->message = 'Korting op overnachtingen (buiten arrangement)';
+		} else {
+			$subTotalDiscount->message = 'Korting op overnachtingen';
+		}	
+		
+		return $subTotalDiscount;
 	}
 	
 	/**

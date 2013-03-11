@@ -78,15 +78,40 @@ window.addEvent('domready' function(){
 			 		</td>
 			 	</tr>
 			 <?php endforeach; ?>
+			 <?php if($this->app->getUserState("option_jbl.subTotalDiscount")) : ?>
+			 <?php
+			 	$subTotalDiscount			= $this->app->getUserState("option_jbl.subTotalDiscount");
+			 	$subTotalDiscountMessage	= $this->app->getUserState("option_jbl.subTotalDiscountMessage");
+			 ?>
+			 
+			 	<tr>
+			 		<td><?php echo $subTotalDiscountMessage; ?></td>
+			 		<td>-&nbsp;&euro;&nbsp;<?php echo number_format($subTotalDiscount, 2, ',', '.'); ?></td>
+			 	</tr>
+			 <?php endif; ?>
 			 	<tr>
 			 		<td>&nbsp;</td>
 			 		<td>+</td>
 			 	</tr>
 			 	<tr>
-			 		<td style="text-align:right;">Totaalprijs overnachtingen:</td>
+			 		<td style="text-align:right;">
+			 		<?php if($overlap) : ?>
+			 		Prijs overnachtingen:
+			 		<?php else :?>
+			 		Totaalprijs overnachtingen:
+			 		<?php endif; ?>
+			 		</td>
 			 		<td>
 			 		&euro;&nbsp;
 			 		<?php echo number_format($this->app->getUserState("option_jbl.calcPrice"), 2, ',', '.'); ?>
+			 		</td>
+			 	</tr>			 	
+			 <?php endif; ?>
+			 <?php if($overlap) :?>
+			 	<tr>
+			 		<td style="text-align:right;">Totaalprijs overnachtingen:</td>
+			 		<td>
+			 			&euro;<?php echo number_format(($this->app->getUserState("option_jbl.calcPrice") + $arr['arr_price']), 2, ',', '.'); ?>
 			 		</td>
 			 	</tr>
 			 <?php endif; ?>
