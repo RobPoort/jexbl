@@ -5,8 +5,6 @@ jimport('joomla.html.html');
 JHtml::_('behavior.tooltip');
 JHtml::stylesheet('jbl.css','components/com_jexbooking/css/');
 
-//JHtml::_('behavior.calendar');
-
 $document =& JFactory::getDocument();
 
 
@@ -70,6 +68,7 @@ function onlyDays(date) {
 return [date.getDay() == 1 || date.getDay() == 5,""];
 }
 </script>
+
 <form method="post" action="">
 	<fieldset class="jexDatesSelect"><legend>Kies uw aankomst- en vertrekdatum:</legend>
 		<table class="jbl_form_table">
@@ -81,6 +80,19 @@ return [date.getDay() == 1 || date.getDay() == 5,""];
 				<td><label>*Vertrek:&nbsp;</label></td>
 				<td><input type="text" id="end_date" name="jbl_form[end_date]" required="required" value="<?php echo $this->default['end_date']; ?>" /></td>
 			</tr>
+			<?php if($this->locations) : ?>
+			<tr>
+				<td><label>*Kies een locatie:&nbsp;</label></td>
+				<td>
+					<select name="jbl_form[location]" required="required">
+						<option value="">kies een locatie</option>
+						<?php foreach($this->locations as $location) : ?>
+						<option value="<?php echo $location->id; ?>"><?php echo $location->name; ?></option>
+						<?php endforeach; ?>
+					</select>
+				</td>
+			</tr>
+			<?php endif; ?>
 			<tr><td>&nbsp;</td></tr>
 			<tr><td></td><td><input type="submit" name="sendButton" class="buttonNext" value="VOLGENDE" /></td></tr>
 		</table>
@@ -91,13 +103,3 @@ return [date.getDay() == 1 || date.getDay() == 5,""];
 	<input type="hidden" name="step" value="1" />
 </form>
 <div class="clear"></div>
-<pre>
-	<?php
-		//TODO: var_dump verwijderen
-	
-		echo '<h2>$this->data:</h2>';
-		var_dump($this->data);
-		echo '<h2>$this->default:</h2>';
-		var_dump($this->default);
-	?>
-</pre>

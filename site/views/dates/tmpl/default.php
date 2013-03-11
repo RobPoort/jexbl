@@ -68,7 +68,6 @@ function onlyDays(date) {
 return [date.getDay() == 1 || date.getDay() == 5,""];
 }
 </script>
-
 <form method="post" action="">
 	<fieldset class="jexDatesSelect"><legend>Kies uw aankomst- en vertrekdatum:</legend>
 		<table class="jbl_form_table">
