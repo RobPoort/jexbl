@@ -206,10 +206,20 @@ window.addEvent('domready' function(){
 			 		<td>+&nbsp;&euro;&nbsp;<?php echo number_format($totalAdd, 2, ',', '.'); ?></td>
 			 	</tr>
 			 <?php endif; ?>
+			 <?php
+			 	$defTotal = $this->app->getUserState("option_jbl.defTotal"); 
+			 ?>
+			 	<tr>
+			 		<td colspan="2">&nbsp;</td>
+			 	</tr>
+			 	<tr>
+			 		<td>&nbsp;</td>
+			 		<td>+</td>
+			 	</tr>
 			 	<tr>
 			 		<td style="text-align:right;font-weight:bold;">Totaalprijs:</td>
 			 		<td style="font-weight:bold;">
-			 			&euro;&nbsp;<?php echo number_format($subtotal, 2, ',', '.'); ?>
+			 			&euro;&nbsp;<?php echo number_format($defTotal, 2, ',', '.'); ?>
 			 		</td>
 			 	</tr>
 			 </table>
@@ -373,22 +383,22 @@ window.addEvent('domready' function(){
 		$this->prices = $this->app->getUserState("option_jbl.prices");
 		$this->calcPrice = $this->app->getUserState("option_jbl.calcPrice");
 		$this->calcAttribs = $this->app->getUserState("option_jbl.calcattribs");
-		echo '<h2>$this->overlap</h2>';
-		var_dump($this->overlap);
-		echo '<h2>$this->calcAttribs</h2>';
-		var_dump($this->calcAttribs);
-		echo '<h2>$this->data:</h2>';
-		var_dump($this->data);
-		echo '<h2>$this->default:</h2>';
-		var_dump($this->default);
-		echo '<h2>$attribs</h2>';
-		var_dump($attribs);
-		echo '<h2>$this->calcPrice</h2>';
-		var_dump($this->calcPrice);
-		echo '<h2>$this->overlap</h2>';
-		var_dump($this->overlap);
-		echo '<h2>$this->prices</h2>';
-		var_dump($this->prices);
+		//echo '<h2>$this->overlap</h2>';
+		//var_dump($this->overlap);
+		//echo '<h2>$this->calcAttribs</h2>';
+		//var_dump($this->calcAttribs);
+		//echo '<h2>$this->data:</h2>';
+		//var_dump($this->data);
+		//echo '<h2>$this->default:</h2>';
+		//var_dump($this->default);
+		//echo '<h2>$attribs</h2>';
+		//var_dump($attribs);
+		//echo '<h2>$this->calcPrice</h2>';
+		//var_dump($this->calcPrice);
+		//echo '<h2>$this->overlap</h2>';
+		//var_dump($this->overlap);
+		//echo '<h2>$this->prices</h2>';
+		//var_dump($this->prices);
 		
 	?>
 </pre>

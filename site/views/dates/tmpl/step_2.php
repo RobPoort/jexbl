@@ -262,18 +262,18 @@ window.addEvent('domready' function(){
 <pre>
 	<?php
 		//TODO: var_dump verwijderen
-		echo '<h2>$this->overlap</h2>';
-		var_dump($this->overlap);
-		$this->calcAttribs = $this->app->getUserState("option_jbl.calcattribs");
-		var_dump($this->prices);
-		echo '<h2>$this->calcAttribs</h2>';
-		var_dump($this->calcAttribs);
+		//echo '<h2>$this->overlap</h2>';
+		//var_dump($this->overlap);
+		//$this->calcAttribs = $this->app->getUserState("option_jbl.calcattribs");
+		//var_dump($this->prices);
+		//echo '<h2>$this->calcAttribs</h2>';
+		//var_dump($this->calcAttribs);
 			
-		echo '<h2>$this->prices</h2>';
-		var_dump($this->prices);
-		echo '<h2>$this->data:</h2>';
-		var_dump($this->data);
-		echo '<h2>$this->default:</h2>';
-		var_dump($this->default);
+		//echo '<h2>$this->prices</h2>';
+		//var_dump($this->prices);
+		//echo '<h2>$this->data:</h2>';
+		//var_dump($this->data);
+		//echo '<h2>$this->default:</h2>';
+		//var_dump($this->default);
 	?>
 </pre>

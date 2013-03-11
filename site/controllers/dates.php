@@ -632,6 +632,18 @@ class JexBookingControllerDates extends JController
 		
 		//en dan, finally, de totaalprijs!
 		
+		//optellen: $subtotal, $totalAdd, $totalStayPrice, $totalDiscount
+		$defTotal		 = 0;
+		$defTotal		+= $subtotal;
+		//$defTotal		+= $totalStayPrice;
+		if($totalAdd && $totalAdd->add > 0){
+			$defTotal	+= $totalAdd->add;
+		}
+		if($totalDiscount && $totalDiscount->discount){
+			$defTotal	-= $totalDiscount->discount;
+		}
+		$app->setUserState("option_jbl.defTotal", null);
+		$app->setUserState("option_jbl.defTotal", $defTotal);
 	}
 	
 	
