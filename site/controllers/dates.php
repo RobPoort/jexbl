@@ -605,6 +605,7 @@ class JexBookingControllerDates extends JController
 		
 		if($totalDiscount && $totalDiscount->discount > 0){
 		
+			$totalPrice = $subtotal;
 			$totalPrice -= $totalDiscount->discount;
 			$app->setUserState("option_jbl.TotalDiscountMessage", null);
 			if($totalDiscount->message){
@@ -717,11 +718,7 @@ class JexBookingControllerDates extends JController
 		} else {
 			$subTotalDiscount->message = 'Korting op totaalprijs';
 		}
-
-		echo '<pre>';
-		var_dump($subTotalDiscount, $discounts);
-		echo '</pre>';
-		return $subTotalDiscount;
+		
 	}
 	
 	/**

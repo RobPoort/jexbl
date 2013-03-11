@@ -186,6 +186,16 @@ window.addEvent('domready' function(){
 				 		</td>
 			 		</tr>
 			 <?php endif; ?>
+			 <?php if($this->app->getUserState("option_jbl.TotalDiscount")) : ?>
+			 <?php
+			 	$totalDiscount = $this->app->getUserState("option_jbl.TotalDiscount");
+			 	$totalDiscountMessage	= $this->app->getUserState("option_jbl.TotalDiscountMessage");
+			  ?>
+			 	<tr>
+			 		<td><?php echo $totalDiscountMessage; ?></td>
+			 		<td>-&nbsp;&euro;&nbsp;<?php echo number_format($totalDiscount, 2, ',', '.'); ?></td>
+			 	</tr>
+			 <?php endif; ?>
 			 </table>
 		
 	</fieldset>
