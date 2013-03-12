@@ -63,6 +63,25 @@
 			<option value="0">JNO</option>
 		</field>
 		<field
+			name="pp-extra"
+			type="text"
+			label="COM_JEXBOOKING_DEFAULT_PRICES_EXTRA_PP_LABEL"
+			description="COM_JEXBOOKING_DEFAULT_PRICES_EXTRA_PP_DESC"
+			required="true"
+			default="0.00"
+		/>
+		<field
+			name="use_pp_extra"
+			type="radio"
+			label="COM_JEXBOOKING_DEFAULT_PRICES_USE_EXTRA_PP_LABEL"
+			description="COM_JEXBOOKING_DEFAULT_PRICES_USE_EXTRA_PP_DESC"
+			required="true"
+			default="0"
+		>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field
 			name="location_id"
 			type="defaultlocation"
 			label="COM_JEXBOOKING_DEFAULT_PRICES_LOCATION_LABEL"
