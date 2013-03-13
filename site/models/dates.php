@@ -286,8 +286,7 @@ class JexBookingModelDates extends JModel
 				$dateTimes[$price->id]['end'] = new DateTime($price->end_date);
 				$dateTimes[$price->id]['priceObject'] = $price;
 			}
-			//$this->prices->price_periods = $dateTimes;
-			//$this->prices->overlap = $overlap;
+			
 		}
 		
 		//verblijfsperiode - overlap opdelen in verblijfsperiode(s)
@@ -420,7 +419,6 @@ class JexBookingModelDates extends JModel
 		
 		if($overlap == null){
 			//beginnen met de startDate
-			
 			foreach($dateTimes as $key=>$value){
 				if($start >= $value['start'] && $start < $value['end'] && $value['priceObject']->is_default == 0){
 					$this->prices->startPeriod = $key;

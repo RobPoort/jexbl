@@ -66,6 +66,7 @@ class JexBookingControllerDates extends JController
 		
 		switch ($step){
 			case 1:
+				$this->setLocationId();
 				$this->app->input->set('layout', 'step_2');
 				$this->checkForArr();
 				$this->getPrices();
@@ -104,10 +105,10 @@ class JexBookingControllerDates extends JController
 		$this->app = JFactory::getApplication();
 	
 		//eerst start en enddate uit form halen + $location_id
-		$date = $this->app->input->get("jbl_form",null,null);
+		$data = $this->app->input->get("jbl_form",null,null);
 	
-		$startDate = new DateTime($date['start_date']);
-		$endDate = new DateTime($date['end_date']);
+		$startDate = new DateTime($data['start_date']);
+		$endDate = new DateTime($data['end_date']);
 		//$locationId = $this->app->input->get('location_id');
 		$locationId = $this->app->getUserState("jbl_option.location_id");
 	
@@ -1004,13 +1005,20 @@ class JexBookingControllerDates extends JController
 		$this->app = JFactory::getApplication();
 		
 		//eerst start en enddate uit form halen + $location_id en eventuele overlap
-		$date = $this->app->input->get("jbl_form",null,null);
-		//$this->locationId = (int)$this->app->input->get("location_id");
+		$data = $this->app->input->get("jbl_form",null,null);
+		
 		$this->locationId = $this->app->getUserState("jbl_option.location_id");
+		
+		if(!$this->locationd_id){
+			if($data['location']){
+				$this->location_id = $data['location'];
+			}
+		}
+		
 		$this->overlap = $this->app->getUserState("option_jbl_overlap");
 		
-		$startDate = new DateTime($date['start_date']);
-		$endDate = new DateTime($date['end_date']);
+		$startDate = new DateTime($data['start_date']);
+		$endDate = new DateTime($data['end_date']);
 		$locationId = $this->locationId;
 		
 		$model = $this->getModel('dates');

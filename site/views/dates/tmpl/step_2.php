@@ -149,7 +149,36 @@ window.addEvent('domready' function(){
 	</fieldset>
 	<?php
 		if($attribs){
+			if($attribs['special']){
+				if($attribs['special']['required']){
+					$required = $attribs['special']['required'];
+					if($required['checked']){
+						$checked = $required['checked'];
+					} else {
+						$checked = array();
+					}
+					if($required['number']){
+						$number = $required['number'];
+					} else {
+						$number = array();
+					}
+				}
+				if($attribs['special']['not_required']){
+					$not_required = $attribs['special']['not_required'];
+					if($not_required['percent']){
+						$percent = $not_required['percent'];
+					} else {
+						$percent = array();
+					}
+					if($not_required['not_percent']){
+						$not_percent = $not_required['not_percent'];
+					} else {
+						$not_percent = array();
+					}
+				}
+			}
 		?>
+		<?php if(!empty($checked) || !empty($number) || !empty($percent) || !empty($not_percent) || !empty($attribs['checked']) || !empty($attribs['number'])) : ?>
 		<fieldset class="jbl_form" id="jbl_form"><legend class="hasTip" title="Extra faciliteiten tegen een meerprijs">Toevoegingen:</legend>
 			<table class="jbl_form_table">
 				<?php
@@ -178,8 +207,10 @@ window.addEvent('domready' function(){
 						
 					}
 				}
-			if(!empty($attribs['special'])){
+						
+			if(!empty($checked) || !empty($number) || !empty($percent) || !empty($not_percent)){
 			?>
+			<pre><?php //var_dump($attribs['special']); ?></pre>
 			<tr>
 				<td colspan="2" style="text-align:left;font-weight:bold;">&nbsp;</td>
 			</tr>
@@ -187,7 +218,7 @@ window.addEvent('domready' function(){
 				<td colspan="2" style="text-align:left;font-weight:bold;">Speciaal:</td>
 			</tr>
 			<?php 
-			if($attribs['special']['not_required']){
+			if(!empty($attribs['special']['not_required'])){
 							if($attribs['special']['not_required']['percent']){
 								foreach($attribs['special']['not_required']['percent'] as $item){
 									?>
@@ -215,7 +246,7 @@ window.addEvent('domready' function(){
 				<?php
 			}			
 			?>
-				<?php if($attribs['special']['required']) :?>
+				<?php if(!empty($attribs['special']['required'])) :?>
 				<tr>
 					<td colspan="2">&nbsp;</td>
 				</tr>
@@ -241,7 +272,8 @@ window.addEvent('domready' function(){
 				} 
 				?>
 				</table>
-			</fieldset>			
+			</fieldset>
+			<?php endif; ?>		
 			<?php
 		} 
 	?>
