@@ -26,7 +26,6 @@ $this->app->setUserState("option_jbl.attrib_extras_checked", $attribs_extras_che
 
 //TODO bovenstaande filteren, zitten nog overbodige dingen van oude bedankt pagina in
 ?>
-
 <h1>Overzicht:</h1>
 <div class="jbl_prijsberekening" id="jbl_prijsberekening">
 	
@@ -63,8 +62,8 @@ $this->app->setUserState("option_jbl.attrib_extras_checked", $attribs_extras_che
 							?>
 							<tr>
 								<td><?php echo $item['name']; ?></td>
-								<td><?php echo $final['price']; ?></td>
-								<td><?php echo $final['number_info']; ?></td>							
+								<td><?php echo $item['price']; ?></td>
+								<td><?php echo $item['number_info']; ?></td>							
 							</tr>
 							<?php
 						}

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="COM_JEXBOOKING_VIEW_ARRANGEMENTS_TITLE">
+	<layout title="COM_JEXBOOKING_VIEW_ARRANGEMENTS_DATEPICKER_TITLE">
 		<message>COM_JEXBOOKING_VIEW_ARRANGEMENTS_DESC</message>
 	</layout>
 	<fields name="request">

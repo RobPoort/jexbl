@@ -20,15 +20,21 @@ class JexBookingControllerArrangements extends JController
 		//model ophalen
 		$model = $this->getModel('arrangements');
 		//eerst bepalen uit welke stap we komen: (hidden) field 'step'
-		$step = (int)$app->input->get('step');
+		$step = $app->input->get('step');
 		
 		//nu layout bepalen en userState vullen
 		switch($step){
+			case 'datepicker':
+				$app->input->set('layout', 'datepicker');
+				break;
 			case 0:				
 				$app->input->set('layout', 'default');
 				break;
 			case 1:
-				$arr_id = $app->getUserState("option_jbl.arr_price")->id;				
+				$arr_id = $app->getUserState("option_jbl.arr_price")->id;
+				if(!$arr_id){
+					$arr_id = JFactory::getApplication()->input->get('arrangementSelect');
+				}				
 				if($arr_id){
 					$app->setUserState("option_jbl.arr_id", $arr_id);
 					}

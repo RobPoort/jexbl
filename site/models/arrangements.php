@@ -32,7 +32,15 @@ class JexBookingModelArrangements extends JModel
 		}
 		return $items;
 	}
-	function getItems(){
+	
+	/**
+	 * Method om lijst met arrangementen op te halen met een bepaalde aanvangsdatum
+	 * 
+	 * @return array met arrangementen, empty on failure
+	 */
+	public function getItemsByDate(){
+		
+		//eerst array maken met start_dates en id's van arrangementen
 		
 		//eerst de locatie_id ophalen uit de params
 		$this->location_id = JFactory::getApplication()->input->get('location_id');
@@ -46,12 +54,63 @@ class JexBookingModelArrangements extends JModel
 		$query->from('#__jexbooking_arrangements as ja');
 		$query->select('*');
 		
-		if(!$this->choose){
-		$query->where('type_id='.$this->type_id.' AND published=1');
-		} else{
+		if($this->choose == 1){
+			$query->where('type_id='.$this->type_id.' AND published=1');
+		} elseif($this->choose == 0){
 			$query->where('location_id='.$this->location_id.' AND published=1');
 		}
+		$query->order("start_date");
+		$db->setQuery($query);
+		$items = $db->loadObjectList();	
 		
+		
+		$itemsByDate = array();
+		if($items){
+			foreach($items as $item){				
+				$date = new DateTime($item->start_date);				
+				$itemsByDate[$item->id]['start'] = $date;
+				$itemsByDate[$item->id]['arrObject'] = $item;
+			}
+		}
+		
+		$this->arrangements = array();
+		$start = JFactory::getApplication()->input->get('jbl_arr_start');
+		
+		if($start && !empty($itemsByDate)){
+			$start = new DateTime($start);
+			foreach($itemsByDate as $item){
+				if($start == $item['start']){
+					$this->arrangements[] = $item['arrObject'];
+				}
+			}
+		}
+		
+		return $this->arrangements;
+	}
+	/**
+	 * method om arrangementen op te halen aan de hand van een location_id
+	 * @return array Array met arrangementen met dezelfde location_id
+	 */
+	public function getItems(){
+		
+		//eerst de locatie_id ophalen uit de params
+		$this->location_id = JFactory::getApplication()->input->get('location_id');
+		$this->type_id = JFactory::getApplication()->input->get('type_id');
+		$this->choose = JFactory::getApplication()->input->get('choose');
+		
+		
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		
+		$query->from('#__jexbooking_arrangements as ja');
+		$query->select('*');
+		
+		if($this->choose == 1){
+		$query->where('type_id='.$this->type_id.' AND published=1');
+		} elseif($this->choose == 0){
+			$query->where('location_id='.$this->location_id.' AND published=1');
+		}
+		$query->order("start_date");
 		$db->setQuery($query);
 		$this->items = $db->loadObjectList();
 		
@@ -64,6 +123,9 @@ class JexBookingModelArrangements extends JModel
 	function getItem(){
 		//eerst arr_id ophalen uit state
 		$arr_id = (int)JFactory::getApplication()->getUserState("option_jbl.arr_id");
+		if(JFactory::getApplication()->input->get('arrangementSelect')){
+			$arr_id = JFactory::getApplication()->input->get('arrangementSelect');
+		}
 		
 		if($arr_id){
 			$db = JFactory::getDbo();
@@ -83,8 +145,12 @@ class JexBookingModelArrangements extends JModel
 	function getPaidItems(){
 		
 		//eerst de arr_id ophalen uit de userState
-		$arr_id = (int)JFactory::getApplication()->getUserState("option_jbl.arr_id");		
-		
+		$arr_id = (int)JFactory::getApplication()->getUserState("option_jbl.arr_id");
+		if(!$arr_id){
+			if(JFactory::getApplication()->input->get('arrangementSelect')){
+				$arr_id = JFactory::getApplication()->input->get('arrangementSelect');
+			}	
+		}
 		//attrib_ids ophalen uit xref tabel
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);		
@@ -102,7 +168,8 @@ class JexBookingModelArrangements extends JModel
 			$db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 			$query->from('#__jexbooking_attributes as ja');
-			$query->where('ja.published=1 AND ja.has_price=1 AND ja.is_special=0 AND ja.id='.$attrib_id->attribute_id);
+			//$query->where('ja.published=1 AND ja.has_price=1 AND ja.is_special=0 AND ja.id='.$attrib_id->attribute_id);
+			$query->where('id='.$attrib_id->attribute_id.' AND published=1 AND is_special=0 AND has_price=1');
 			$query->select('*');
 			$db->setQuery($query);
 			$row = $db->loadObject();
@@ -120,6 +187,9 @@ class JexBookingModelArrangements extends JModel
 	public function getSpecialAttribs(){
 		//eerst de arr_id ophalen uit de UserState
 		$arr_id = (int)JFactory::getApplication()->getUserState("option_jbl.arr_id");
+		if(JFactory::getApplication()->input->get('arrangementSelect')){
+			$arr_id = JFactory::getApplication()->input->get('arrangementSelect');
+		}
 		
 		//attrib_ids ophalen uit xref
 		$db = JFactory::getDbo();
@@ -161,6 +231,9 @@ class JexBookingModelArrangements extends JModel
 	function getExtras(){
 		//eerst de arr_id ophalen uit de userState
 		$arr_id = (int)JFactory::getApplication()->getUserState("option_jbl.arr_id");
+		if(JFactory::getApplication()->input->get('arrangementSelect')){
+			$arr_id = JFactory::getApplication()->input->get('arrangementSelect');
+		}
 		
 		//attrib_ids ophalen uit xref tabel
 		$db = JFactory::getDbo();

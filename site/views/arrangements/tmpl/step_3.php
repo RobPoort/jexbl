@@ -80,12 +80,14 @@ window.addEvent('domready' function(){
 						<tr>
 							<td><?php echo $item->name; ?></td>							
 							<td>&euro;&nbsp;<?php echo number_format($item->total_attrib_price, 2, ',','.'); ?></td>
-							<td>(<?php echo $item->number;?>&nbsp;maal&nbsp;&euro;&nbsp;<?php echo number_format($item->price, 2, ',','.'); ?>)</td>
+							<td>(<?php echo $item->number;?>&nbsp;maal&nbsp;&euro;&nbsp;<?php echo number_format($item->price, 2, ',','.'); ?>)
+							<input type="hidden" name="final[attribs_number][<?php echo $i; ?>][name]" value="<?php echo $item->name; ?>" />
+							<input type="hidden" name="final[attribs_number][<?php echo $i; ?>][price]" value="&euro;&nbsp;<?php echo number_format($item->total_attrib_price, 2, ',','.'); ?>" />
+							<input type="hidden" name="final[attribs_number][<?php echo $i; ?>][number_info]" value="(<?php echo $item->number;?>&nbsp;maal&nbsp;&euro;&nbsp;<?php echo number_format($item->price, 2, ',','.'); ?>)" />
+							</td>
 							
 						</tr>
-						<input type="hidden" name="final[attribs_number][<?php echo $i; ?>][name]" value="<?php echo $item->name; ?>" />
-						<input type="hidden" name="final[attribs_number][<?php echo $i; ?>][price]" value="&euro;&nbsp;<?php echo number_format($item->total_attrib_price, 2, ',','.'); ?>" />
-						<input type="hidden" name="final[attribs_number][<?php echo $i; ?>][number_info]" value="(<?php echo $item->number;?>&nbsp;maal&nbsp;&euro;&nbsp;<?php echo number_format($item->price, 2, ',','.'); ?>)" />
+						
 						<?php
 						$i++;
 					}

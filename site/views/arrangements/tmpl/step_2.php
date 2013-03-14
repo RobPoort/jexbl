@@ -144,7 +144,8 @@ $state = $this->state;
 		<div class="clear">&nbsp;</div>
 		<form method="post" action="">
 		<button class="buttonNext" onClick="this.form.submit()" >VORIGE</button>
-		<!-- <input type="hidden" name="task" value="arrangements.setStep" />-->
-		<!-- <input type="hidden" name="step" value="0" /> -->
+		<input type="hidden" name="task" value="arrangements.setStep" />
+		<input type="hidden" name="jbl_arr_start" value="<?php echo $this->item->start_date; ?>" />
+		<input type="hidden" name="step" value="0" />
 		</form>
 	</fieldset>

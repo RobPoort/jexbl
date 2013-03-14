@@ -11,8 +11,9 @@ class JexBookingViewArrangements extends JView
 		$this->step = (int)$this->app->input->get('step');
 		$this->input = $this->app->input;
 		$this->items = $this->get('Items');
-		if($this->step = 2){
-				$this->attribs = $this->get('PaidItems');
+		$this->itemsByDate = $this->get("itemsByDate");
+		//if($this->step = 2){
+				$this->attribs = $this->get('PaidItems');				
 				$this->extras = $this->get('Extras');
 				$this->special_attribs = $this->get('SpecialAttribs');
 				$this->item = $this->get('Item');
@@ -38,7 +39,7 @@ class JexBookingViewArrangements extends JView
 				$this->total_percent_price = $this->app->getUserState("option_jbl.total_price_percent_price");
 				$this->state = $this->app->getUserState("option_jbl");
 				
-		}
+		//}
 		$this->data = $this->app->input->get('jbl_form',null,null);
 		
 		parent::display($tpl);
