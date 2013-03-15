@@ -40,6 +40,7 @@ window.addEvent('domready' function(){
 	});
 });
 </script>
+<pre><?php //var_dump($final); ?></pre>
 <h1>Overzicht:</h1>
 <div class="jbl_prijsberekening" id="jbl_prijsberekening">
 	
@@ -99,7 +100,7 @@ window.addEvent('domready' function(){
 				<?php
 					if ($final['attribs_special_required']) {
 						foreach ($final['attribs_special_required'] as $item){
-							if($item['price'] > 0){
+							//if($item['price'] > 0){
 							?>
 							<tr>
 								<td><?php echo $item['name']; ?></td>
@@ -107,7 +108,7 @@ window.addEvent('domready' function(){
 								<td><?php echo $item['number_info']; ?></td>
 							</tr>
 							<?php
-							}
+							//}
 						}
 					} 
 				?>
