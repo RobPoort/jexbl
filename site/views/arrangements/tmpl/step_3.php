@@ -30,6 +30,9 @@ window.addEvent('domready' function(){
 	});
 });
 </script>
+<pre>
+<?php //var_dump($arrangement); ?>
+</pre>
 <div class="jbl_prijsberekening" id="jbl_prijsberekening">
 <form method="post" action="" class="form-validate">
 	<fieldset class="jbl_form"><legend>Uw prijsberekening:</legend>
@@ -45,7 +48,7 @@ window.addEvent('domready' function(){
 				</td>
 				<td>
 					<?php
-						if($arrangement->number_pp){
+						if($arrangement->is_pa == 0){
 							echo '('.$arrangement->number_pp.'&nbsp;personen&nbsp;&aacute;&nbsp;&euro;&nbsp;'.number_format($arrangement->price, 2, ',','.').')';
 							?>
 							<input type="hidden" name="final[name_number_pp]" value="<?php echo '('.$arrangement->number_pp.'&nbsp;personen&nbsp;&aacute;&nbsp;&euro;&nbsp;'.number_format($arrangement->price, 2, ',','.').')'; ?>" />
@@ -180,7 +183,7 @@ window.addEvent('domready' function(){
 									<?php
 								} else{
 									?>
-										<td>&nbsp;</td>
+										<td>&nbsp;
 									<?php
 								}
 							?>
@@ -198,7 +201,7 @@ window.addEvent('domready' function(){
 									<?php
 								}
 							?>" />
-							
+							</td>
 						</tr>
 						<?php
 						$i++;
@@ -219,10 +222,11 @@ window.addEvent('domready' function(){
 				<tr>				
 					<td style="text-align:right;font-weight:bold;">subtotaal:</td>
 					<td style="font-weight:bold;">&euro;<?php echo number_format($this->total_price, 2, ',','.'); ?></td>
-					<td>&nbsp;</td>
+					<td>&nbsp;
 					<input type="hidden" name="final[subtotaal]" value="subtotaal:" />
 					<input type="hidden" name="final[subtotaal_value]" value="&euro;<?php echo number_format($this->total_price, 2, ',','.'); ?>" />
 					<input type="hidden" name="final[subtotaal_extra]" value="" />
+					</td>
 				</tr>				
 				<?php
 				foreach($this->percent_items as $item){
@@ -250,7 +254,7 @@ window.addEvent('domready' function(){
 						echo '&nbsp;';
 					}
 					?>
-					</td>
+					
 					<input type="hidden" name="final[percent_items][<?php echo $i; ?>][name]" value="<?php echo $item->name; ?>" />
 					<input type="hidden" name="final[percent_items][<?php echo $i; ?>][price]" value="&euro;&nbsp;
 					<?php 
@@ -269,7 +273,8 @@ window.addEvent('domready' function(){
 					} else {
 						echo '&nbsp;';
 					}
-					?>"/>					
+					?>"/>
+					</td>				
 				</tr>
 				<?php
 				$i++;

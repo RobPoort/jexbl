@@ -4,6 +4,20 @@ jimport('joomla.html.html');
 
 JHtml::stylesheet('jbl.css','components/com_jexbooking/css/');
 ?>
+<script>
+window.addEvent('domready' function(){
+	$('form.form-validate').addEvent('submit', function(evt){
+		// PREVENT FORM FROM BEING SUBMITTED
+		evt.preventDefault();
+		var form = evt.target;
+		if(! document.formvalidator.isValid(form) ){
+			// DISPLAY ERROR MESSAGE HERE
+			return false;
+		}
+		form.submit();
+	});
+});
+</script>
 <?php if($this->itemsByDate) : ?>
 <form method="post" action="">
 	<fieldset class="jexSelect">
@@ -38,6 +52,19 @@ JHtml::stylesheet('jbl.css','components/com_jexbooking/css/');
 				} 
 			?>
 		</table>
+	</fieldset>
+	<fieldset class="jexSelect">
+		<table class="jbl_form_table">
+			<tr>
+				<td>
+					*Aantal personen: 
+				</td>
+				<td>
+					<input type="text" name="jbl_form[number_pp]" value="" required="required" />
+				</td>
+			</tr>
+		</table>
+	</fieldset>
 		<input type="submit" name="buttonNext" class="buttonNext" value="VOLGENDE" />
 		<input type="hidden" name="task" value="arrangements.setStep" />
 		<input type="hidden" name="step" value="1" />

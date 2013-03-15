@@ -26,6 +26,20 @@ $this->app->setUserState("option_jbl.attrib_extras_checked", $attribs_extras_che
 
 //TODO bovenstaande filteren, zitten nog overbodige dingen van oude bedankt pagina in
 ?>
+<script>
+window.addEvent('domready' function(){
+	$('form.form-validate').addEvent('submit', function(evt){
+		// PREVENT FORM FROM BEING SUBMITTED
+		evt.preventDefault();
+		var form = evt.target;
+		if(! document.formvalidator.isValid(form) ){
+			// DISPLAY ERROR MESSAGE HERE
+			return false;
+		}
+		form.submit();
+	});
+});
+</script>
 <h1>Overzicht:</h1>
 <div class="jbl_prijsberekening" id="jbl_prijsberekening">
 	

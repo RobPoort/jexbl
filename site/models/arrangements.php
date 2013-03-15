@@ -349,7 +349,6 @@ class JexBookingModelArrangements extends JModel
 					$query->where('id='.$attrib_id);
 					$db->setQuery($query);
 					$result = $db->loadObject();
-						
 					$result->number = $number;
 					$result->total_attrib_price = (double)$result->price;
 					if($result->is_pn){

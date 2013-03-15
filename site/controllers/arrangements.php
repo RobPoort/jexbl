@@ -126,8 +126,10 @@ class JexBookingControllerArrangements extends JController
 			$this->arr_price = $model->getItem();
 			$this->arr_price->total_arr_price = $this->arr_price->price;
 			if (array_key_exists('number_pp', $data)) {
-				$this->arr_price->number_pp = (int)$data['number_pp'];
+				$this->arr_price->number_pp = (int)$data['number_pp']; // TODO: moet extra conditie aan toegevoegd worden ivm number_pp wanneer in arr use_pp 0 is
+				if($this->arr_price->is_pa == 0){
 				$this->arr_price->total_arr_price = $this->arr_price->number_pp * $this->arr_price->price;
+				}
 			}
 			
 			//prijzen met key 'number' ophalen, indien aanwezig

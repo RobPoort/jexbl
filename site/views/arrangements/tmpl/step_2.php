@@ -10,6 +10,20 @@ $attribs = $this->attribs;
 $app = $this->app;
 $state = $this->state;
 ?>
+<script>
+window.addEvent('domready' function(){
+	$('form.form-validate').addEvent('submit', function(evt){
+		// PREVENT FORM FROM BEING SUBMITTED
+		evt.preventDefault();
+		var form = evt.target;
+		if(! document.formvalidator.isValid(form) ){
+			// DISPLAY ERROR MESSAGE HERE
+			return false;
+		}
+		form.submit();
+	});
+});
+</script>
 <form action="" method="post">
 	<fieldset class="jbl_form" id="jbl_has_number"><legend><?php echo ucfirst($item->name);?></legend>
 		<table class="jbl_form_table">
@@ -22,11 +36,13 @@ $state = $this->state;
 						$number_pp = $state->arr_price->number_pp;
 					}
 					?>				
-					<td class="jbl_form_left"><label>Aantal personen:&nbsp;</label></td><td class="jbl_form_right">&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="jbl_form[number_pp]" value="<?php echo $number_pp; ?>" class="jbl_input_number" /></td>				
+					<td class="jbl_form_left"><input type="hidden" name="jbl_form[number_pp]" value="<?php echo $this->data['number_pp']; ?>" /></td>				
 					<?php
 				} else{
 					?>					
-					<td class="jbl_form_left"><label>Prijs:</label></td><td class="jbl_form_right">&euro;&nbsp;<?php echo number_format($item->price, 2, ',','.'); ?></td>					
+					<td class="jbl_form_left"><label>Prijs:</label></td><td class="jbl_form_right">&euro;&nbsp;<?php echo number_format($item->price, 2, ',','.'); ?>
+					<input type="hidden" name="jbl_form[number_pp]" value="<?php echo $this->data['number_pp']; ?>" />
+					</td>					
 					<?php
 				}
 			?>
