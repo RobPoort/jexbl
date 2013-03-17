@@ -30,9 +30,6 @@ window.addEvent('domready' function(){
 	});
 });
 </script>
-<pre>
-<?php //var_dump($arrangement); ?>
-</pre>
 <div class="jbl_prijsberekening" id="jbl_prijsberekening">
 <form method="post" action="" class="form-validate">
 	<fieldset class="jbl_form"><legend>Uw prijsberekening:</legend>

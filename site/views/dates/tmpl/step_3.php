@@ -26,7 +26,7 @@ window.addEvent('domready' function(){
 });
 </script>
 <pre>
-	<?php //var_dump($this->app->getUserState("option_jbl.attribsSpecial")); ?>
+	<?php //var_dump($this->app->getUserState("option_jbl.stayperiods")); ?>
 	<?php //var_dump($this->data); ?>
 </pre>
 <form method="post" action="">
@@ -35,7 +35,7 @@ window.addEvent('domready' function(){
 		<?php if($overlap) :?>
 			<?php if($this->app->getUserState("option_jbl.arrPrice")) : ?>
 			<?php $arrs = $this->app->getUserState("option_jbl.arrPrice"); ?>
-				
+					<?php $i = 0; ?>
 					<?php foreach($arrs as $arr) : ?>
 						<tr>
 							<td>
@@ -48,8 +48,11 @@ window.addEvent('domready' function(){
 							<td>
 								&euro;&nbsp;
 								<?php echo number_format($arr['arr_price'], 2, ',', '.'); ?>
+								<input type="hidden" name="final[arrangement][<?php echo $i; ?>][name]" value="<?php echo $arr['price_message'][$i]; ?>" />
+								<input type="hidden" name="final[arrangement][<?php echo $i; ?>][name]" value="<?php echo $arr['arr_price']; ?>" />
 							</td>
 						</tr>
+					<?php $i++; ?>
 					<?php endforeach; ?>
 				<tr>
 					<td colspan="2">&nbsp;</td>
@@ -57,7 +60,7 @@ window.addEvent('domready' function(){
 			<?php endif; ?>
 		<?php endif; ?>
 		<?php if($this->app->getUserState("option_jbl.calcPrice")) : ?>
-			 
+			 <?php $i = 0; ?>
 			 <?php foreach($this->app->getUserState("option_jbl.stayperiods") as $stayPeriod) : ?>
 			 	<tr>
 			 		<td>
@@ -75,8 +78,14 @@ window.addEvent('domready' function(){
 			 		<td>
 			 			&euro;&nbsp;
 			 			<?php echo number_format($stayPeriod['stayPeriodPrice'], 2, ',', '.'); ?>
+			 			<input type="hidden" name="final[stayPeriod][<?php echo $i; ?>][nachten]" value="<?php echo $stayPeriod['nachten']; ?>" />
+			 			<input type="hidden" name="final[stayPeriod][<?php echo $i; ?>][name]" value="<?php echo $stayPeriod['priceObject']->name; ?>" />
+			 			<input type="hidden" name="final[stayPeriod][<?php echo $i; ?>][number_pp]" value="<?php echo $stayPeriod['number_pp']; ?>" />
+			 			<input type="hidden" name="final[stayPeriod][<?php echo $i; ?>][stayPeriodPrice]" value="<?php echo $stayPeriod['stayPeriodPrice']; ?>" />
+			 			<input type="hidden" name="final[stayPeriod][<?php echo $i; ?>][message]" value="<?php echo $stayPeriod['message']; ?>" />
 			 		</td>
 			 	</tr>
+			 <?php $i++; ?>
 			 <?php endforeach; ?>
 			 <?php if($this->app->getUserState("option_jbl.subTotalDiscount")) : ?>
 			 <?php
@@ -86,7 +95,10 @@ window.addEvent('domready' function(){
 			 
 			 	<tr>
 			 		<td><?php echo $subTotalDiscountMessage; ?></td>
-			 		<td>-&nbsp;&euro;&nbsp;<?php echo number_format($subTotalDiscount, 2, ',', '.'); ?></td>
+			 		<td>-&nbsp;&euro;&nbsp;<?php echo number_format($subTotalDiscount, 2, ',', '.'); ?>
+			 		<input type="hidden" name="final[subTotalDiscount][message]" value="<?php echo $subTotalDiscountMessage; ?>" />
+			 		<input type="hidden" name="final[subTotalDiscount][subtotal]" value="<?php echo $subTotalDiscount; ?>" />
+			 		</td>
 			 	</tr>
 			 <?php endif; ?>
 			 	<tr>
@@ -104,6 +116,7 @@ window.addEvent('domready' function(){
 			 		<td>
 			 		&euro;&nbsp;
 			 		<?php echo number_format($this->app->getUserState("option_jbl.calcPrice"), 2, ',', '.'); ?>
+			 		<input type="hidden" name="final[calcStayPeriodsPrice]" value="<?php echo $this->app->getUserState("option_jbl.calcPrice"); ?>" />
 			 		</td>
 			 	</tr>			 	
 			 <?php endif; ?>
@@ -111,7 +124,8 @@ window.addEvent('domready' function(){
 			 	<tr>
 			 		<td style="text-align:right;">Totaalprijs overnachtingen:</td>
 			 		<td>
-			 			&euro;<?php echo number_format(($this->app->getUserState("option_jbl.calcPrice") + $arr['arr_price']), 2, ',', '.'); ?>
+			 			&euro;&nbsp;<?php echo number_format(($this->app->getUserState("option_jbl.calcPrice") + $arr['arr_price']), 2, ',', '.'); ?>
+			 			<input type="hidden" name="final[calcTotalStayPeriodsPrice]" value="<?php echo $this->app->getUserState("option_jbl.calcPrice") + $arr['arr_price']; ?>" />
 			 		</td>
 			 	</tr>
 			 <?php endif; ?>
@@ -123,6 +137,7 @@ window.addEvent('domready' function(){
 					<td colspan="2" style="text-align:left;font-weight:bold;">Toevoegingen:</td>
 				</tr>
 			 <?php $calcAttribs = $this->app->getUserState("option_jbl.calcattribs"); ?>
+			 	<?php $i = 0; ?>
 			 	<?php foreach($calcAttribs as $item) : ?>			 	
 			 	<tr>
 			 		<td>
@@ -130,8 +145,11 @@ window.addEvent('domready' function(){
 			 		</td>
 			 		<td>
 			 			&euro;&nbsp;<?php echo number_format($item['calculated'], 2, ',', '.'); ?>
+			 			<input type="hidden" name="final[calcAttribs][<?php echo $i; ?>][name]" value="<?php echo $item['attribObject']->name; ?>&nbsp;<?php echo $item['message']; ?>" />
+			 			<input type="hidden" name="final[calcAttribs][<?php echo $i; ?>][price]" value="<?php echo $item['calculated']; ?>" />
 			 		</td>
 			 	</tr>
+			 	<?php $i++; ?>
 			 	<?php endforeach; ?>
 			 	<tr>
 			 		<td>&nbsp;</td>
@@ -142,6 +160,7 @@ window.addEvent('domready' function(){
 			 		<td>
 			 		&euro;&nbsp;
 			 		<?php echo number_format($this->app->getUserState("option_jbl.attribsSubTotaal"), 2, ',', '.'); ?>
+			 		<input type="hidden" name="final[subTotalAttribs]" value="<?php echo $this->app->getUserState("option_jbl.attribsSubTotaal"); ?>" />			 		
 			 		</td>
 			 	</tr>
 			 <?php endif; ?>
@@ -150,6 +169,7 @@ window.addEvent('domready' function(){
 			 		<td colspan="2">&nbsp;</td>
 			 	</tr>
 			 	<?php $not_percents = $this->app->getUserState("option_jbl.calcattribsSpecial"); ?>
+			 		<?php $i = 0; ?>
 			 		<?php foreach($not_percents as $item) : ?>
 			 			<tr>
 			 				<td>
@@ -157,8 +177,11 @@ window.addEvent('domready' function(){
 			 				</td>
 			 				<td>
 			 					&euro;&nbsp;<?php echo number_format($item['calculated'], 2, ',', '.'); ?>
+			 					<input type="hidden" name="final[special][not_percents][<?php echo $i; ?>][name]" value="<?php echo $item['attribObject']->name; ?>" />
+			 					<input type="hidden" name="final[special][not_percents][<?php echo $i; ?>][name]" value="<?php echo $item['calculated']; ?>" />
 			 				</td>
 			 			</tr>
+			 		<?php $i++; ?>
 			 		<?php endforeach; ?>
 			 		<tr>
 				 		<td>&nbsp;</td>
@@ -169,6 +192,7 @@ window.addEvent('domready' function(){
 			 		<td>
 			 		&euro;&nbsp;
 			 		<?php echo number_format($this->app->getUserState("option_jbl.calcAttribsSpecialSubTotaal"), 2, ',', '.'); ?>
+			 		<input type="hidden" name="final[subTotalSpecial]" value="<?php echo $this->app->getUserState("option_jbl.calcAttribsSpecialSubTotaal"); ?>" />
 			 		</td>
 			 	</tr>
 			 <?php endif; ?>
@@ -183,6 +207,7 @@ window.addEvent('domready' function(){
 				 		<td style="font-weight:bold;">
 				 		&euro;&nbsp;
 				 		<?php echo number_format($subtotal, 2, ',', '.'); ?>
+				 		<input type="hidden" name="final[subTotalPrice]" value="<?php echo $subtotal; ?>" />
 				 		</td>
 			 		</tr>
 			 <?php endif; ?>
@@ -193,7 +218,10 @@ window.addEvent('domready' function(){
 			  ?>
 			 	<tr>
 			 		<td><?php echo $totalDiscountMessage; ?></td>
-			 		<td>-&nbsp;&euro;&nbsp;<?php echo number_format($totalDiscount, 2, ',', '.'); ?></td>
+			 		<td>-&nbsp;&euro;&nbsp;<?php echo number_format($totalDiscount, 2, ',', '.'); ?>
+				 		<input type="hidden" name="final[subTotalPriceDiscount]" value="<?php echo $totalDiscountMessage; ?>" />
+				 		<input type="hidden" name="final[subTotalPriceDiscount]" value="<?php echo $totalDiscount; ?>" />
+			 		</td>
 			 	</tr>
 			 <?php endif; ?>
 			 <?php if($this->app->getUserState("option_jbl.TotalAdd")) : ?>
@@ -203,7 +231,10 @@ window.addEvent('domready' function(){
 			 ?>
 			 	<tr>
 			 		<td><?php echo $totalAddMessage; ?></td>
-			 		<td>+&nbsp;&euro;&nbsp;<?php echo number_format($totalAdd, 2, ',', '.'); ?></td>
+			 		<td>+&nbsp;&euro;&nbsp;<?php echo number_format($totalAdd, 2, ',', '.'); ?>
+			 		<input type="hidden" name="final[totalAdd][message]" value="<?php echo $totalAddMessage; ?>" />
+			 		<input type="hidden" name="final[totalAdd][price]" value="<?php echo $totalAdd; ?>" />
+			 		</td>
 			 	</tr>
 			 <?php endif; ?>
 			 <?php
@@ -220,6 +251,7 @@ window.addEvent('domready' function(){
 			 		<td style="text-align:right;font-weight:bold;">Totaalprijs:</td>
 			 		<td style="font-weight:bold;">
 			 			&euro;&nbsp;<?php echo number_format($defTotal, 2, ',', '.'); ?>
+			 			<input type="hidden" name="final[defTotal]" value="<?php echo $defTotal; ?>" />
 			 		</td>
 			 	</tr>
 			 </table>
@@ -383,30 +415,4 @@ window.addEvent('domready' function(){
 			<input type="hidden" name="step" value="1" />
 			<input type="submit" name="buttonprev" class="buttonNext" value="VORIGE" />
 		</form>
-
-<pre>
-	<?php
-		//TODO: var_dump verwijderen
-		
-		$this->prices = $this->app->getUserState("option_jbl.prices");
-		$this->calcPrice = $this->app->getUserState("option_jbl.calcPrice");
-		$this->calcAttribs = $this->app->getUserState("option_jbl.calcattribs");
-		//echo '<h2>$this->overlap</h2>';
-		//var_dump($this->overlap);
-		//echo '<h2>$this->calcAttribs</h2>';
-		//var_dump($this->calcAttribs);
-		//echo '<h2>$this->data:</h2>';
-		//var_dump($this->data);
-		//echo '<h2>$this->default:</h2>';
-		//var_dump($this->default);
-		//echo '<h2>$attribs</h2>';
-		//var_dump($attribs);
-		//echo '<h2>$this->calcPrice</h2>';
-		//var_dump($this->calcPrice);
-		//echo '<h2>$this->overlap</h2>';
-		//var_dump($this->overlap);
-		//echo '<h2>$this->prices</h2>';
-		//var_dump($this->prices);
-		
-	?>
-</pre>
+	</fieldset>

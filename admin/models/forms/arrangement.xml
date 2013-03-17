@@ -100,6 +100,13 @@
 			<option value="0">JNO</option>
 		</field>
 		<field
+			name="min_pp"
+			type="text"
+			label="COM_JEXBOOKING_ARRANGEMENT_MIN_PP_LABEL"
+			description="COM_JEXBOOKING_ARRANGEMENT_MIN_PP_DESC"
+			default="1" 
+		/>
+		<field
 			name="required"
 			type="list"
 			label="COM_JEXBOOKING_ARRANGEMENT_REQUIRED_LABEL"
