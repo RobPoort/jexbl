@@ -100,7 +100,7 @@ window.addEvent('domready' function(){
 				<?php
 					if ($final['attribs_special_required']) {
 						foreach ($final['attribs_special_required'] as $item){
-							//if($item['price'] > 0){
+							
 							?>
 							<tr>
 								<td><?php echo $item['name']; ?></td>
@@ -108,7 +108,7 @@ window.addEvent('domready' function(){
 								<td><?php echo $item['number_info']; ?></td>
 							</tr>
 							<?php
-							//}
+							
 						}
 					} 
 				?>

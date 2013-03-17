@@ -510,8 +510,8 @@ class JexBookingControllerDates extends JController
 		if($pricePeriods){
 			$i = 0;
 			foreach($pricePeriods as $key=>$value){
-				if($key == 0 && $value['priceObject']->is_pn_extra){
-					$totalStayPrice += $value['priceObject']->min_price * $number_pp;
+				if($key == 0 && $value['priceObject']->is_pn_extra == 1){
+					$totalStayPrice += $value['priceObject']->min_price * $number_pp; //klopt niet, moet pn zijn, niet pp?
 					$totalStayPrice += ($value['nachten'] - 1) * $value['priceObject']->extra * $number_pp;
 					$stayPeriods[$i]['nachten']			= $value['nachten'];
 					$stayPeriods[$i]['priceObject']		= $value['priceObject'];
@@ -525,6 +525,53 @@ class JexBookingControllerDates extends JController
 					$stayPeriods[$i]['number_pp']		= $number_pp;
 					$stayPeriods[$i]['stayPeriodPrice']	= $value['priceObject']->extra * $value['nachten'] * $number_pp;
 					$stayPeriods[$i]['message']			= $message;
+				} elseif($value['priceObject']->use_pp_extra == 1 && $value['priceObject']->is_pn_extra == 1){
+					
+					if($number_pp <= 2){
+						//eerst eerste nacht berekenen, daarna daaropvolgende dagen
+						$dayStayPriceFirst	=  $value['priceObject']->min_price * $number_pp;
+						$dayStayPrice		=  $value['priceObject']->extra * $number_pp;
+						$totalStayPrice		+= $dayStayPrice * ($value['nachten'] - 1); //vermenigvuldigen met aantal nachten minus de eerste dag
+						$totalStayPrice		+= $dayStayPriceFirst;
+						$stayPeriods[$i]['nachten']			= $value['nachten'];
+						$stayPeriods[$i]['priceObject']		= $value['priceObject'];
+						$stayPeriods[$i]['number_pp']		= $number_pp;
+						$stayPeriods[$i]['stayPeriodPrice']	= $totalStayPrice;
+						$stayPeriods[$i]['message']			= $message;
+					} elseif($number_pp > 2){
+						//eerst eerste nacht berekenen, daarna daaropvolgende dagen
+						$dayStayPriceFirst	=  $value['priceObject']->min_price * 2; //eerste 2 personen
+						$dayStayPriceFirst	+= $value['priceObject']->pp_extra * ($number_pp - 2); //daaropvolgende personen
+						$dayStayPrice		=  $value['priceObject']->min_price * 2; //eerste 2 personen
+						$dayStayPrice		+= $value['priceObject']->pp_extra * ($number_pp - 2); //daaropvolgende personen
+						$totalStayPrice		+= $dayStayPrice * ($value['nachten'] - 1); //vermenigvuldigen met aantal nachten
+						$stayPeriods[$i]['nachten']			= $value['nachten'];
+						$stayPeriods[$i]['priceObject']		= $value['priceObject'];
+						$stayPeriods[$i]['number_pp']		= $number_pp;
+						$stayPeriods[$i]['stayPeriodPrice']	= $totalStayPrice;
+						$stayPeriods[$i]['message']			= $message;
+					}
+					
+				} elseif ($value['priceObject']->use_pp_extra == 1 && $value['priceObject']->is_pn_extra == 0){
+					//als us_pp_extra, dan eerst min_price * 2, alle daaropvolgende personen = + pp_extra
+					if($number_pp <= 2){
+					$dayStayPrice		=  $value['priceObject']->min_price * $number_pp;
+					$totalStayPrice		+= $dayStayPrice * $value['nachten']; //vermenigvuldigen met aantal nachten					
+					$stayPeriods[$i]['nachten']			= $value['nachten'];
+					$stayPeriods[$i]['priceObject']		= $value['priceObject'];
+					$stayPeriods[$i]['number_pp']		= $number_pp;
+					$stayPeriods[$i]['stayPeriodPrice']	= $totalStayPrice;
+					$stayPeriods[$i]['message']			= $message;
+					} elseif($number_pp > 2){
+						$dayStayPrice		=  $value['priceObject']->min_price * 2; //eerste 2 personen
+						$dayStayPrice		+= $value['priceObject']->pp_extra * ($number_pp - 2); //daaropvolgende personen
+						$totalStayPrice		+= $dayStayPrice * $value['nachten']; //vermenigvuldigen met aantal nachten
+						$stayPeriods[$i]['nachten']			= $value['nachten'];
+						$stayPeriods[$i]['priceObject']		= $value['priceObject'];
+						$stayPeriods[$i]['number_pp']		= $number_pp;
+						$stayPeriods[$i]['stayPeriodPrice']	= $totalStayPrice;
+						$stayPeriods[$i]['message']			= $message;
+					}
 				} else {
 					$totalStayPrice += $value['priceObject']->min_price * $value['nachten'] * $number_pp;
 					$stayPeriods[$i]['nachten']			= $value['nachten'];

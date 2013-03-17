@@ -63,7 +63,7 @@
 			<option value="0">JNO</option>
 		</field>
 		<field
-			name="pp-extra"
+			name="pp_extra"
 			type="text"
 			label="COM_JEXBOOKING_DEFAULT_PRICES_EXTRA_PP_LABEL"
 			description="COM_JEXBOOKING_DEFAULT_PRICES_EXTRA_PP_DESC"

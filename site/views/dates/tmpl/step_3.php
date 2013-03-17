@@ -371,11 +371,19 @@ window.addEvent('domready' function(){
 		</textarea>
 
 	</fieldset>
-	<input type="hidden" name="task" value="dates.setStep" />	
-	<input type="hidden" name="step" value="1" />
-	<input type="submit" name="buttonprev" class="buttonNext" value="VORIGE" />
-</form>
-<div class="clear"></div>
+	<fieldset class="jbl_form" id="button">			
+			<input type="submit" name="sendButton" value="VOLGENDE" class="buttonNext" />			
+			 <input type="hidden" name="step" value="3" />
+			 <input type="hidden" name="task" value="dates.setStep" />
+			 <input type="hidden" name="jbl_form[state_check]" value="1" />		 
+	</form>
+	<div class="clear">&nbsp;</div>
+		<form method="post" action="">
+			<input type="hidden" name="task" value="dates.setStep" />	
+			<input type="hidden" name="step" value="1" />
+			<input type="submit" name="buttonprev" class="buttonNext" value="VORIGE" />
+		</form>
+
 <pre>
 	<?php
 		//TODO: var_dump verwijderen

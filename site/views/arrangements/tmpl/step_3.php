@@ -110,7 +110,7 @@ window.addEvent('domready' function(){
 									echo '('.$item->persons.'&nbsp;personen&nbsp;&aacute;&nbsp;'.number_format($item->single_price, 2, ',','.').')';
 								} 
 							?>
-							</td>
+							
 							<input type="hidden" name="final[attribs_checked][<?php echo $i; ?>][name]" value="<?php echo $item->name; ?>" />
 							<input type="hidden" name="final[attribs_checked][<?php echo $i; ?>][price]" value="&euro;&nbsp;<?php echo number_format($item->total_attrib_price, 2, ',','.'); ?>" />
 							<input type="hidden" name="final[attribs_checked][<?php echo $i; ?>][number_info]" value="
@@ -120,6 +120,7 @@ window.addEvent('domready' function(){
 									} 
 								?>
 							" />
+							</td>
 						</tr>
 						<?php
 						$i++;
@@ -138,11 +139,11 @@ window.addEvent('domready' function(){
 							<?php
 								if($item->is_pp_special){
 									?>
-									<td>(<?php echo $item->persons;?>&nbsp;personen&nbsp;&aacute;&nbsp;&euro;&nbsp;<?php echo number_format($item->price, 2, ',','.'); ?>)</td>
+									<td>(<?php echo $item->persons;?>&nbsp;personen&nbsp;&aacute;&nbsp;&euro;&nbsp;<?php echo number_format($item->price, 2, ',','.'); ?>)
 									<?php
 								} else{
 									?>
-										<td>&nbsp;</td>
+										<td>&nbsp;
 									<?php
 								}
 							?>
@@ -160,7 +161,7 @@ window.addEvent('domready' function(){
 									<?php
 								}
 							?>" />
-							
+							</td>
 						</tr>
 						<?php
 						}
@@ -284,10 +285,11 @@ window.addEvent('domready' function(){
 				<tr>				
 					<td style="text-align:right;font-weight:bold;">totaal:</td>
 					<td style="font-weight:bold;">&euro;&nbsp;<?php echo number_format($this->total_price_def, 2, ',','.'); ?></td>
-					<td>&nbsp;</td>
+					<td>&nbsp;
 					<input type="hidden" name="final[totaal]" value="totaal:" />
 					<input type="hidden" name="final[totaal_value]" value="&euro;&nbsp;<?php echo number_format($this->total_price_def, 2, ',','.'); ?>" />
 					<input type="hidden" name="final[totaal_extra]" value="" />
+					</td>
 				</tr>
 				<?php
 			} else{
@@ -295,10 +297,11 @@ window.addEvent('domready' function(){
 					<tr>				
 					<td style="text-align:right;font-weight:bold;">totaal:</td>
 					<td style="font-weight:bold;">&euro;<?php echo number_format($this->total_price, 2, ',','.'); ?></td>
-					<td>&nbsp;</td>
+					<td>&nbsp;
 					<input type="hidden" name="final[totaal]" value="totaal:" />
 					<input type="hidden" name="final[totaal_value]" value="&euro;<?php echo number_format($this->total_price, 2, ',','.'); ?>" />
 					<input type="hidden" name="final[totaal_extra]" value="" />
+					</td>
 				</tr>
 				<?php
 			} 
