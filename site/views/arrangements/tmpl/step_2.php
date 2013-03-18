@@ -30,17 +30,20 @@ window.addEvent('domready' function(){
 			<tr>
 			<td class="jbl_form_checkbox">&nbsp;&nbsp;&nbsp;</td>
 			<?php
-				if($item->is_pp){
+				if($item->is_pp == 1){
 					$number_pp = 2;
 					if($state->arr_price->number_pp){
 						$number_pp = $state->arr_price->number_pp;
 					}
-					?>				
-					<td class="jbl_form_left"><input type="hidden" name="jbl_form[number_pp]" value="<?php echo $this->data['number_pp']; ?>" /></td>				
+					?>									
+					<td class="jbl_form_left" >Arrangementsprijs:</td>
+					<td class="jbl_form_right">&euro;&nbsp;<?php echo number_format($item->price, 2, ',','.'); ?>
+					<input type="hidden" name="jbl_form[number_pp]" value="<?php echo $this->data['number_pp']; ?>" />
+					</td>				
 					<?php
-				} else{
+				} elseif($item->is_pp == 0){
 					?>					
-					<td class="jbl_form_left"><label>Prijs:</label></td><td class="jbl_form_right">&euro;&nbsp;<?php echo number_format($item->price, 2, ',','.'); ?>
+					<td class="jbl_form_left"><label>Arrangementsprijs:</label></td><td class="jbl_form_right">&euro;&nbsp;<?php echo number_format($item->price, 2, ',','.'); ?>
 					<input type="hidden" name="jbl_form[number_pp]" value="<?php echo $this->data['number_pp']; ?>" />
 					</td>					
 					<?php

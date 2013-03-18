@@ -94,7 +94,6 @@ class JexBookingControllerArrangements extends JController
 		
 		$arr_id = $app->getUserState("option_jbl.arr_id");		
 		
-		
 		$app->setUserState("option_jbl.arr_id", $arr_id);
 		
 		$state_check = $app->input->get('jbl_form',null,null);		
@@ -123,14 +122,61 @@ class JexBookingControllerArrangements extends JController
 			$model = $this->getModel('arrangements');
 			
 			//arr_price ophalen
+			//TODO deze total_arr_price moet opnieuw ivm is_pp, use_extra_pp, extra_pp en min_pp. Moet ook message komen met berekening
 			$this->arr_price = $model->getItem();
-			$this->arr_price->total_arr_price = $this->arr_price->price;
-			if (array_key_exists('number_pp', $data)) {
-				$this->arr_price->number_pp = (int)$data['number_pp']; // TODO: moet extra conditie aan toegevoegd worden ivm number_pp wanneer in arr use_pp 0 is
-				if($this->arr_price->is_pa == 0){
-				$this->arr_price->total_arr_price = $this->arr_price->number_pp * $this->arr_price->price;
+			$arrItem = $this->arr_price;
+			
+			if($arrItem->is_pp == 0){ //aantal personen maakt niets uit
+				$this->arr_price->total_arr_price = $arrItem->price;
+				$this->arr_price->message = 'testkip';
+			} elseif($arrItem->is_pp == 1){ //nu alle mogelijkheden waarbij aantal personen wel van belang is
+				$number_pp = $data['number_pp'];
+				
+				$app->setUserState("option_jbl.adaptedNumber_pp", null); // number_pp in UserState zetten
+				$app->setUserState("option_jbl.adaptedNumber_pp", $number_pp);
+				
+				if($arrItem->use_extra_pp == 0){
+					if($number_pp < $arrItem->min_pp){ //rekening houden met min_pp
+						$number_pp = $arrItem->min_pp;
+						$app->setUserState("option_jbl.adaptedNumber_pp", null); // aangepaste number_pp in UserState zetten
+						$app->setUserState("option_jbl.adaptedNumber_pp", $number_pp);
+						$this->arr_price->total_arr_price = $arrItem->price * $number_pp;
+						$this->arr_price->message = $number_pp.' x &euro; '.number_format($arrItem->price, 2, ',', '.').'<br />(Het minimum aantal personen voor dit arrangement is '.$arrItem->min_pp.')';
+					} else {
+						$this->arr_price->total_arr_price = $arrItem->price * $number_pp;
+						$this->arr_price->message = $number_pp.' x &euro; '.number_format($arrItem->price, 2, ',', '.');
+					}
+				} elseif($arrItem->use_extra_pp == 1){ //nu met use_extra_pp, tricky ivm min_pp. Price is dan voor min_pp, alle personen meer zijn extra_pp!
+					if($number_pp < $arrItem->min_pp){ //number_pp moet weer worden aangepast aan min_pp
+						$number_pp = $arrItem->min_pp;
+						$app->setUserState("option_jbl.adaptedNumber_pp", null); // aangepaste number_pp in UserState zetten
+						$app->setUserState("option_jbl.adaptedNumber_pp", $number_pp);
+						$this->arr_price->total_arr_price = $arrItem->price; //price is nu voor min_pp personen!
+						$this->arr_price->message = '(het minimum aantal personen is '.$arrItem->min_pp.')';
+					} elseif($number_pp == $arrItem->min_pp){ //total_price is nu price
+						$number_pp = $arrItem->min_pp;
+						$app->setUserState("option_jbl.adaptedNumber_pp", null); // aangepaste number_pp in UserState zetten
+						$app->setUserState("option_jbl.adaptedNumber_pp", $number_pp);
+						$this->arr_price->total_arr_price = $arrItem->price; //price is nu voor min_pp personen!
+						$this->arr_price->message = '('.$number_pp.' personen)';
+					} elseif ($number_pp > $arrItem->min_pp) { //min_pp is price, alles boven min_pp is extra_pp
+						$this->arr_price->total_arr_price = $arrItem->price; //eerste gedeelte: geldt voor min_pp
+						$this->arr_price->total_arr_price += $arrItem->extra_pp * ($number_pp - $arrItem->min_pp);
+						$this->arr_price->message = 'Eerste '.$arrItem->min_pp.' personen &euro; '.number_format($arrItem->price,2 , ',' ,'.').'<br />Daaropvolgende '.($number_pp - $arrItem->min_pp).' personen &euro; '.number_format($arrItem->extra_pp,2, ',', '.').' pp.';
+					}
 				}
 			}
+			
+			
+			
+			
+			//$this->arr_price->total_arr_price = $this->arr_price->price;
+			//if (array_key_exists('number_pp', $data)) {
+			//	$this->arr_price->number_pp = (int)$data['number_pp']; // TODO: moet extra conditie aan toegevoegd worden ivm number_pp wanneer in arr use_pp 0 is
+			//	if($this->arr_price->is_pa == 0){
+			//	$this->arr_price->total_arr_price = $this->arr_price->number_pp * $this->arr_price->price;
+			//	}
+			//}
 			
 			//prijzen met key 'number' ophalen, indien aanwezig
 			if (array_key_exists('number', $data)) {

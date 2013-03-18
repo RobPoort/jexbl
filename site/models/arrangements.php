@@ -168,7 +168,7 @@ class JexBookingModelArrangements extends JModel
 			$db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 			$query->from('#__jexbooking_attributes as ja');
-			//$query->where('ja.published=1 AND ja.has_price=1 AND ja.is_special=0 AND ja.id='.$attrib_id->attribute_id);
+			
 			$query->where('id='.$attrib_id->attribute_id.' AND published=1 AND is_special=0 AND has_price=1');
 			$query->select('*');
 			$db->setQuery($query);
@@ -301,7 +301,8 @@ class JexBookingModelArrangements extends JModel
 		}
 		$persons = 1;
 		if(array_key_exists('number_pp', $data)){
-			$persons = $data['number_pp'];
+			//$persons = $data['number_pp'];
+			$persons = $app->getUserState("option_jbl.adaptedNumber_pp");
 		}
 		
 		//de $key's in $data zijn de attrib_ids

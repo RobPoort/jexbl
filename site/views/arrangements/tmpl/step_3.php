@@ -45,8 +45,9 @@ window.addEvent('domready' function(){
 				</td>
 				<td>
 					<?php
-						if($arrangement->is_pa == 0){
-							echo '('.$arrangement->number_pp.'&nbsp;personen&nbsp;&aacute;&nbsp;&euro;&nbsp;'.number_format($arrangement->price, 2, ',','.').')';
+						if($arrangement->is_pp == 1){
+							//echo '('.$arrangement->number_pp.'&nbsp;personen&nbsp;&aacute;&nbsp;&euro;&nbsp;'.number_format($arrangement->price, 2, ',','.').')';
+							echo $arrangement->message;
 							?>
 							<input type="hidden" name="final[name_number_pp]" value="<?php echo '('.$arrangement->number_pp.'&nbsp;personen&nbsp;&aacute;&nbsp;&euro;&nbsp;'.number_format($arrangement->price, 2, ',','.').')'; ?>" />
 							<?php
