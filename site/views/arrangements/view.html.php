@@ -8,6 +8,7 @@ class JexBookingViewArrangements extends JView
 	function display($tpl = null){
 		
 		$this->app = JFactory::getApplication();
+		$this->fixed_days = $this->app->input->get("fixed_days");
 		$this->step = (int)$this->app->input->get('step');
 		$this->input = $this->app->input;
 		$this->items = $this->get('Items');

@@ -33,6 +33,16 @@
 				<option value="1">COM_JEXBOOKING_CHOOSE_TYPE</option>
 				<option value="0">COM_JEXBOOKING_CHOOSE_LOCATION</option>
 			</field>
+			<field
+				name="fixed_days"
+				type="list"
+				label="COM_JEXBOOKING_FIXED_DAYS_LABEL"
+				description="COM_JEXBOOKING_FIXED_DAYS_DESC"
+				default="0"
+			>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
 		</fieldset>
 	</fields>
 </metadata>

@@ -42,7 +42,9 @@ window.addEvent('domready' function(){
             minDate: "+1",
 			defaultDate: "+1",
 			dateFormat: "dd-mm-yy",
+			<?php if((bool)$this->fixed_days) : ?>
 			beforeShowDay: onlyDays,
+			<?php endif; ?>
 			changeMonth: true,
             onSelect: function(dateText, inst){
                 var day =
