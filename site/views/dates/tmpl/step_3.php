@@ -25,10 +25,6 @@ window.addEvent('domready' function(){
 	});
 });
 </script>
-<pre>
-	<?php //var_dump($this->app->getUserState("option_jbl.stayperiods")); ?>
-	<?php var_dump($this->data); ?>
-</pre>
 <form method="post" action="">
 	<fieldset class="jbl_form" id="jbl_has_number"><legend>Uw prijsberekening:</legend>
 		<table class="jbl_form_table">
@@ -307,7 +303,7 @@ window.addEvent('domready' function(){
 						
 					?>
 						<tr>
-						<td class="jbl_form_checkbox"><input type="checkbox" class="jbl_input_checkbox" name="jbl_form[checked][<?php echo $item->id; ?>]" value="1" <?php if($this->default['checked']){if(array_key_exists($item->id, $this->default['checked'])){ echo 'checked="checked"'; }} ?> /></td><td class="jbl_form_left"><label <?php if($item->desc) : ?>class="hasTip" title="<?php echo $item->desc; ?>" <?php endif; ?>><?php echo $item->name; ?>&nbsp;</label></td><td class="jbl_form_right">&nbsp;</td>
+						<td class="jbl_form_checkbox"><input type="checkbox" class="jbl_input_checkbox" name="final[extras][checked][<?php echo $item->id; ?>]" value="<?php echo $item->name; ?>" <?php if($this->default['checked']){if(array_key_exists($item->id, $this->default['checked'])){ echo 'checked="checked"'; }} ?> /></td><td class="jbl_form_left"><label <?php if($item->desc) : ?>class="hasTip" title="<?php echo $item->desc; ?>" <?php endif; ?>><?php echo $item->name; ?>&nbsp;</label></td><td class="jbl_form_right">&nbsp;</td>
 						</tr>
 					<?php 
 					}
@@ -317,7 +313,7 @@ window.addEvent('domready' function(){
 					foreach($extras['number'] as $item){
 					?>
 						<tr>
-							<td class="jbl_form_checkbox">&nbsp;</td><td class="jbl_form_left"><label <?php if($item->desc) : ?>class="hasTip" title="<?php echo $item->desc; ?>" <?php endif; ?>><?php echo $item->name; ?></label></td><td class="jbl_form_right">&nbsp;x&nbsp;<input type="text" name="jbl_form[number][<?php echo $item->id; ?>]" value="<?php if($this->default['number']){if(array_key_exists($item->id, $this->default['number'])){echo $this->default['number'][$item->id];}} ?>" class="jbl_input_number" /></td>
+							<td class="jbl_form_checkbox">&nbsp;</td><td class="jbl_form_left"><label <?php if($item->desc) : ?>class="hasTip" title="<?php echo $item->desc; ?>" <?php endif; ?>><?php echo $item->name; ?></label></td><td class="jbl_form_right">&nbsp;x&nbsp;<input type="text" name="final[extras][number][<?php echo $item->name; ?>]" value="<?php if($this->default['number']){if(array_key_exists($item->id, $this->default['number'])){echo $this->default['number'][$item->id];}} ?>" class="jbl_input_number" /></td>
 						</tr>
 					<?php
 						
@@ -329,7 +325,7 @@ window.addEvent('domready' function(){
 								foreach($extras['special']['not_required']['percent'] as $item){
 									?>
 									<tr>
-										<td class="jbl_form_checkbox"><input type="checkbox" class="jbl_input_checkbox" name="jbl_form[special][not_required][percent][<?php echo $item->id; ?>]" value="1" <?php if($this->default['special']['not_required']['percent']){
+										<td class="jbl_form_checkbox"><input type="checkbox" class="jbl_input_checkbox" name="final[extras][special][not_required][percent][<?php echo $item->id; ?>]" value="1" <?php if($this->default['special']['not_required']['percent']){
 											if(array_key_exists($item->id, $this->default['special']['not_required']['percent']))
 										{ echo 'checked="checked"'; }} ?> /></td><td class="jbl_form_left"><label <?php if($item->desc) : ?>class="hasTip" title="<?php echo $item->desc; ?>" <?php endif; ?>><?php echo $item->name; ?>&nbsp;</label></td><td class="jbl_form_right">&nbsp;</td>
 									</tr>

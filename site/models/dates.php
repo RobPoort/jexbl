@@ -43,12 +43,7 @@ class JexBookingModelDates extends JModel
 			$start_date = $date['start_date'];
 			$end_date = $date['end_date'];
 			
-			list($day,$month,$year) = explode('-', $start_date);
-			$start = mktime(0,1,0,$month,$day,$year);
-			list($day,$month,$year) = explode('-', $end_date);
-			$end = mktime(0,1,0,$month,$day,$year);
 			
-			//$nights = ($end - $start) / 86400;
 			$start = new DateTime($start_date);
 			$end = new DateTime($end_date);
 			$diff = $start->diff($end);

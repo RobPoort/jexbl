@@ -15,8 +15,6 @@ $attribs_special_checked = $this->attrib_prices_special_checked;
 $attribs_extras_checked = $this->attribs_extras_checked;
 $attribs_extras_number = $this->attribs_extras_number;
 $final = $this->app->input->get("final",null,null);
-
-$mailfrom	= $this->app->getCfg('sitename');
 $state = $this->state;
 $form = $this->app->input->get("jbl_form",null,null);
 $naw = $form['naw'];
@@ -40,7 +38,6 @@ window.addEvent('domready' function(){
 	});
 });
 </script>
-<pre><?php var_dump($final); ?></pre>
 <h1>Overzicht:</h1>
 <div class="jbl_prijsberekening" id="jbl_prijsberekening">
 	
@@ -101,8 +98,8 @@ window.addEvent('domready' function(){
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
-					<td>Subtotaal</td>				
-					<td style="text-align:left;">&euro;&nbsp;<?php echo number_format($final['subTotalPrice'], 2, ',', '.')?></td>
+					<td>Totaalprijs overnachtingen</td>				
+					<td style="text-align:left;">&euro;&nbsp;<?php echo number_format($final['calcTotalStayPeriodsPrice'], 2, ',', '.')?></td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
@@ -120,6 +117,37 @@ window.addEvent('domready' function(){
 							<td>&nbsp;</td>
 						</tr>
 					<?php endforeach; ?>
+					<tr>
+						<td>&nbsp;</td>				
+						<td style="text-align:left;">+</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>Subtotaal toevoegingen</td>				
+						<td style="text-align:left;">&euro;&nbsp;<?php echo number_format($final['subTotalAttribs'], 2, ',', '.')?></td>
+						<td>&nbsp;</td>
+					</tr>
+				<?php endif; ?>
+				<tr>
+					<td>&nbsp;</td>				
+					<td style="text-align:left;">+</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>Subtotaalprijs</td>				
+					<td style="text-align:left;">&euro;&nbsp;<?php echo number_format($final['subTotalPrice'], 2, ',', '.')?></td>
+					<td>&nbsp;</td>
+				</tr>
+				<?php if(isset($final['totalAdd']) && !empty($final['totalAdd'])) : ?>
+					<tr>
+						<td>
+							<?php echo $final['totalAdd']['message']; ?>
+						</td>
+						<td>
+							&euro;&nbsp;<?php echo number_format((double)$final['totalAdd']['price'], 2, ',', '.'); ?>
+						</td>
+						<td>&nbsp;</td>
+					</tr>
 				<?php endif; ?>
 				<tr>
 					<td colspan="3">&nbsp;</td>
@@ -128,6 +156,19 @@ window.addEvent('domready' function(){
 					<td>&nbsp;</td>				
 					<td style="text-align:left;">+</td>
 					<td>&nbsp;</td>
+				</tr>
+				<tr style="font-weight:bold;">
+					<td>
+						Totaalprijs
+					</td>
+					<td>
+						&euro;&nbsp;<?php echo number_format($final['defTotal'], 2, ',', '.'); ?>
+					</td>
+					<td>
+						<input type="hidden" name="jbl_form[start_date]" value="<?php echo $final['start_date']; ?>" />
+						<input type="hidden" name="jbl_form[end_date]" value="<?php echo $final['end_date']; ?>" />
+						<input type="hidden" name="jbl_form[number_pp]" value="<?php echo $final['number_pp']; ?>" />
+					</td>
 				</tr>
 			</table>
 		<form method="post" action="">
@@ -178,42 +219,32 @@ window.addEvent('domready' function(){
 			<input type="hidden" name="task" value="arrangements.setStep" />			
 			<input type="hidden" name="jbl_form[state_check]" value="1" />
 			<input type="hidden" name="noCalc" value="1" />
+			<input type="hidden" name="jbl_form[start_date]" value="<?php echo $final['start_date']; ?>" />
+			<input type="hidden" name="jbl_form[end_date]" value="<?php echo $final['end_date']; ?>" />
+			<input type="hidden" name="jbl_form[number_pp]" value="<?php echo $final['number_pp']; ?>" />
 	</form>
 	</fieldset>
-	<?php
-	 if($attribs_extras_checked || $attribs_extras_number){
-	?>
+	<?php if(isset($final['extras']) && !empty($final['extras'])) :?>
 	<fieldset class="jbl_form"><legend>Uw extra wensen:</legend>
 		<table class="jbl_form_table">
-			<?php
-				if($attribs_extras_checked){
-					foreach($attribs_extras_checked as $item){
-						?>
-						<tr>
-							<td><?php echo $item->name; ?></td>
-							<td>
-								<?php
-									if($item->persons > 1){
-										echo '(&aacute;&nbsp;'.$item->persons.'&nbsp;personen)';
-									} 
-								?>
-							</td>
-						</tr>
-						<?php
-					}
-				}
-				if($attribs_extras_number){
-					foreach($attribs_extras_number as $item){
-						?>
-						<tr>
-							<td><?php echo $item->name; ?></td>
-							<td>(<?php echo $item->number; ?>&nbsp;maal)</td>
-						</tr>
-						<?php
-					}
-				} 
-			?>
-			<tr><td colspan="2">&nbsp;</td></tr>
+			<?php if(isset($final['extras']['checked']) && !empty($final['extras']['checked'])) : ?>
+				<?php foreach($final['extras']['checked'] as $item) : ?>
+					<tr>
+						<td>
+							<?php echo $item; ?>
+						</td>
+					</tr>
+				<?php endforeach;; ?>
+			<?php endif; ?>
+			<?php if(isset($final['extras']['number']) && !empty($final['extras']['number'])) : ?>
+				<?php foreach($final['extras']['number'] as $key=>$value) : ?>
+					<tr>
+						<td>
+							<?php echo $value; ?>&nbsp;x&nbsp;<?php echo $key; ?>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+			<?php endif; ?>
 		</table>
 		<form method="post" action="">
 			<input type="submit" name="buttonedit" value="WIJZIG" class="buttonNext" />			
@@ -221,11 +252,12 @@ window.addEvent('domready' function(){
 			<input type="hidden" name="task" value="arrangements.setStep" />			
 			<input type="hidden" name="jbl_form[state_check]" value="1" />
 			<input type="hidden" name="noCalc" value="1" />
+			<input type="hidden" name="jbl_form[start_date]" value="<?php echo $final['start_date']; ?>" />
+			<input type="hidden" name="jbl_form[end_date]" value="<?php echo $final['end_date']; ?>" />
+			<input type="hidden" name="jbl_form[number_pp]" value="<?php echo $final['number_pp']; ?>" />
 	</form>
 	</fieldset>
-	<?php
-	} 
-	?>
+	<?php endif; ?>
 	<fieldset class="jbl_form"><legend>Uw opmerkingen:</legend>
 		<p><?php echo $form['comment']; ?></p>
 		<p>&nbsp;</p>
@@ -235,11 +267,14 @@ window.addEvent('domready' function(){
 			<input type="hidden" name="task" value="arrangements.setStep" />			
 			<input type="hidden" name="jbl_form[state_check]" value="1" />
 			<input type="hidden" name="noCalc" value="1" />
+			<input type="hidden" name="jbl_form[start_date]" value="<?php echo $final['start_date']; ?>" />
+			<input type="hidden" name="jbl_form[end_date]" value="<?php echo $final['end_date']; ?>" />
+			<input type="hidden" name="jbl_form[number_pp]" value="<?php echo $final['number_pp']; ?>" />
 		</form>
 	</fieldset>
 	<fieldset class="jbl_form"><legend>Heeft u alles gecontroleerd?</legend>
 		<form method="post" action="">
 			<input type="submit" name="sendButton" value="VERZENDEN" class="buttonNext" />
-			<input type="hidden" name="task" value="arrangements.process" />
+			<input type="hidden" name="task" value="dates.process" />
 		</form>
 	</fieldset>

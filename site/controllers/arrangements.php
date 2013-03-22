@@ -321,6 +321,20 @@ class JexBookingControllerArrangements extends JController
 		$app = JFactory::getApplication();
 		$app->input->set('layout', 'bedankt');
 		$app->setUserState('option_jbl', null);
+		
+		//laatste gegevens uit form halen en in de userState zetten
+		$form = $app->input->get("jbl_form",null,null);
+		$final = $app->input->get('final', null, null);
+		$naw = $form['naw'];
+		$comment = $form['comment'];
+		
+		//userState eerst legen, dan data uit step_3 er in
+		$app->setUserState("option_process_jbl", null);
+		$app->setUserState("option_process_jbl.final", $final);
+		$app->setUserState("option_process_jbl.comment", $comment);
+		$app->setUserState("option_process_jbl.naw", $naw);
+		
+		$mailfrom	= $app->getCfg('sitename');
 		$this->display();
 	}
 }

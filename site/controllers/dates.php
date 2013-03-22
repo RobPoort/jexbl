@@ -41,6 +41,7 @@ class JexBookingControllerDates extends JController
 	 */
 	public function setAttributes(){
 		
+		$this->app = JFactory::getApplication();
 		$locationId = $this->app->getUserState("jbl_option.location_id");
 		
 		$db = JFactory::getDbo();
@@ -76,6 +77,22 @@ class JexBookingControllerDates extends JController
 				$this->app->input->set('layout', 'step_3');
 				break;
 			case 3:
+				//laatste gegevens uit form halen en in de userState zetten
+				$app = $this->app;
+				$form = $app->input->get("jbl_form",null,null);
+				$final = $app->input->get('final', null, null);
+				$naw = $form['naw'];
+				$comment = $form['comment'];
+				
+				//userState eerst legen, dan data uit step_3 er in
+				$app->setUserState("option_process_jbl", null);
+				$app->setUserState("option_process_jbl.final", $final);
+				$app->setUserState("option_process_jbl.comment", $comment);
+				$app->setUserState("option_process_jbl.naw", $naw);
+				
+				$rob = $app->getUserState("option_process_jbl");
+				var_dump($rob);
+				
 				$this->app->input->set('layout', 'step_4');
 				break;
 			default:
@@ -1072,5 +1089,52 @@ class JexBookingControllerDates extends JController
 		$this->prices = $model->getPrices($locationId,$startDate,$endDate,$this->overlap);
 		
 		$this->app->setUserState("option_jbl.prices", $this->prices);
+	}
+	
+	public function process(){
+		$app = JFactory::getApplication();
+		$app->input->set('layout', 'bedankt');
+		$naw = $app->getUserState("option_process_jbl.naw");
+		$final = $app->getUserState("option_process_jbl.final");
+		$comment = $app->getUserState("option_process_jbl.comment");
+		
+		$emailText = $this->emailText($naw,$final,$comment);
+	
+		$mailfrom	= $app->getCfg('sitename');
+		$this->display();
+	}
+	
+	/**
+	 * method om de body voor de email aan te maken
+	 * @param array $naw
+	 * @param array $final
+	 * @param array $comment
+	 * 
+	 * @return string
+	 */
+	public function emailText($naw,$final,$comment){
+		
+		$text	 = 'Uw reservering bij De Papillon';
+		$text	.= "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\"><tr><td>Periode:</td><td>";
+		$text	.= $final['start_date'];
+		$text	.= "</td><td>";
+		$text	.= $final['end_date'];
+		$text	.= "</td></tr><tr><td>Personen:</td><td>";
+		$text	.= $final['number_pp'];
+		$text	.= "</td><td></td></tr>";
+		if(isset($final['arrangement']) && !empty($final['arrangement'])){
+			foreach($final['arrangement'] as $item){
+				$text	.= "<tr><td>";
+				$text	.= $item['name'];
+				$text	.= "</td>";
+				$text	.= "<td>&euro;&nbsp;";
+				$text	.= number_format($item['price'], 2, ',', '.');
+				$text	.= "</td><td>&nbsp;</td></tr>";
+			}
+		}
+		
+		$text	.= "</table>";
+		var_dump($text);
+		return $text;
 	}
 }
