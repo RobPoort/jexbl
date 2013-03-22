@@ -1132,6 +1132,30 @@ class JexBookingControllerDates extends JController
 				$text	.= "</td><td>&nbsp;</td></tr>";
 			}
 		}
+		if(isset($final['stayPeriod']) && !empty($final['stayPeriod'])){
+			foreach($final['stayPeriod'] as $item){
+				$text	.= "<tr><td>";
+				$text	.= $item['nachten']."&nbsp;nachten&nbsp".$item['name'];
+				$text	.= "</td><td>&euro;&nbsp;";
+				$text	.= number_format($item['stayPeriodPrice'], 2, ',', '.');
+				$text	.="</td><td>&nbsp;</td></tr>";
+			}
+		}
+		$text	.= "<tr>
+					<td>&nbsp;</td>				
+					<td style=\"text-align:left;\">+</td>
+					<td>&nbsp;</td>
+				</tr>";
+		$text	.= "<tr>
+					<td>Totaalprijs overnachtingen</td>				
+					<td style=\"text-align:left;\">&euro;&nbsp;";
+		$text	.= number_format($final['calcTotalStayPeriodsPrice'], 2, ',', '.');
+		$text	.= "</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td colspan=\"3\">&nbsp;</td>
+				</tr>";	
 		
 		$text	.= "</table>";
 		var_dump($text);
