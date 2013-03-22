@@ -27,7 +27,7 @@ window.addEvent('domready' function(){
 </script>
 <pre>
 	<?php //var_dump($this->app->getUserState("option_jbl.stayperiods")); ?>
-	<?php //var_dump($this->data); ?>
+	<?php var_dump($this->data); ?>
 </pre>
 <form method="post" action="">
 	<fieldset class="jbl_form" id="jbl_has_number"><legend>Uw prijsberekening:</legend>
@@ -49,7 +49,7 @@ window.addEvent('domready' function(){
 								&euro;&nbsp;
 								<?php echo number_format($arr['arr_price'], 2, ',', '.'); ?>
 								<input type="hidden" name="final[arrangement][<?php echo $i; ?>][name]" value="<?php echo $arr['price_message'][$i]; ?>" />
-								<input type="hidden" name="final[arrangement][<?php echo $i; ?>][name]" value="<?php echo $arr['arr_price']; ?>" />
+								<input type="hidden" name="final[arrangement][<?php echo $i; ?>][price]" value="<?php echo $arr['arr_price']; ?>" />
 							</td>
 						</tr>
 					<?php $i++; ?>
@@ -407,7 +407,10 @@ window.addEvent('domready' function(){
 			<input type="submit" name="sendButton" value="VOLGENDE" class="buttonNext" />			
 			 <input type="hidden" name="step" value="3" />
 			 <input type="hidden" name="task" value="dates.setStep" />
-			 <input type="hidden" name="jbl_form[state_check]" value="1" />		 
+			 <input type="hidden" name="jbl_form[state_check]" value="1" />
+			 <input type="hidden" name="final[start_date]" value="<?php echo $this->data['start_date']; ?>" />
+			 <input type="hidden" name="final[end_date]" value="<?php echo $this->data['end_date']; ?>" />
+			 <input type="hidden" name="final[number_pp]" value="<?php echo $this->default['number_pp']; ?>" /> 
 	</form>
 	<div class="clear">&nbsp;</div>
 		<form method="post" action="">

@@ -40,22 +40,13 @@ window.addEvent('domready' function(){
 	});
 });
 </script>
-<pre><?php //var_dump($final); ?></pre>
+<pre><?php var_dump($final); ?></pre>
 <h1>Overzicht:</h1>
 <div class="jbl_prijsberekening" id="jbl_prijsberekening">
 	
 		<fieldset class="jbl_form"><legend>Uw prijsberekening:</legend>
 		
 			<table class="jbl_form_table">
-				<tr>
-					<td>
-						<?php echo $final['name']; ?>
-					</td>
-					<td>
-						<?php echo $final['name_value']; ?>
-					</td>
-					<td><?php echo $final['name_number_pp']; ?></td>
-				</tr>
 				<tr>
 					<td>
 						Periode:
@@ -69,62 +60,67 @@ window.addEvent('domready' function(){
 					
 				</tr>
 				<tr>
+					<td>
+						Personen:
+					</td>
+					<td>
+						<?php echo $final['number_pp']; ?>
+					</td>
+				</tr>
+				<?php if(isset($final['arrangement']) && !empty($final['arrangement'])) : ?>
+					<?php foreach($final['arrangement'] as $item) : ?>
+						<tr>
+							<td>
+								<?php echo $item['name'];?>
+							</td>
+							
+							<td>
+								&euro;&nbsp;<?php echo number_format($item['price'], 2, ',', '.'); ?>
+							</td>
+							<td>&nbsp;</td>
+						</tr>
+					<?php endforeach; ?>
+				<?php endif; ?>
+				<?php if(isset($final['stayPeriod']) && !empty($final['stayPeriod'])) : ?>
+					<?php foreach($final['stayPeriod'] as $item) : ?>
+						<tr>
+							<td>
+								<?php echo $item['nachten'];?>&nbsp;nachten&nbsp;<?php echo $item['name']; ?>
+							</td>
+							
+							<td>
+								&euro;&nbsp;<?php echo number_format($item['stayPeriodPrice'], 2, ',', '.'); ?>
+							</td>
+							<td>&nbsp;</td>
+						</tr>
+					<?php endforeach; ?>
+				<?php endif; ?>			
+				<tr>
+					<td>&nbsp;</td>				
+					<td style="text-align:left;">+</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>Subtotaal</td>				
+					<td style="text-align:left;">&euro;&nbsp;<?php echo number_format($final['subTotalPrice'], 2, ',', '.')?></td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
 					<td colspan="3">&nbsp;</td>
 				</tr>
-				<?php
-					if ($final['attribs_number']) {
-						foreach ($final['attribs_number'] as $item){
-							?>
-							<tr>
-								<td><?php echo $item['name']; ?></td>
-								<td><?php echo $item['price']; ?></td>
-								<td><?php echo $item['number_info']; ?></td>							
-							</tr>
-							<?php
-						}
-					} 
-				?>
-				<?php
-					if ($final['attribs_checked']) {
-						foreach ($final['attribs_checked'] as $item){
-							?>
-							<tr>
-								<td><?php echo $item['name']; ?></td>
-								<td><?php echo $item['price']; ?></td>
-								<td><?php echo $item['number_info']; ?></td>
-							</tr>
-							<?php
-						}
-					} 
-				?>
-				<?php
-					if ($final['attribs_special_required']) {
-						foreach ($final['attribs_special_required'] as $item){
-							
-							?>
-							<tr>
-								<td><?php echo $item['name']; ?></td>
-								<td><?php echo $item['price']; ?></td>
-								<td><?php echo $item['number_info']; ?></td>
-							</tr>
-							<?php
-							
-						}
-					} 
-				?>
-				<?php
-					if ($final['attribs_special_checked']) {
-						foreach ($final['attribs_special_checked'] as $item){
-							?>
-							<tr>
-								<td><?php echo $item['name']; ?></td>
-								<td><?php echo $item['price']; ?></td>
-								<td><?php echo $item['number_info']; ?></td>
-							</tr>
-							<?php
-						}
-					} 
-				?>
+				<?php if(isset($final['calcAttribs']) && !empty($final['calcAttribs'])) : ?>
+					<?php foreach($final['calcAttribs'] as $item) : ?>
+						<tr>
+							<td>
+								<?php echo $item['name']; ?>
+							</td>
+							<td>
+								&euro;&nbsp;<?php echo number_format($item['price'], 2, ',', '.'); ?>
+							</td>
+							<td>&nbsp;</td>
+						</tr>
+					<?php endforeach; ?>
+				<?php endif; ?>
 				<tr>
 					<td colspan="3">&nbsp;</td>
 				</tr>
@@ -132,43 +128,7 @@ window.addEvent('domready' function(){
 					<td>&nbsp;</td>				
 					<td style="text-align:left;">+</td>
 					<td>&nbsp;</td>
-				</tr>			
-				<?php
-				if(count($final['percent_items']) > 0){ //TODO hier kan het eventueel (weer) fout gaan, denk hierbij aan diepte van de multi-dimensional array
-					?>
-					<tr>				
-						<td style="text-align:right;font-weight:bold;"><?php echo $final['subtotaal']; ?></td>
-						<td style="font-weight:bold;"><?php echo $final['subtotaal_value']; ?></td>
-						<td><?php echo $final['subtotaal_extra']; ?></td>
-					</tr>				
-					<?php
-					foreach($final['percent_items'] as $item){
-					?>				
-					<tr>
-						<td><?php echo $item['name']; ?></td>
-						<td><?php echo $item['price']; ?></td>
-						<td><?php echo $item['number_info']; ?></td>
-					</tr>
-					<?php
-					}
-					?>
-					<tr><td colspan="3">&nbsp;</td></tr>
-					<tr>				
-						<td style="text-align:right;font-weight:bold;"><?php echo $final['totaal']; //TODO ook hier opletten of het juiste wordt getoond ?></td>
-						<td style="font-weight:bold;"><?php echo $final['totaal_value']; ?></td>
-						<td><?php echo $final['totaal_extra']; ?></td>
-					</tr>
-					<?php
-				} else{
-					?>
-						<tr>				
-						<td style="text-align:right;font-weight:bold;"><?php echo $final['totaal']; ?></td>
-						<td style="font-weight:bold;"><?php echo $final['totaal_value']; ?></td>
-						<td><?php echo $final['totaal_extra']; ?></td>
-					</tr>
-					<?php
-				} 
-				?>
+				</tr>
 			</table>
 		<form method="post" action="">
 			<input type="submit" name="buttonedit" value="WIJZIG" class="buttonNext" />			
@@ -203,6 +163,14 @@ window.addEvent('domready' function(){
 			<tr>
 				<td colspan="2">&nbsp;</td>
 			</tr>
+			<?php $i = 1; ?>
+			<?php foreach($naw['birthdate'] as $item) : ?>
+			<tr>
+				<td class="naw_left">Geb. datum:</td>
+				<td><?php echo $item; ?></td>
+			</tr>
+			<?php $i++; ?>
+			<?php endforeach; ?>
 		</table>
 	<form method="post" action="">
 			<input type="submit" name="buttonedit" value="WIJZIG" class="buttonNext" />			
