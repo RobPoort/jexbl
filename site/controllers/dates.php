@@ -89,10 +89,6 @@ class JexBookingControllerDates extends JController
 				$app->setUserState("option_process_jbl.final", $final);
 				$app->setUserState("option_process_jbl.comment", $comment);
 				$app->setUserState("option_process_jbl.naw", $naw);
-				
-				$rob = $app->getUserState("option_process_jbl");
-				var_dump($rob);
-				
 				$this->app->input->set('layout', 'step_4');
 				break;
 			default:
@@ -1098,10 +1094,57 @@ class JexBookingControllerDates extends JController
 		$final = $app->getUserState("option_process_jbl.final");
 		$comment = $app->getUserState("option_process_jbl.comment");
 		
-		$emailText = $this->emailText($naw,$final,$comment);
-	
-		$mailfrom	= $app->getCfg('sitename');
+		$mailText = $this->emailText($naw,$final,$comment);
+		$mailfrom	= $app->getCfg('mailfrom');
+		$mailfromSite	= $app->getCfg('sitename');
+		
+		$this->sendMail($naw['mail'],$mailText);
+		
+		$this->storeReservation($naw,$mailText);
+		
 		$this->display();
+	}
+	/**
+	 * method om de reservering in de database op te slaan
+	 * @param array $naw
+	 * @param string $mailText
+	 * @return void
+	 */
+	public function storeReservation($naw,$mailText){
+		
+		$name	= $naw['name'];
+		$email	= $naw['mail'];
+		
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$query = 
+			" INSERT INTO `#__jexbooking_reserveringen`(`email`,`name`,`mail_text`)
+			VALUES('".$db->escape($email).
+			"', '". $db->escape($name).
+			"', '". $db->escape($mailText).
+			"')";
+		$db->setQuery($query);
+		$db->query();
+	}
+	/**
+	 * method om de e-mail te versturen
+	 * @param unknown $email
+	 * @param unknown $body
+	 */
+	function sendMail($email,$body){
+		//config data halen
+		$app = JFactory::getApplication();
+		$mailfrom	= $app->getCfg('mailfrom');
+		$sitename	= $app->getCfg('sitename');
+	
+		//mail functions
+		$mailer = JFactory::getMailer();
+		$mailer->setSender(array($mailfrom,$sitename)); //uit config sitenaam en email halen
+		$mailer->addRecipient($email);
+		$mailer->setSubject("Uw reservering bij De Papillon");
+		$mailer->isHTML(true);
+		$mailer->setBody($body);
+		$mailer->Send();
 	}
 	
 	/**
@@ -1115,7 +1158,7 @@ class JexBookingControllerDates extends JController
 	public function emailText($naw,$final,$comment){
 		
 		$text	 = 'Uw reservering bij De Papillon';
-		$text	.= "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\"><tr><td>Periode:</td><td>";
+		$text	.= "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"border:none;\"><tr><td>Periode:</td><td>";
 		$text	.= $final['start_date'];
 		$text	.= "</td><td>";
 		$text	.= $final['end_date'];
@@ -1155,10 +1198,90 @@ class JexBookingControllerDates extends JController
 				</tr>
 				<tr>
 					<td colspan=\"3\">&nbsp;</td>
-				</tr>";	
-		
+				</tr>";
+		if(isset($final['calcAttribs']) && !empty($final['calcAttribs'])){
+			foreach($final['calcAttribs'] as $item){
+				$text	.= "
+						<tr>
+							<td>";
+				$text	.= $item['name'];
+				$text	.="</td>
+							<td>
+								&euro;&nbsp;";
+				$text	.= number_format($item['price'], 2, ',', '.');
+				$text	.="</td>
+							<td>&nbsp;</td>
+						</tr>";
+			}
+			$text	.= "<tr>
+						<td>&nbsp;</td>				
+						<td style=\"text-align:left;\">+</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>Subtotaal toevoegingen</td>				
+						<td style=\"text-align:left;\">&euro;&nbsp;";
+			$text	.= number_format($final['subTotalAttribs'], 2, ',', '.');
+			$text	.="</td>
+						<td>&nbsp;</td>
+					</tr>";
+		}
+		$text	.= "<tr>
+					<td>&nbsp;</td>				
+					<td style=\"text-align:left;\">+</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>Subtotaalprijs</td>				
+					<td style=\"text-align:left;\">&euro;&nbsp;";
+		$text	.= number_format($final['subTotalPrice'], 2, ',', '.');
+		$text	.="</td>
+					<td>&nbsp;</td>
+				</tr>";
+		if(isset($final['totalAdd']) && !empty($final['totalAdd'])){
+			$text	.= "<tr>
+						<td>";
+			$text	.= $final['totalAdd']['message'];
+			$text	.= "</td>
+						<td>
+							&euro;&nbsp;";
+			$text	.= number_format((double)$final['totalAdd']['price'], 2, ',', '.');
+			$text	.= "</td>
+						<td>&nbsp;</td>
+					</tr>";
+		}
+		$text	.= "<tr>
+					<td colspan=\"3\">&nbsp;</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>				
+					<td style=\"text-align:left;\">+</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr style=\"font-weight:bold;\">
+					<td>
+						Totaalprijs
+					</td>
+					<td>
+						&euro;&nbsp;";
+		$text	.= number_format($final['defTotal'], 2, ',', '.');
+		$text	.= "</td>
+					<td>
+						&nbsp;
+					</td>
+				</tr>";
+		if(isset($comment) && !empty($comment) && $comment != ""){
+		$text	.= "<tr>
+					<td colspan=\"3\">Uw opmerkingen:</td>
+					</tr>
+					<tr>
+					<td colspan=\"3\">";
+		$text	.= $comment;
+		$text	.= "</td>
+					</tr>";
+		}
 		$text	.= "</table>";
-		var_dump($text);
+		
 		return $text;
 	}
 }
