@@ -1308,7 +1308,7 @@ class JexBookingControllerDates extends JController
 					</tr>";
 		}
 		$text	.= "</table>";		
-		var_dump($text);
+		
 		return $text;
 	}
 }
