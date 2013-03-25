@@ -1280,7 +1280,32 @@ class JexBookingControllerDates extends JController
 		$text	.= "</td>
 					</tr>";
 		}
-		$text	.= "</table>";
+		$text	.= "<tr>
+					<td colspan=\"3\">Uw gegevens:</td>
+					</tr>";
+		$text	.= "<tr><td>Naam:</td><td>";
+		$text	.= $naw['name'];
+		if($naw['surname'] != ''){
+			$text	.= ', '.$naw['surname'];
+		}
+		$text	.= "</td><td>&nbsp;</td></tr>";
+		$text	.= "<tr><td>Adres:</td><td>";
+		$text	.= $naw['street'].'&nbsp;'.$naw['street_number'].'<br />';
+		$text	.= $naw['zipcode'].'&nbsp;'.$naw['city'];
+		$text	.= "</td><td>&nbsp;</td></tr>";
+		$text	.= "<tr><td>Telefoon:</td><td>";
+		$text	.= $naw['phone'];
+		$text	.= "</td<td>&nbsp;</td></tr>";
+		$text	.= "<tr><td>E-mail:</td><td>";
+		$text	.= $naw['mail'];
+		$text	.= "</td><td>&nbsp;</td></tr>";
+		$text	.= "<tr><td colspan=\"3\">&nbsp;</td></tr>";
+		foreach($naw['birthdate'] as $item){
+			$text	.= "<tr><td>Geb. datum:</td><td>";
+			$text	.= $item;
+			$text	.= "</td><td>&nbsp;</td></tr>";
+		}
+		$text	.= "</table>";		
 		
 		return $text;
 	}
