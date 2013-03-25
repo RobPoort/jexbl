@@ -1270,17 +1270,8 @@ class JexBookingControllerDates extends JController
 						&nbsp;
 					</td>
 				</tr>";
-		if(isset($comment) && !empty($comment) && $comment != ""){
-		$text	.= "<tr>
-					<td colspan=\"3\">Uw opmerkingen:</td>
-					</tr>
-					<tr>
-					<td colspan=\"3\">";
-		$text	.= $comment;
-		$text	.= "</td>
-					</tr>";
-		}
-		$text	.= "<tr>
+		$text	.= "<tr><td colspan=\"3\">&nbsp;</td></tr>";	
+		$text	.= "<tr style=\"font-weight:bold;\">
 					<td colspan=\"3\">Uw gegevens:</td>
 					</tr>";
 		$text	.= "<tr><td>Naam:</td><td>";
@@ -1305,8 +1296,19 @@ class JexBookingControllerDates extends JController
 			$text	.= $item;
 			$text	.= "</td><td>&nbsp;</td></tr>";
 		}
+		if(isset($comment) && !empty($comment) && $comment != ""){
+			$text	.= "<tr><td colspan=\"3\">&nbsp;</td></tr>";
+			$text	.= "<tr style=\"font-weight:bold;\">
+					<td colspan=\"3\">Uw opmerkingen:</td>
+					</tr>
+					<tr>
+					<td colspan=\"3\">";
+			$text	.= $comment;
+			$text	.= "</td>
+					</tr>";
+		}
 		$text	.= "</table>";		
-		
+		var_dump($text);
 		return $text;
 	}
 }
