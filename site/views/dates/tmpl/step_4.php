@@ -236,13 +236,16 @@ window.addEvent('domready' function(){
 					</tr>
 				<?php endforeach;; ?>
 			<?php endif; ?>
+			
 			<?php if(isset($final['extras']['number']) && !empty($final['extras']['number'])) : ?>
 				<?php foreach($final['extras']['number'] as $key=>$value) : ?>
-					<tr>
-						<td>
-							<?php echo $value; ?>&nbsp;x&nbsp;<?php echo $key; ?>
-						</td>
-					</tr>
+					<?php if($value > 0) : ?>
+						<tr>
+							<td>
+								<?php echo $value; ?>&nbsp;x&nbsp;<?php echo $key; ?>
+							</td>
+						</tr>
+					<?php endif; ?>
 				<?php endforeach; ?>
 			<?php endif; ?>
 		</table>

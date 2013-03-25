@@ -394,9 +394,7 @@ window.addEvent('domready' function(){
 		</fieldset>
 	<fieldset class="jbl_form"><legend>Eventuele opmerkingen:</legend>
 
-		<textarea rows="15" cols="85" name="jbl_form[comment]">
-			
-		</textarea>
+		<textarea rows="15" cols="85" name="jbl_form[comment]"></textarea>
 
 	</fieldset>
 	<fieldset class="jbl_form" id="button">			
